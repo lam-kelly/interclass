@@ -30,6 +30,22 @@
     <article v-else>
       <p>{{ content }}</p>
     </article>
+    <article
+      v-if="booleanFields.length"
+    >
+      <div
+        v-for="booleanField in booleanFields"
+        :key="booleanField.id"
+      >
+        <label :for="booleanField.id">{{ booleanField.label }}:</label>
+        <input
+          :type="'checkbox'"
+          :name="booleanField.id"
+          :checked="booleanField.value"
+          @input="booleanField.value = $event.target.checked"
+        >
+      </div>
+    </article>
     <button
       type="submit"
     >
@@ -60,7 +76,7 @@ export default {
       method: 'GET', // Form request method
       hasBody: false, // Whether or not form request has a body
       setUsername: false, // Whether or not stored username should be updated after form submission
-      refreshFreets: false, // Whether or not stored freets should be updated after form submission
+      booleanFields: [],
       alerts: {}, // Displays success/error messages encountered during form submission
       callback: null // Function to run after successful form submission
     };
@@ -76,8 +92,13 @@ export default {
         credentials: 'same-origin' // Sends express-session credentials with request
       };
       if (this.hasBody) {
+        const role = this.booleanFields.map(field => {
+          field.value = field.value ? 'teacher' : 'student';
+          return field;
+        });
+        let allFields = this.fields.concat(role);
         options.body = JSON.stringify(Object.fromEntries(
-          this.fields.map(field => {
+          allFields.map(field => {
             const {id, value} = field;
             field.value = '';
             return [id, value];
@@ -97,10 +118,6 @@ export default {
           const text = await r.text();
           const res = text ? JSON.parse(text) : {user: null};
           this.$store.commit('setUsername', res.user ? res.user.username : null);
-        }
-
-        if (this.refreshFreets) {
-          this.$store.commit('refreshFreets');
         }
 
         if (this.callback) {

@@ -16,6 +16,9 @@ export default {
         {id: 'username', label: 'Username', value: ''},
         {id: 'password', label: 'Password', value: ''}
       ],
+      booleanFields: [
+        {id: 'role', label: 'Teacher', value: false}
+      ],
       title: 'Create account',
       callback: () => {
         const message = 'Successfully created an account!';

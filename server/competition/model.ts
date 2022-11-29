@@ -34,12 +34,12 @@ export type PopulatedCompetition = {
 const CompetitionSchema = new Schema({
   name: {
     type: String,
-    required: true,
-    ref: 'User'
+    required: true
   },
   creatorId: {
     type: Schema.Types.ObjectId,
-    required: true
+    required: true,
+    ref: 'User'
   },
   classes: {
     type: [{

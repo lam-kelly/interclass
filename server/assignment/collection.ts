@@ -27,7 +27,7 @@ class AssignmentCollection {
     // }
     // assignment.totalPoints = points;
     await assignment.save(); // Saves Assignment to MongoDB
-    return assignment;
+    return (await assignment.populate('problems')).populate('totalPoints');
   }
 
     /**
@@ -43,7 +43,7 @@ class AssignmentCollection {
     assignment.problems.push(questionId);
     assignment.totalPoints += questObj.pointValue;
     await assignment.save(); // Saves Assignment to MongoDB
-    return assignment;
+    return (await assignment.populate('problems')).populate('totalPoints');
   }
 
   /**
@@ -64,7 +64,7 @@ class AssignmentCollection {
    * @return {Promise<HydratedDocument<Assignment>> | Promise<null>} - The Assignment with the given Assignment ID, if any
    */
   static async findOneById(assignmentId: Types.ObjectId | string): Promise<HydratedDocument<Assignment>> {
-    return AssignmentModel.findOne({_id: assignmentId});
+    return (await (await AssignmentModel.findOne({_id: assignmentId})).populate('problems')).populate('totalPoints');
   }
 
   /**
@@ -98,7 +98,7 @@ class AssignmentCollection {
     studentClass.totalPoints += assignmentPoints;
 
     await assignment.save();
-    return assignment;
+    return (await assignment.populate('problems')).populate('totalPoints');
   }
 
 }

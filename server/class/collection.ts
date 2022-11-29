@@ -22,7 +22,7 @@ class ClassCollection {
   static async addOne(teacherId: Types.ObjectId | string): Promise<HydratedDocument<Class>> {
     const Class = new ClassModel({teacher: teacherId, students: [], totalPoints: 0});
     await Class.save(); // Saves Class to MongoDB
-    return Class;
+    return (await (await Class.populate('teacher')).populate('students')).populate('totalPoints');
   }
 
   /**
@@ -43,7 +43,7 @@ class ClassCollection {
    * @return {Promise<HydratedDocument<Class>> | Promise<null>} - The Class with the given Class ID, if any
    */
   static async findOneByclassId(classId: Types.ObjectId | string): Promise<HydratedDocument<Class>> {
-    return ClassModel.findOne({_id: classId});
+    return (await (await (await ClassModel.findOne({_id: classId})).populate('teacher')).populate('students')).populate('totalPoints');
   }
 
   /**
@@ -56,7 +56,7 @@ class ClassCollection {
     // const user = await UserCollection.findOneByUserId(teacherId);
     // return ClassModel.findOne({teacher: user._id});
     const foundClass = await ClassModel.findOne({teacher: teacherId} );
-    return foundClass;
+    return (await (await foundClass.populate('teacher')).populate('students')).populate('totalPoints');
   }
 
    /**
@@ -70,7 +70,7 @@ class ClassCollection {
     // return ClassModel.findOne({students: user} );
     // return ClassModel.findOne({students: {$all: [studentId]}}); 
     const foundClass = await ClassModel.findOne({students: studentId} );
-    return foundClass;
+    return (await (await foundClass.populate('teacher')).populate('students')).populate('totalPoints');
   }
 
   /**
@@ -87,7 +87,7 @@ class ClassCollection {
     // Class.students.push(studentId);
 
     await Class.save();
-    return Class;
+    return (await (await Class.populate('teacher')).populate('students')).populate('totalPoints');
   }
 
   /**
@@ -116,7 +116,7 @@ class ClassCollection {
     }
 
     await Class.save();
-    return Class;
+    return (await (await Class.populate('teacher')).populate('students')).populate('totalPoints');
   }
 
 }

@@ -7,10 +7,13 @@ import ClassCollection from '../class/collection';
  * Checks if the user exists.
  */
 const isUserExists = async (req: Request, res: Response, next: NextFunction) => {
-  const user = await UserCollection.findOneByUserId(req.params.teacherId);
+  const toCheck = req.params.teacherId ? req.params.teacherId : req.params.studentId;
+  const validFormat = Types.ObjectId.isValid(toCheck);
+  const user = validFormat ? await UserCollection.findOneByUserId(toCheck) : '';
+  // const user = await UserCollection.findOneByUserId(req.params.teacherId);
   if (!user) {
     res.status(404).json({
-      error: 'Teacher does not exist.'
+      error: 'The user with the given Id does not exist.'
     });
     return;
   }

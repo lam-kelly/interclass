@@ -34,7 +34,7 @@ router.get(
  */
  router.get(
   '/:classId?',
-  [], //classValidator.isUserExists
+  [], 
 async (req: Request, res: Response) => {
   // const response = await ClassModel.findOne({_id: req.params.classId});
   const response = await ClassCollection.findOneByclassId(req.params.classId);
@@ -52,7 +52,7 @@ async (req: Request, res: Response) => {
  */
 router.get(
     '/teacher/:teacherId?',
-    [], //classValidator.isUserExists
+    [classValidator.isUserExists], 
   async (req: Request, res: Response) => {
     // const user = await UserCollection.findOneByUserId(req.params.teacherId);
     // const userId = user._id;
@@ -71,7 +71,7 @@ router.get(
  */
 router.get(
     '/student/:studentId?',
-    [], //classValidator.isUserExists
+    [classValidator.isUserExists], 
   async (req: Request, res: Response) => {
     // const user = await UserCollection.findOneByUserId(req.params.teacherId);
     // const userId = user._id;

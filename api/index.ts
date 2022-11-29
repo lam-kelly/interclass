@@ -10,6 +10,8 @@ import * as userValidator from '../server/user/middleware';
 import {userRouter} from '../server/user/router';
 import MongoStore from 'connect-mongo';
 import { problemRouter } from '../server/problem/router';
+import { classRouter } from '../server/class/router';
+import { assignmentRouter } from '../server/assignment/router';
 
 // Load environmental variables
 dotenv.config({});
@@ -70,6 +72,8 @@ app.use(userValidator.isCurrentSessionUserExists);
 // Add routers from routes folder
 app.use('/api/users', userRouter);
 app.use('/api/problem', problemRouter);
+app.use('/api/class', classRouter);
+app.use('/api/assignment', assignmentRouter);
 
 // Catch all the other routes and display error message
 app.all('*', (req: Request, res: Response) => {

@@ -14,7 +14,7 @@ export type Problem = {
   answer: string;
   solvers: Types.ObjectId[];
   workers: Types.ObjectId[];
-  pointValue: Number;
+  pointValue: number;
 };
 
 export type PopulatedProblem = {
@@ -24,7 +24,7 @@ export type PopulatedProblem = {
     answer: string;
     solvers: User[];
     workers: User[];
-    pointValue: Number;
+    pointValue: number;
   };
 
 const ProblemSchema = new Schema({

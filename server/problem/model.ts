@@ -61,5 +61,5 @@ const ProblemSchema = new Schema({
   }
 });
 
-const ProblemModel = model<Problem>('Question', ProblemSchema);
+const ProblemModel = model<Problem>('Problem', ProblemSchema);
 export default ProblemModel;

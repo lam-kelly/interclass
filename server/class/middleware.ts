@@ -85,7 +85,7 @@ const canEdit = async (req: Request, res: Response, next: NextFunction) => {
   const user = await UserCollection.findOneByUserId(req.session.userId);
   const userId = user._id;
   const currentClass = await ClassCollection.findOneByclassId(req.params.classId);
-  const teacherId = currentClass.teacher;
+  const teacherId = currentClass.teacher._id;
   if (userId.toString() !== teacherId.toString()) {
     res.status(403).json({
       error: 'Cannot edit the class that you are not the teacher of.'

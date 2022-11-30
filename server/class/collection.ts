@@ -43,7 +43,12 @@ class ClassCollection {
    * @return {Promise<HydratedDocument<Class>> | Promise<null>} - The Class with the given Class ID, if any
    */
   static async findOneByclassId(classId: Types.ObjectId | string): Promise<HydratedDocument<Class>> {
-    return (await (await (await ClassModel.findOne({_id: classId})).populate('teacher')).populate('students')).populate('totalPoints');
+    const foundClass = await ClassModel.findOne({_id: classId});
+    if (foundClass){
+      return (await (await foundClass.populate('teacher')).populate('students')).populate('totalPoints');
+    } else {
+      return null;
+    }
   }
 
   /**
@@ -56,7 +61,11 @@ class ClassCollection {
     // const user = await UserCollection.findOneByUserId(teacherId);
     // return ClassModel.findOne({teacher: user._id});
     const foundClass = await ClassModel.findOne({teacher: teacherId} );
-    return (await (await foundClass.populate('teacher')).populate('students')).populate('totalPoints');
+    if (foundClass){
+      return (await (await foundClass.populate('teacher')).populate('students')).populate('totalPoints');
+    } else {
+      return null;
+    }
   }
 
    /**
@@ -70,7 +79,12 @@ class ClassCollection {
     // return ClassModel.findOne({students: user} );
     // return ClassModel.findOne({students: {$all: [studentId]}}); 
     const foundClass = await ClassModel.findOne({students: studentId} );
-    return (await (await foundClass.populate('teacher')).populate('students')).populate('totalPoints');
+    if (foundClass){
+      return (await (await foundClass.populate('teacher')).populate('students')).populate('totalPoints');
+    } else {
+      return null;
+    }
+    // return (await (await foundClass.populate('teacher')).populate('students')).populate('totalPoints');
   }
 
   /**

@@ -43,12 +43,7 @@ class ClassCollection {
    * @return {Promise<HydratedDocument<Class>> | Promise<null>} - The Class with the given Class ID, if any
    */
   static async findOneByclassId(classId: Types.ObjectId | string): Promise<HydratedDocument<Class>> {
-    const foundClass = await ClassModel.findOne({_id: classId});
-    if (foundClass){
-      return (await (await foundClass.populate('teacher')).populate('students')).populate('totalPoints');
-    } else {
-      return null;
-    }
+    return await ClassModel.findOne({_id: classId}).populate('teacher').populate('students').populate('totalPoints');
   }
 
   /**
@@ -60,12 +55,7 @@ class ClassCollection {
   static async findOneByTeacher(teacherId: Types.ObjectId | string): Promise<HydratedDocument<Class>> {
     // const user = await UserCollection.findOneByUserId(teacherId);
     // return ClassModel.findOne({teacher: user._id});
-    const foundClass = await ClassModel.findOne({teacher: teacherId} );
-    if (foundClass){
-      return (await (await foundClass.populate('teacher')).populate('students')).populate('totalPoints');
-    } else {
-      return null;
-    }
+    return await ClassModel.findOne({teacher: teacherId}).populate('teacher').populate('students').populate('totalPoints');
   }
 
    /**
@@ -78,12 +68,7 @@ class ClassCollection {
     // const user = await UserCollection.findOneByUserId(studentId);
     // return ClassModel.findOne({students: user} );
     // return ClassModel.findOne({students: {$all: [studentId]}}); 
-    const foundClass = await ClassModel.findOne({students: studentId} );
-    if (foundClass){
-      return (await (await foundClass.populate('teacher')).populate('students')).populate('totalPoints');
-    } else {
-      return null;
-    }
+    return await ClassModel.findOne({students: studentId}).populate('teacher').populate('students').populate('totalPoints');
     // return (await (await foundClass.populate('teacher')).populate('students')).populate('totalPoints');
   }
 
@@ -102,6 +87,22 @@ class ClassCollection {
 
     await Class.save();
     return (await (await Class.populate('teacher')).populate('students')).populate('totalPoints');
+
+    // This is the code I have for adding a class to an array of classes
+    // It makes mongo to the pushing istead
+    // It's a little simplier than what you have so idk if you wanna change
+    //
+    // await CompetitionModel.updateOne({_id: competitionId}, {$push: {classes: classId}});
+    // return await CompetitionModel.findOne({_id: competitionId})
+    // .populate('creatorId')
+    // .populate('classes')
+    // .populate('assignments')
+    // .populate({
+    //   path : 'assignments',
+    //   populate : {
+    //     path : 'problems'
+    //   }
+    // });
   }
 
   /**
@@ -131,6 +132,21 @@ class ClassCollection {
 
     await Class.save();
     return (await (await Class.populate('teacher')).populate('students')).populate('totalPoints');
+
+    // This is the code I have for removing class from an array of classes
+    // It's a little simplier than what you have so idk if you wanna change
+    //
+    // await CompetitionModel.updateOne({_id: competitionId}, {$pull: {classes: classId}});
+    // return await CompetitionModel.findOne({_id: competitionId})
+    // .populate('creatorId')
+    // .populate('classes')
+    // .populate('assignments')
+    // .populate({
+    //   path : 'assignments',
+    //   populate : {
+    //     path : 'problems'
+    //   }
+    // });
   }
 
 }

@@ -64,7 +64,7 @@ class AssignmentCollection {
    * @return {Promise<HydratedDocument<Assignment>> | Promise<null>} - The Assignment with the given Assignment ID, if any
    */
   static async findOneById(assignmentId: Types.ObjectId | string): Promise<HydratedDocument<Assignment>> {
-    return (await (await AssignmentModel.findOne({_id: assignmentId})).populate('problems')).populate('totalPoints');
+    return await AssignmentModel.findOne({_id: assignmentId}).populate('problems').populate('totalPoints');
   }
 
   /**

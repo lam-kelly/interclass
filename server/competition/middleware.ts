@@ -64,8 +64,7 @@ const isValidClassAndTeacherOfClass = async (req: Request, res: Response, next: 
 
 const isValidClassJoin = async (req: Request, res: Response, next: NextFunction) => {
   const competition = await CompetitionCollection.findOneByCompetitionId(req.params.competitionId);
-  const classs = await ClassCollection.findOneByclassId(req.body.classId);
-  if (!competition.classes.includes(classs)) {
+  if (competition.classes.map(c => c._id.toString()).includes(req.body.classId)) {
     res.status(400).json({
       error: 'Your class is already part of this competition'
     });
@@ -76,8 +75,7 @@ const isValidClassJoin = async (req: Request, res: Response, next: NextFunction)
 
 const isValidClassLeave = async (req: Request, res: Response, next: NextFunction) => {
   const competition = await CompetitionCollection.findOneByCompetitionId(req.params.competitionId);
-  const classs = await ClassCollection.findOneByclassId(req.body.classId);
-  if (competition.classes.includes(classs)) {
+  if (!competition.classes.map(c => c._id.toString()).includes(req.body.classId)) {
     res.status(400).json({
       error: 'Your class is not part of this competition'
     });
@@ -102,10 +100,10 @@ const isValidAssignment = async (req: Request, res: Response, next: NextFunction
 
 const isValidTeacherOfCompetition = async (req: Request, res: Response, next: NextFunction) => {
   const competition = await CompetitionCollection.findOneByCompetitionId(req.params.competitionId);
-  const teachers = competition.classes.map(c => c.teacher._id);
+  const teachers = competition.classes.map(c => c.teacher._id.toString());
   if (!teachers.includes(req.session.userId)) {
     res.status(400).json({
-      error: 'You are a valid teacher in this competition'
+      error: 'You are not a valid teacher in this competition'
     });
     return;
   }
@@ -115,8 +113,7 @@ const isValidTeacherOfCompetition = async (req: Request, res: Response, next: Ne
 
 const isValidAddAssignment = async (req: Request, res: Response, next: NextFunction) => {
   const competition = await CompetitionCollection.findOneByCompetitionId(req.params.competitionId);
-  const assignment = await AssignmentCollection.findOneById(req.body.assignmentId);
-  if (competition.assignments.includes(assignment)) {
+  if (competition.assignments.map(a => a._id.toString()).includes(req.body.assignmentId)) {
     res.status(400).json({
       error: 'Your assignment is already part of this competition'
     });
@@ -128,8 +125,7 @@ const isValidAddAssignment = async (req: Request, res: Response, next: NextFunct
 
 const isValidRemoveAssignment = async (req: Request, res: Response, next: NextFunction) => {
   const competition = await CompetitionCollection.findOneByCompetitionId(req.params.competitionId);
-  const assignment = await AssignmentCollection.findOneById(req.body.assignmentId);
-  if (!competition.assignments.includes(assignment)) {
+  if (!competition.assignments.map(a => a._id.toString()).includes(req.body.assignmentId)) {
     res.status(400).json({
       error: 'Your assignment is not part of this competition'
     });

@@ -185,14 +185,14 @@ router.patch(
  *
  * @name PATCH /api/competition/:competitionId/end
  *
- * @param {string} competitionId - The id of the competition to join
+ * @param {string} competitionId - The id of the competition to end
  * @return {CompetitionResponse} - The updated competition
  * @throws {403} - If user is not logged in
  * @throws {404} - If competitionsId is invalid
  * @throws {403} - If the user is not a teacher in the competition
  */
  router.patch(
-  '/',
+  '/:competitionId/end',
   [
     userValidator.isUserLoggedIn,
     competitionValidator.isValidCompetition,
@@ -210,7 +210,7 @@ router.patch(
 /**
  * Delete a user.
  *
- * @name DELETE /api/competition/id
+ * @name DELETE /api/competition/:competitionId
  *
  * @return {string} - A success message
  * @throws {403} - If the user is not logged in
@@ -220,6 +220,7 @@ router.delete(
   '/:competitionId',
   [
     userValidator.isUserLoggedIn,
+    competitionValidator.isValidCompetition,
     competitionValidator.isValidTeacherOfCompetition
   ],
   async (req: Request, res: Response) => {

@@ -35,14 +35,17 @@ router.get(
  * @param {string} name - name of the competition
  * @return {CompetitionResponse} - The created competition
  * @throws {403} - If the user is not logged in
- * @throws {403} - If the user is not a teacher of the class
+ * @throws {403} - If the user is not a teacher
  * @throws {403} - If user/teacher is currently in a competition
+ * @throws {400} - If the name is empty or a stream of empty spaces
  */
 router.post(
   '/',
   [
     userValidator.isUserLoggedIn,
-    competitionValidator.isValidCompetitionCreator,
+    competitionValidator.isValidCompetitionName,
+    competitionValidator.isTeacher,
+    competitionValidator.isNotInCompetition
   ],
   async (req: Request, res: Response) => {
     const competition = await CompetitionCollection.addOne(req.body.name, req.session.userId);
@@ -63,16 +66,16 @@ router.post(
  * @return {CompetitionResponse} - The updated competition
  * @throws {403} - If user is not logged in
  * @throws {404} - If competitionsId is invalid
- * @throws {400} - If classId is invalid
+ * @throws {404} - If classId is invalid
  * @throws {403} - If the user is not the teacher of the class
+ * @throws {400} - If the class is already in the competition
  */
 router.patch(
   '/:competitionId/join',
   [
     userValidator.isUserLoggedIn,
     competitionValidator.isValidCompetition,
-    competitionValidator.isValidClass,
-    competitionValidator.isValidTeacherOfClass,
+    competitionValidator.isValidClassAndTeacherOfClass,
     competitionValidator.isValidClassJoin,
   ],
   async (req: Request, res: Response) => {
@@ -96,14 +99,14 @@ router.patch(
  * @throws {404} - If competitionsId is invalid
  * @throws {400} - If classId is invalid
  * @throws {403} - If the user is not the teacher of the class
+ * @throws {400} - If the class is not already in the competition
  */
  router.patch(
   '/:competitionId/leave',
   [
     userValidator.isUserLoggedIn,
     competitionValidator.isValidCompetition,
-    competitionValidator.isValidClass,
-    competitionValidator.isValidTeacherOfClass,
+    competitionValidator.isValidClassAndTeacherOfClass,
     competitionValidator.isValidClassLeave,
   ],
   async (req: Request, res: Response) => {
@@ -125,8 +128,8 @@ router.patch(
  * @return {CompetitionResponse} - The updated competition
  * @throws {403} - If user is not logged in
  * @throws {404} - If competitionsId is invalid
- * @throws {400} - If classId is invalid
- * @throws {403} - If the user is not a teacher in the competition
+ * @throws {404} - If assignmentId is invalid
+ * @throws {403} - If the assignment is already in the competition
  */
  router.patch(
   '/:competitionId/addAssignment',

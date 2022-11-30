@@ -28,13 +28,32 @@ class CompetitionCollection {
     return (await (await (await competition
       .populate('creatorId'))
       .populate('classes'))
-      .populate('assignments')
-      ).populate({
+      .populate('assignments'))
+      .populate({
         path : 'assignments',
         populate : {
           path : 'problems'
         }
       });
+  }
+
+  /**
+   * Find a competition by competitionId
+   *
+   * @param {string} competitionId - The competitionId of the competition to find
+   * @return {Promise<HydratedDocument<Competition>> | Promise<null>} - The user with the given username, if any
+   */
+   static async findOneByCompetitionId(competitionId: Types.ObjectId | string): Promise<HydratedDocument<Competition>> {
+    return await CompetitionModel.findOne({ _id: competitionId })
+    .populate('creatorId')
+    .populate('classes')
+    .populate('assignments')
+    .populate({
+      path : 'assignments',
+      populate : {
+        path : 'problems'
+      }
+    });
   }
 
   /**
@@ -72,7 +91,6 @@ class CompetitionCollection {
       });
     }
   }
-
 
   /**
    * Add a class to a competition

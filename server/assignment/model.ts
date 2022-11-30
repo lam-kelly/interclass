@@ -6,6 +6,7 @@ import type {Problem} from '../problem/model';
 // Type definition for Assignment on the backend
 export type Assignment = {
   _id: Types.ObjectId; // MongoDB assigns each object this ID on creation
+  name: string;
   problems: Types.Array<Problem>; //Types.Array<string>; Types.ObjectId[];
   totalPoints: number;
 };
@@ -23,6 +24,10 @@ const AssignmentSchema = new Schema({
   //   }],
   //   required: true
   // },
+  name: {
+    type: String,
+    required: true
+  },
   problems: {
     type: [Schema.Types.ObjectId],
     required: true,

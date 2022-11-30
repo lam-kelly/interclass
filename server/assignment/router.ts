@@ -47,6 +47,7 @@ router.get(
  *
  * @name POST /api/assignment
  *
+ * @param {string} assignmentName - the name of the assignment to be added
  * @return {string} - A success message
  * @throws {403} - If the user is not logged in or is not a teacher
  */
@@ -57,7 +58,7 @@ router.get(
     classValidator.isValidTeacher
   ],
   async (req: Request, res: Response) => {
-    await AssignmentCollection.addOne();
+    await AssignmentCollection.addOne(req.body.assignmentName);
 
     res.status(201).json({message: 'Your assignment was created successfully.'});
   }

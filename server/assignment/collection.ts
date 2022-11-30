@@ -18,8 +18,8 @@ class AssignmentCollection {
    *
    * @return {Promise<HydratedDocument<Assignment>>} - The newly created Assignment
    */
-  static async addOne(): Promise<HydratedDocument<Assignment>> {
-    const assignment = new AssignmentModel({problems: [], totalPoints: 0});
+  static async addOne(newName: string): Promise<HydratedDocument<Assignment>> {
+    const assignment = new AssignmentModel({name: newName, problems: [], totalPoints: 0});
     // let points = 0;
     // for (const prob of assignment.problems){
     //   const questObj = await ProblemCollection.findOneByProblemId(prob._id);

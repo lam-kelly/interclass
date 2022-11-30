@@ -1,4 +1,5 @@
 import type {HydratedDocument, ObjectId, Types} from 'mongoose';
+import mongoose from 'mongoose';
 import UserCollection from 'server/user/collection';
 import type {Problem} from './model';
 import ProblemModel from './model';
@@ -54,13 +55,19 @@ class ProblemCollection {
     ): Promise<HydratedDocument<Problem>> {
         const problem = await ProblemModel.findOne({_id: problemId});
         if (problemDetails.newWorkerId) {
-            // const newWorker = await UserCollection.findOneByUserId(problemDetails.newWorkerId)
-            await ProblemModel.updateOne({_id: problemId}, {$push: {workers: problemDetails.newWorkerId}})
+            const newWorker = new mongoose.Types.ObjectId(problemDetails.newWorkerId)
+            if (!problem.workers.includes(newWorker)) {
+                // await ProblemModel.updateOne({_id: problemId}, {$push: {workers: problemDetails.newWorkerId}})
+                problem.workers.push(newWorker)
+            }
         }
 
         if (problemDetails.newSolverId) {
-            // const newSolver = await UserCollection.findOneByUserId(problemDetails.newSolverId)
-            await ProblemModel.updateOne({_id: problemId}, {$push: {solvers: problemDetails.newSolverId}})
+            const newSolver = new mongoose.Types.ObjectId(problemDetails.newSolverId)
+            if (!problem.solvers.includes(newSolver)) {
+                // await ProblemModel.updateOne({_id: problemId}, {$push: {solvers: problemDetails.newSolverId}})
+                problem.solvers.push(newSolver)
+            }
             // const solverId = problemDetails.newSolverId as ObjectId;
             // problem.solvers.push(problemDetails.newSolverId)
         }

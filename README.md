@@ -148,3 +148,220 @@ Here is a list of documentation you may want to consult while working with Vue:
 * [Vuex for Vue 2](https://v3.vuex.vuejs.org)
 * [Vue Template Explorer for Vue 2](https://v2.template-explorer.vuejs.org)
 * [MDN's in-depth Vue tutorials](https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks#vue_tutorials)
+
+## API routes
+
+#### `POST /api/users/session` - Sign in user
+
+**Body**
+
+- `username` _{string}_ - The user's username
+- `password` _{string}_ - The user's password
+
+**Returns**
+
+- A success message
+- An object with user's details (without password)
+
+**Throws**
+
+- `403` if the user is already logged in
+- `400` if username or password is not in correct format format or missing in the req
+- `401` if the user login credentials are invalid
+
+#### `DELETE /api/users/session` - Sign out user
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if user is not logged in
+
+#### `POST /api/users` - Create an new user account
+
+**Body**
+
+- `username` _{string}_ - The user's username
+- `password` _{string}_ - The user's password
+
+**Returns**
+
+- A success message
+- An object with the created user's details (without password)
+
+**Throws**
+
+- `403` if there is a user already logged in
+- `400` if username or password is in the wrong format
+- `409` if username is already in use
+
+#### `PUT /api/users` - Update a user's profile
+
+**Body** _(no need to add fields that are not being changed)_
+
+- `username` _{string}_ - The user's username
+- `password` _{string}_ - The user's password
+
+**Returns**
+
+- A success message
+- An object with the update user details (without password)
+
+**Throws**
+
+- `403` if the user is not logged in
+- `400` if username or password is in the wrong format
+- `409` if the username is already in use
+
+#### `DELETE /api/users` - Delete user
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if the user is not logged in
+
+#### `GET /api/class/allclass` - Get all classes
+
+**Returns**
+
+- All classes that exist
+
+#### `GET /api/class/:classId?` - Get a class given an ID
+
+**Returns**
+
+- The class specified by the class ID
+
+#### `GET /api/class/teacher/:teacherId?` - Get the class that a teacher belongs to
+
+**Returns**
+
+- The class that has the specified teacher
+
+**Throws**
+
+- `404` if the teacher ID is not valid
+
+#### `GET /api/class/student/:studentId?` - Get the class that a student belongs to
+
+**Returns**
+
+- The class that has the specified student
+
+**Throws**
+
+- `404` if the student ID is not valid
+
+#### `POST /api/class` - Create a new class
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if the user is not logged in or is not a teacher
+
+#### `DELETE /api/class/:classId?` - Delete a class specified by the class ID
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if the user is not logged in or is not the teacher of the class
+- `404` if the class ID is not valid
+
+#### `PATCH /api/class/add/:classId?` - Add a student to a class
+
+**Body** 
+
+- `studentId` _{string}_ - The ID of the student to be added
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if the user is not logged in or not the teacher of the class, or if the student is already in the class
+- `404` if the class ID is not valid
+- `400` if the student does not exist
+
+#### `PATCH /api/class/remove/:classId?` - Remove a student from a class
+
+**Body** 
+
+- `studentId` _{string}_ - The ID of the student to be removed
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if the user is not logged in or not the teacher of the class, or if the student is already in the class
+- `404` if the class ID is not valid
+- `400` if the student does not exist
+
+#### `GET /api/assignment/all` - Get all assignments
+
+**Returns**
+
+- The assignments that exist
+
+#### `GET /api/assignment/:assignmentId?` - Get an assignment given its ID
+
+**Returns**
+
+- The assignment specified by the ID
+
+**Throws**
+
+- `404` if the assignment does not exist
+
+#### `POST /api/assignment` - Create a new assignment
+
+**Body** 
+
+- `assignmentName` _{string}_ - The name of the assignment to be added
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if the user is not logged in or is not a teacher
+
+#### `PATCH /api/assignment/:assignmentId?` - Update an assignment with a problem
+
+**Body** 
+
+- `newProblem` _{string}_ - The ID of the problem to be added
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if the user is not logged in or is not a teacher
+
+#### `DELETE /api/assignment/:assignmentId?` - Delete an assignment
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if the user is not logged in or is not the teacher who made the assignment
+- `404` if the assignment ID is not valid
+

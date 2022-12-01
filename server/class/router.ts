@@ -29,8 +29,7 @@ router.get(
  *
  * @name GET /api/class/:classId
  *
- * @return {string} - The class that the teacher has
- * @throws {404} - If the teacherName is not valid
+ * @return {string} - The class specified by the Id
  */
  router.get(
   '/:classId?',

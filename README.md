@@ -306,7 +306,7 @@ Here is a list of documentation you may want to consult while working with Vue:
 
 **Throws**
 
-- `403` if the user is not logged in or not the teacher of the class, or if the student is already in the class
+- `403` if the user is not logged in or not the teacher of the class
 - `404` if the class ID is not valid
 - `400` if the student does not exist
 

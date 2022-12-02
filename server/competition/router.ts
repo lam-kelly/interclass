@@ -1,6 +1,7 @@
 import type {Request, Response} from 'express';
 import express from 'express';
 import CompetitionCollection from './collection';
+import AssignmentCollection from '../assignment/collection';
 import * as competitionValidator from './middleware';
 import * as userValidator from '../user/middleware';
 import * as util from './util';
@@ -224,8 +225,11 @@ router.delete(
     competitionValidator.isValidTeacherOfCompetition
   ],
   async (req: Request, res: Response) => {
+    const competition = await CompetitionCollection.findOneByCompetitionId(req.params.competitionId);
+    for (const assignment of competition.assignments) {
+      await AssignmentCollection.deleteOne(assignment._id);
+    }
     await CompetitionCollection.deleteOne(req.params.competitionId);
-    req.session.userId = undefined;
     res.status(200).json({
       message: 'Your competition has been deleted successfully.'
     });

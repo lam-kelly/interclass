@@ -3,6 +3,7 @@ import type {Assignment} from './model';
 import AssignmentModel from './model';
 import ProblemCollection from '../problem/collection';
 import ClassCollection from '../class/collection';
+import CompetitionCollection from 'server/competition/collection';
 
 /**
  * This file contains a class with functionality to interact with Assignments stored
@@ -75,6 +76,10 @@ class AssignmentCollection {
    */
   static async deleteOne(assignmentId: Types.ObjectId | string): Promise<boolean> {
     const assignment = await AssignmentModel.deleteOne({_id: assignmentId});
+    const competitions = await CompetitionCollection.findAllByAssignmentId(assignmentId);
+    for (const competition of competitions){
+      await CompetitionCollection.updateOneRemoveAssignment(competition._id, assignmentId);
+    }
     return assignment !== null;
   }
 

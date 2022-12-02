@@ -3,6 +3,7 @@ import type {Class} from './model';
 import type {User} from '../user/model';
 import ClassModel from './model';
 import UserCollection from '../user/collection';
+import CompetitionCollection from 'server/competition/collection';
 
 /**
  * This file contains a class with functionality to interact with Classs stored
@@ -33,6 +34,10 @@ class ClassCollection {
    */
   static async deleteOne(classId: Types.ObjectId | string): Promise<boolean> {
     const Class = await ClassModel.deleteOne({_id: classId});
+    const competitions = await CompetitionCollection.findAllByClassId(classId);
+    for (const competition of competitions){
+      await CompetitionCollection.updateOneRemoveClass(competition._id, classId);
+    }
     return Class !== null;
   }
 

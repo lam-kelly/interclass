@@ -3,6 +3,7 @@ import express from 'express';
 import UserCollection from './collection';
 import * as userValidator from '../user/middleware';
 import * as util from './util';
+import ClassCollection from '../class/collection';
 
 const router = express.Router();
 
@@ -160,6 +161,15 @@ router.delete(
   ],
   async (req: Request, res: Response) => {
     const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
+    const user = await UserCollection.findOneByUserId(userId);
+    if (user.role === 'teacher') {
+      const classs = await ClassCollection.findOneByTeacher(userId);
+      await ClassCollection.deleteOne(classs._id);
+    }
+    else {
+      const classs = await ClassCollection.findOneByStudent(userId);
+      await ClassCollection.removeStudent(classs._id, userId);
+    }
     await UserCollection.deleteOne(userId);
     req.session.userId = undefined;
     res.status(200).json({

@@ -105,6 +105,21 @@ class ClassCollection {
     // });
   }
 
+    /**
+   * Add points to a class
+   *
+   * @param {string} studentId - The ID of the student in the class
+   * @param {number} points - The number of points to add 
+   * @return {Promise<HydratedDocument<Class>>} - The updated Class
+   */
+  static async addPoints(studentId: Types.ObjectId | string, points: number): Promise<HydratedDocument<Class>> {
+    const Class = await ClassCollection.findOneByStudent(studentId);
+    Class.totalPoints += points;
+
+    await Class.save();
+    return (await (await Class.populate('teacher')).populate('students')).populate('totalPoints');
+  }
+
   /**
    * Remove a student from a class. 
    *

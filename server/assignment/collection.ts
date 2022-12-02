@@ -46,6 +46,27 @@ class AssignmentCollection {
     return (await assignment.populate('problems')).populate('totalPoints');
   }
 
+     /**
+   * Remove a problem from an assignment
+   *
+   * @param {string} questionId - The ID of a problem
+   * @param {string} assignmentId - The ID of the assignment
+   * @return {Promise<HydratedDocument<Assignment>>} - The newly created Assignment
+   */
+  static async removeQuestion(assignmentId: string | Types.ObjectId, questionId: string | Types.ObjectId): Promise<HydratedDocument<Assignment>> {
+    // const assignment = await AssignmentModel.findOne({_id: assignmentId});
+    // const questObj = await ProblemCollection.findOneByProblemId(questionId);
+    // assignment.problems.push(questionId);
+    // assignment.totalPoints += questObj.pointValue;
+    // await assignment.save(); // Saves Assignment to MongoDB
+    // return (await assignment.populate('problems')).populate('totalPoints');
+    await AssignmentModel.updateOne({_id: assignmentId}, {$pull: {problems: questionId}});
+    return await AssignmentModel.findOne({_id: assignmentId})
+    .populate('name')
+    .populate('problems')
+    .populate('totalPoints');
+  }
+
   /**
    * Delete an Assignment from the collection.
    *

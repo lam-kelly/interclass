@@ -93,6 +93,25 @@ class CompetitionCollection {
   }
 
   /**
+   * Find competitions by classId
+   *
+   * @param {string} classId - The competitionId of the competition to find
+   * @return {Promise<HydratedDocument<Competition>[]> | Promise<null>} - The user with the given username, if any
+   */
+   static async findAllByClassId(classId: Types.ObjectId | string): Promise<Array<HydratedDocument<Competition>>> {
+    return await CompetitionModel.find({ classes: classId })
+    .populate('creatorId')
+    .populate('classes')
+    .populate('assignments')
+    .populate({
+      path : 'assignments',
+      populate : {
+        path : 'problems'
+      }
+    });
+  }
+
+  /**
    * Add a class to a competition
    *
    * @param {string} competitionId - The ID of the competition to update

@@ -1,6 +1,6 @@
 import type {HydratedDocument, ObjectId, Types} from 'mongoose';
 import mongoose from 'mongoose';
-import ClassCollection from 'server/class/collection';
+import ClassCollection from '../class/collection';
 import UserCollection from 'server/user/collection';
 import type {Problem} from './model';
 import ProblemModel from './model';

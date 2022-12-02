@@ -3,7 +3,7 @@ import type {Assignment} from './model';
 import AssignmentModel from './model';
 import ProblemCollection from '../problem/collection';
 import ClassCollection from '../class/collection';
-import CompetitionCollection from 'server/competition/collection';
+import CompetitionCollection from '../competition/collection';
 
 /**
  * This file contains a class with functionality to interact with Assignments stored

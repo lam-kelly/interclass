@@ -3,7 +3,7 @@ import type {Class} from './model';
 import type {User} from '../user/model';
 import ClassModel from './model';
 import UserCollection from '../user/collection';
-import CompetitionCollection from 'server/competition/collection';
+import CompetitionCollection from '../competition/collection';
 
 /**
  * This file contains a class with functionality to interact with Classs stored

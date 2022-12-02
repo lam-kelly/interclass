@@ -4,7 +4,7 @@ import ProblemCollection from './collection';
 import * as problemValidator from './middleware';
 import * as userValidator from '../user/middleware';
 import * as util from './util';
-import AssignmentCollection from 'server/assignment/collection';
+import AssignmentCollection from '../assignment/collection';
 
 const router = express.Router();
 

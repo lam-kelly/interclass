@@ -118,6 +118,8 @@ export default {
           const text = await r.text();
           const res = text ? JSON.parse(text) : {user: null};
           this.$store.commit('setUsername', res.user ? res.user.username : null);
+          this.$store.commit('setRole', res.user ? res.user.role : null);
+          this.$store.commit('setUserId', res.user ? res.user._id : null);
         }
 
         if (this.callback) {

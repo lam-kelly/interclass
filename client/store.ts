@@ -10,6 +10,8 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   state: {
     username: null, // Username of the logged in user
+    role: null, // role of the logged in user
+    userid: null, // ID of the logged in user
     alerts: {} // global success/error messages encountered during submissions to non-visible forms
   },
   mutations: {
@@ -28,6 +30,20 @@ const store = new Vuex.Store({
        * @param username - new username to set
        */
       state.username = username;
+    },
+    setRole(state, role) {
+      /**
+       * Update the stored role to the specified one.
+       * @param role - the role to set
+       */
+      state.role = role;
+    },
+    setUserId(state, userid) {
+      /**
+       * Update the stored ID to the specified one.
+       * @param userid - the user ID to set
+       */
+      state.userid = userid;
     },
   },
   // Store data across page refreshes, only discard on browser close

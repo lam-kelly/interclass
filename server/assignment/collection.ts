@@ -50,11 +50,11 @@ class AssignmentCollection {
    * Remove a problem from an assignment
    *
    * @param {string} questionId - The ID of a problem
-   * @param {string} assignmentId - The ID of the assignment
    * @return {Promise<HydratedDocument<Assignment>>} - The newly created Assignment
    */
-  static async removeQuestion(assignmentId: string | Types.ObjectId, questionId: string | Types.ObjectId): Promise<HydratedDocument<Assignment>> {
-    // const assignment = await AssignmentModel.findOne({_id: assignmentId});
+  static async removeQuestion(questionId: string | Types.ObjectId): Promise<HydratedDocument<Assignment>> {
+    const assignment = await AssignmentCollection.findOneByProblem(questionId);
+    const assignmentId = assignment._id;
     // const questObj = await ProblemCollection.findOneByProblemId(questionId);
     // assignment.problems.push(questionId);
     // assignment.totalPoints += questObj.pointValue;
@@ -86,6 +86,16 @@ class AssignmentCollection {
    */
   static async findOneById(assignmentId: Types.ObjectId | string): Promise<HydratedDocument<Assignment>> {
     return await AssignmentModel.findOne({_id: assignmentId}).populate('problems').populate('totalPoints');
+  }
+
+  /**
+   * Find a Assignment by problemId.
+   *
+   * @param {string} problemId - The id of the problem of the assignment to find
+   * @return {Promise<HydratedDocument<Assignment>> | Promise<null>} - The Assignment with the given Assignment ID, if any
+   */
+   static async findOneByProblem(problemId: Types.ObjectId | string): Promise<HydratedDocument<Assignment>> {
+    return await AssignmentModel.findOne({problems: problemId}).populate('problems').populate('totalPoints');
   }
 
   /**

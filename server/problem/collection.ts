@@ -1,5 +1,6 @@
 import type {HydratedDocument, ObjectId, Types} from 'mongoose';
 import mongoose from 'mongoose';
+import ClassCollection from 'server/class/collection';
 import UserCollection from 'server/user/collection';
 import type {Problem} from './model';
 import ProblemModel from './model';
@@ -67,6 +68,7 @@ class ProblemCollection {
             if (!problem.solvers.includes(newSolver)) {
                 // await ProblemModel.updateOne({_id: problemId}, {$push: {solvers: problemDetails.newSolverId}})
                 problem.solvers.push(newSolver)
+                ClassCollection.addPoints(problemDetails.newSolverId, problem.pointValue)
             }
             // const solverId = problemDetails.newSolverId as ObjectId;
             // problem.solvers.push(problemDetails.newSolverId)

@@ -2,7 +2,9 @@ import type {NextFunction, Request, Response} from 'express';
 import express from 'express';
 import ProblemCollection from './collection';
 import * as problemValidator from './middleware';
+import * as userValidator from '../user/middleware';
 import * as util from './util';
+import AssignmentCollection from 'server/assignment/collection';
 
 const router = express.Router();
 
@@ -74,6 +76,7 @@ router.delete(
   ],
   async (req: Request, res: Response) => {
     await ProblemCollection.deleteOne(req.params.problemId);
+    await AssignmentCollection.removeQuestion(req.params.problemId);
     res.status(200).json({
       message: 'You have successfully deleted this problem.'
     });
@@ -113,8 +116,8 @@ router.patch(
  * @name PATCH /api/problem/:problemId?/addStudent
  *
  * @param {string} problemId - The id of the Problem being udpated
- * @param {string} newSolverId - A new user that solved a problem
- * @param {string} newWorkerId - A new user that attempted a problem
+ * @param {string} isSolver - True if logged in user solved the problem
+ * @param {string} isWorker - True if the logged in user attempted the problem
  * @return {ProblemResponse} - The updated user
  * @throws {403} - If user is not logged in
  * @throws {409} - If username already taken
@@ -123,11 +126,18 @@ router.patch(
  router.patch(
   '/:problemId?/addStudent',
   [
+    userValidator.isUserLoggedIn,
     problemValidator.isProblemExists,
-    problemValidator.isUserExists,
+    // problemValidator.isUserExists,
   ],
   async (req: Request, res: Response) => {
     const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
+    if (req.params.isSolver) {
+      req.body.newSolverId = userId;
+    }
+    if (req.params.isWorker) {
+      req.body.newWorkerId = userId;
+    }
     const problem = await ProblemCollection.updateOne(req.params.problemId, req.body);
     res.status(200).json({
       message: 'Your successfully updated the problem.',

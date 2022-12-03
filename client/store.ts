@@ -13,6 +13,7 @@ const store = new Vuex.Store({
     role: null, // role of the logged in user
     userid: null, // ID of the logged in user
     competition: null, // competition that the logged in user is in
+    currentAssignment: null,
     alerts: {} // global success/error messages encountered during submissions to non-visible forms
   },
   mutations: {
@@ -52,6 +53,13 @@ const store = new Vuex.Store({
        * @param competition - the competition to set
        */
       state.competition = competition;
+    },
+    setCurrentAssignment(state, assignment) {
+      /**
+       * Update the stored current assignment to the specified one.
+       * @param assignment - new assignment to set
+       */
+      state.currentAssignment = assignment;
     },
   },
   // Store data across page refreshes, only discard on browser close

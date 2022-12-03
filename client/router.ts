@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import AccountPage from './components/Account/AccountPage.vue';
+import AssignmentPage from './components/Assignment/AssignmentPage.vue';
 import HomePage from './components/Home/HomePage.vue';
 import LoginPage from './components/Login/LoginPage.vue';
 import ClassPage from './components/Class/ClassPage.vue';
@@ -15,6 +16,7 @@ const routes = [
   {path: '/class', name: 'Class', component: ClassPage},
   {path: '/account', name: 'Account', component: AccountPage},
   {path: '/login', name: 'Login', component: LoginPage},
+  {path: '/assignment/:id', name: 'Assignment', component: AssignmentPage},
   {path: '*', name: 'Not Found', component: NotFound}
 ];
 

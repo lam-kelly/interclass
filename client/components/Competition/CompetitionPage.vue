@@ -4,17 +4,24 @@
             <h2>Start a new Competition</h2>
         </section>
         <section v-else>
-            <h2>Competition: {{$store.state.competition.name}}</h2>
+          <h2>Competition: {{$store.state.competition.name}}</h2>
+          <h2> Assignments in this Competition: </h2>
+          <AssignmentComponent
+            v-for="assignment in $store.state.competition.assignments"
+            :key="assignment.id"
+            :assignment="assignment"
+          />
         </section>
     </main>
 </template>
 
 <script>
+import AssignmentComponent from '@/components/Assignment/AssignmentComponent.vue';
 
 export default {
   name: 'CompetitionPage',
   components: {
-
+    AssignmentComponent
   },
   methods: {
     async getCompetition() {

@@ -122,6 +122,12 @@ export default {
           this.$store.commit('setUserId', res.user ? res.user._id : null);
         }
 
+        if (this.setAssignmentName) {
+          const text = await r.text();
+          const res = text ? JSON.parse(text) : {user: null};
+          this.$store.commit('setCurrentAssignment', res.assignment ? res.assignment : null);
+        }
+
         if (this.callback) {
           this.callback();
         }

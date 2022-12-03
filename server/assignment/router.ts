@@ -58,9 +58,12 @@ router.get(
     classValidator.isValidTeacher
   ],
   async (req: Request, res: Response) => {
-    await AssignmentCollection.addOne(req.body.assignmentName);
+    const assignment = await AssignmentCollection.addOne(req.body.assignmentName);
 
-    res.status(201).json({message: 'Your assignment was created successfully.'});
+    res.status(201).json({
+      assignment: assignment,
+      message: 'Your assignment was created successfully.'
+    });
   }
 );
 

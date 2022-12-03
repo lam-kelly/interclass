@@ -20,6 +20,9 @@
       <router-link to="/competition">
         Competition
       </router-link>
+      <router-link to="/leaderboard">
+        Leaderboard
+      </router-link>
       <router-link
         v-if="$store.state.username"
         to="/account"

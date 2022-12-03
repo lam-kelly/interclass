@@ -12,6 +12,7 @@ const store = new Vuex.Store({
     username: null, // Username of the logged in user
     role: null, // role of the logged in user
     userid: null, // ID of the logged in user
+    competition: null, // competition that the logged in user is in
     alerts: {} // global success/error messages encountered during submissions to non-visible forms
   },
   mutations: {
@@ -44,6 +45,13 @@ const store = new Vuex.Store({
        * @param userid - the user ID to set
        */
       state.userid = userid;
+    },
+    setCompetition(state, competition) {
+      /**
+       * Update the stored competition to the specified one.
+       * @param competition - the competition to set
+       */
+      state.competition = competition;
     },
   },
   // Store data across page refreshes, only discard on browser close

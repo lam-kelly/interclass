@@ -4,12 +4,14 @@ import AccountPage from './components/Account/AccountPage.vue';
 import HomePage from './components/Home/HomePage.vue';
 import LoginPage from './components/Login/LoginPage.vue';
 import ClassPage from './components/Class/ClassPage.vue';
+import CompetitionPage from './components/Competition/CompetitionPage.vue';
 import NotFound from './NotFound.vue';
 
 Vue.use(VueRouter);
 
 const routes = [
   {path: '/', name: 'Home', component: HomePage},
+  {path: '/competition', name: 'Competition', component: CompetitionPage},
   {path: '/class', name: 'Class', component: ClassPage},
   {path: '/account', name: 'Account', component: AccountPage},
   {path: '/login', name: 'Login', component: LoginPage},
@@ -23,6 +25,11 @@ const router = new VueRouter({routes});
  */
 router.beforeEach((to, from, next) => {
   if (router.app.$store) {
+    if (to.name === 'Competition' && !router.app.$store.state.username) {
+      next({name: 'Login'}); // Go to Login page if user navigates to Competition and are not signed in
+      return;
+    }
+
     if (to.name === 'Login' && router.app.$store.state.username) {
       next({name: 'Account'}); // Go to Account page if user navigates to Login and are signed in
       return;

@@ -17,6 +17,9 @@
       <router-link to="/class">
         Class
       </router-link>
+      <router-link to="/competition">
+        Competition
+      </router-link>
       <router-link
         v-if="$store.state.username"
         to="/account"

@@ -69,6 +69,17 @@ const store = new Vuex.Store({
        */
       state.currentClass = currentClass;
     },
+    async refreshProblems(state) {
+      /**
+       * Refresh problems of current assignment
+       */
+      if (state.currentAssignment) {
+        const url = `/api/assignment/${state.currentAssignment._id}`;
+        const res = await fetch(url).then(async r => r.json());
+        state.currentAssignment = res.assignment;
+      }
+      
+    },
   },
   // Store data across page refreshes, only discard on browser close
   plugins: [createPersistedState()]

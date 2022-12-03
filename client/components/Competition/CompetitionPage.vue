@@ -24,9 +24,9 @@
     <section v-else>
       <h2>Competition: {{$store.state.competition.name}}</h2>
       <article v-if="$store.state.role === 'teacher'">
-        <button>Create Assignment</button>
         <button @click="leaveCompetition">Leave Competition</button>
         <button @click="deleteCompetition">Delete Competition</button>
+        <SetAssignmentName/>
         <h2> Assignments in this Competition: </h2>
         <AssignmentComponent
           v-for="assignment in $store.state.competition.assignments"
@@ -42,13 +42,15 @@
 import CreateCompetitionForm from '@/components/Competition/CreateCompetitionForm.vue';
 import JoinCompetitionForm from '@/components/Competition/JoinCompetitionForm.vue';
 import AssignmentComponent from '@/components/Assignment/AssignmentComponent.vue';
+import SetAssignmentName from '@/components/Assignment/SetAssignmentName.vue';
 
 export default {
   name: 'CompetitionPage',
   components: {
     AssignmentComponent,
     CreateCompetitionForm,
-    JoinCompetitionForm
+    JoinCompetitionForm,
+    SetAssignmentName
   },
   methods: {
     async getCompetition() {

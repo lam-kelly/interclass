@@ -25,6 +25,7 @@
       <h2>Competition: {{$store.state.competition.name}}</h2>
       <article v-if="$store.state.role === 'teacher'">
         <button @click="leaveCompetition">Leave Competition</button>
+        <button @click="endCompetition">End Competition</button>
         <button @click="deleteCompetition">Delete Competition</button>
         <SetAssignmentName/>
         <h2> Assignments in this Competition: </h2>
@@ -53,44 +54,6 @@ export default {
     SetAssignmentName
   },
   methods: {
-    async getCompetition() {
-      const url = '/api/competition';
-      const options = {
-        method: 'GET',
-        headers: {'Content-Type': 'application/json'},
-        credentials: 'same-origin' // Sends express-session credentials with request
-      };
-      try {
-        const r = await fetch(url, options);
-        const res = await r.json();
-        if (!r.ok) {
-          throw new Error(res.error);
-        }
-        this.$store.commit('setCompetition', res);
-      } catch (e) {
-        this.$set(this.alerts, e, 'error');
-        setTimeout(() => this.$delete(this.alerts, e), 3000);
-      }
-    },
-    async getClass() {
-      const url = this.$store.state.role === 'teacher' ? `/api/class/teacher/${this.$store.state.userid}` : `/api/class/student/${this.$store.state.userid}`;
-      const options = {
-        method: 'GET',
-        headers: {'Content-Type': 'application/json'},
-        credentials: 'same-origin', // Sends express-session credentials with request
-      };
-      try {
-        const r = await fetch(url, options);
-        let res = await r.json();
-        if (!r.ok) {
-          throw new Error(res.error);
-        }
-        this.$store.commit('setCurrentClass', res);
-      } catch (e) {
-        this.$set(this.alerts, e, 'error');
-        setTimeout(() => this.$delete(this.alerts, e), 3000);
-      }
-    },
     async leaveCompetition() {
       const url = `/api/competition/${this.$store.state.competition._id}/leave`;
       const options = {
@@ -105,7 +68,27 @@ export default {
         if (!r.ok) {
           throw new Error(res.error);
         }
-        this.$store.commit('setCompetition', null);
+        this.$store.commit('getCompetition');
+      } catch (e) {
+        this.$set(this.alerts, e, 'error');
+        setTimeout(() => this.$delete(this.alerts, e), 3000);
+      }
+    },
+    async endCompetition() {
+      const url = `/api/competition/${this.$store.state.competition._id}/end`;
+      const options = {
+        method: 'PATCH',
+        headers: {'Content-Type': 'application/json'},
+        credentials: 'same-origin', // Sends express-session credentials with request
+        body: JSON.stringify({'classId': this.$store.state.currentClass._id})
+      };
+      try {
+        const r = await fetch(url, options);
+        let res = await r.json();
+        if (!r.ok) {
+          throw new Error(res.error);
+        }
+        this.$store.commit('getCompetition');
       } catch (e) {
         this.$set(this.alerts, e, 'error');
         setTimeout(() => this.$delete(this.alerts, e), 3000);
@@ -124,7 +107,7 @@ export default {
         if (!r.ok) {
           throw new Error(res.error);
         }
-        this.$store.commit('setCompetition', null);
+        this.$store.commit('getCompetition');
       } catch (e) {
         this.$set(this.alerts, e, 'error');
         setTimeout(() => this.$delete(this.alerts, e), 3000);
@@ -132,8 +115,8 @@ export default {
     }
   },
   async mounted() {
-    await this.getCompetition();
-    await this.getClass();
+    this.$store.commit('getCompetition');
+    this.$store.commit('getCurrentClass');
   }
 };
 </script>

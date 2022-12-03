@@ -5,6 +5,7 @@ import AssignmentCollection from '../assignment/collection';
 import * as competitionValidator from './middleware';
 import * as userValidator from '../user/middleware';
 import * as util from './util';
+import ClassCollection from '../class/collection';
 
 const router = express.Router();
 
@@ -23,7 +24,7 @@ router.get(
   ],
   async (req: Request, res: Response) => {
     const competition = await CompetitionCollection.findOneByUserId(req.session.userId as string);
-    const response = competition ? util.constructCompetitionResponse(competition) : "No competition found";
+    const response = competition ? util.constructCompetitionResponse(competition) : null;
     res.status(200).json(response);
   }
 );
@@ -46,13 +47,16 @@ router.post(
     userValidator.isUserLoggedIn,
     competitionValidator.isValidCompetitionName,
     competitionValidator.isTeacher,
-    competitionValidator.isNotInCompetition
+    competitionValidator.isNotInCompetition,
+    competitionValidator.teacherHasClass,
   ],
   async (req: Request, res: Response) => {
     const competition = await CompetitionCollection.addOne(req.body.name, req.session.userId);
+    const classs = await ClassCollection.findOneByTeacher(req.session.userId);
+    const updatedCompetition = await CompetitionCollection.updateOneAddClass(competition._id, classs._id);
     res.status(201).json({
       message: `Your competition was created successfully.`,
-      competition: util.constructCompetitionResponse(competition)
+      competition: util.constructCompetitionResponse(updatedCompetition)
     });
   }
 );

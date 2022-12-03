@@ -153,6 +153,18 @@ const isValidCompetitionName = (req: Request, res: Response, next: NextFunction)
   next();
 };
 
+const teacherHasClass = async (req: Request, res: Response, next: NextFunction) => {
+  const classs = await ClassCollection.findOneByTeacher(req.session.userID);
+  if (!classs) {
+    res.status(400).json({
+      error: 'You do not have a class'
+    });
+    return;
+  }
+
+  next();
+};
+
 export {
   isTeacher,
   isNotInCompetition,
@@ -164,5 +176,6 @@ export {
   isValidAddAssignment,
   isValidRemoveAssignment,
   isValidTeacherOfCompetition,
-  isValidCompetitionName
+  isValidCompetitionName,
+  teacherHasClass
 };

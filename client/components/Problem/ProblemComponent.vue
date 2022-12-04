@@ -1,20 +1,24 @@
 <template>
     <main>
-        <textarea
-            v-if="editing"
-            :value="questionDraft"
-            @input="questionDraft = $event.target.value"
-        />
+        <div v-if="editing">
+            Question:
+            <textarea
+                :value="questionDraft"
+                @input="questionDraft = $event.target.value"
+            />
+        </div>
         <div v-else> 
             <h2> {{ problem.question }} </h2>
             <h3> Correct Answer: {{ problem.answer }} </h3>
         </div>
         <div v-for="(answerChoice, index) in problem.answerChoices">
-            <textarea
-                v-if="editing"
-                :value="answerChoicesDraft[index]"
-                @input="answerChoicesDraft[index] = $event.target.value"
-            />
+            <div v-if="editing">
+                Answer Choice {{ index+1 }}
+                <textarea
+                    :value="answerChoicesDraft[index]"
+                    @input="answerChoicesDraft[index] = $event.target.value"
+                />
+            </div>
             <div v-else>
                 <input 
                     v-model="selected"

@@ -282,7 +282,7 @@ Here is a list of documentation you may want to consult while working with Vue:
 
 **Body** 
 
-- `studentId` _{string}_ - The ID of the student to be added
+- `studentName` _{string}_ - The username of the student to be added
 
 **Returns**
 
@@ -364,4 +364,196 @@ Here is a list of documentation you may want to consult while working with Vue:
 
 - `403` if the user is not logged in or is not the teacher who made the assignment
 - `404` if the assignment ID is not valid
+
+#### `GET /api/competition` - Get the competition that the logged in user is in
+
+**Returns**
+
+- The competition or null
+
+**Throws**
+
+- `403` if the user is not logged in 
+
+#### `POST /api/competition` - Create a competition
+
+**Body** 
+
+- `name` _{string}_ - The name of the competition
+
+**Returns**
+
+- The created competition
+
+**Throws**
+
+- `403` if the user is not logged in or is not a teacher or if they are currently in a competition, or if the teacher does not have a class
+- `400` if the name is empty or a stream of empty spaces
+
+#### `PATCH /api/competition/:competitionId/join` - Add a class to a competition
+
+**Body** 
+
+- `classId` _{string}_ - The ID of the class to join the competition
+
+**Returns**
+
+- The updated competition
+
+**Throws**
+
+- `403` if the user is not logged in or is not the teacher of the class
+- `404` if the competition ID is invalid or the class ID is invalid
+- `400` if the class is already in the competition
+
+#### `PATCH /api/competition/:competitionId/leave` - Remove a class from a competition
+
+**Body** 
+
+- `classId` _{string}_ - The ID of the class
+
+**Returns**
+
+- The updated competition
+
+**Throws**
+
+- `403` if the user is not logged in or is not the teacher of the class
+- `404` if the competition ID is invalid or the class ID is invalid
+- `400` if the class is not already in the competition
+
+#### `PATCH /api/competition/:competitionId/addAssignment` - Add an assignment to a competition
+
+**Body** 
+
+- `assignmentId` _{string}_ - The ID of the assignment to add to the competition
+
+**Returns**
+
+- The updated competition
+
+**Throws**
+
+- `403` if the user is not logged in or the assignment is already in the competition
+- `404` if the competition ID is invalid or the assignment ID is invalid
+
+#### `PATCH /api/competition/:competitionId/removeAssignment` - Remove an assignment from a competition
+
+**Body** 
+
+- `assignmentId` _{string}_ - The ID of the assignment to remove from the competition
+
+**Returns**
+
+- The updated competition
+
+**Throws**
+
+- `403` if the user is not logged in or is not a teacher in the competition
+- `404` if the competition ID is invalid
+
+#### `PATCH /api/competition/:competitionId/end` - End a competition
+
+**Returns**
+
+- The updated competition
+
+**Throws**
+
+- `403` if the user is not logged in or is not a teacher in the competition
+- `404` if the competition ID is invalid
+
+
+#### `DELETE /api/competition/:competitionId` - Delete a competition
+
+**Body** 
+
+- `competitionId` _{string}_ - The ID of the competition to end
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if the user is not logged in or is not a teacher in the competition
+
+#### `GET /api/problem/:problemId` - Get the specified problem
+
+**Returns**
+
+- The problem with the specified ID
+
+**Throws**
+
+- `404` if the problem does not exist
+- `400` if the problem ID is empty
+
+#### `POST /api/problem` - Create a new problem for an assignment
+
+**Body** 
+
+- `question` _{string}_ - The problem statement
+- `answerChoices` _{string[]}_ - The answer choices
+- `answer` _{string}_ - The answer to the problem statement
+- `pointValue` _{Number}_ - The amount of points the problem is worth
+
+**Returns**
+
+- An object with the problem's details
+
+**Throws**
+
+- `400` if the problem is not valid
+- `403` if the answer does not match one of the answer choices
+
+#### `DELETE /api/problem/:problemId` - Delete a problem
+
+**Returns**
+
+- None
+
+**Throws**
+
+- `404` if the problem does not exist
+- `400` if the problem ID is empty
+
+#### `PATCH /api/problem/:problemId?/problemDetails` - Update the details of a problem
+
+**Body** 
+
+- `question` _{string}_ - The problem statement
+- `answerChoices` _{string[]}_ - The answer choices
+- `answer` _{string}_ - The answer to the problem statement
+- `pointValue` _{Number}_ - The amount of points the problem is worth
+
+**Returns**
+
+- The updated problem
+
+**Throws**
+
+- `404` if the problem does not exist
+- `400` if the problem ID is empty
+
+#### `PATCH /api/problem/:problemId?/addStudent` - Update the solvers or workers of a problem
+
+**Body** 
+
+- `problemId` _{string}_ - The ID of the problem being updated
+- `isSolver` _{string}_ - True if logged in user solved the problem
+- `isWorker` _{string}_ - True if the logged in user attempted the problem
+
+**Returns**
+
+- The updated problem
+
+**Throws**
+
+- `404` if the problem does not exist
+- `400` if the problem ID is empty
+- `403` if the user is not logged in
+
+
+
 

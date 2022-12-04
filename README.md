@@ -504,7 +504,7 @@ Here is a list of documentation you may want to consult while working with Vue:
 
 **Throws**
 
-- `400` if the problem is not valid
+- `400` if the problem is not valid (empty field, duplicate answer choices)
 - `403` if the answer does not match one of the answer choices
 
 #### `DELETE /api/problem/:problemId` - Delete a problem
@@ -534,7 +534,8 @@ Here is a list of documentation you may want to consult while working with Vue:
 **Throws**
 
 - `404` if the problem does not exist
-- `400` if the problem ID is empty
+- `400` if the problem ID is empty or if the problem is not valid (empty field, duplicate answer choices)
+- `403` if the answer does not match one of the answer choices
 
 #### `PATCH /api/problem/:problemId?/addStudent` - Update the solvers or workers of a problem
 

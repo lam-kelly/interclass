@@ -24,6 +24,8 @@
     <section v-else>
       <h2>Competition: {{$store.state.competition.name}}</h2>
       <article v-if="$store.state.role === 'teacher'">
+        <h4>Competition ID: {{$store.state.competition._id}}</h4>
+        <p>Share your competition ID, so that other teachers can join your competition!</p>
         <button @click="leaveCompetition">Leave Competition</button>
         <button @click="endCompetition">End Competition</button>
         <button @click="deleteCompetition">Delete Competition</button>

@@ -59,6 +59,9 @@ const store = new Vuex.Store({
         state.competition = res;
       } 
     },
+    setCompetition(state, competition) {
+      state.competition = competition;
+    },
     setCurrentAssignment(state, assignment) {
       /**
        * Update the stored current assignment to the specified one.
@@ -76,6 +79,7 @@ const store = new Vuex.Store({
         state.currentClass = res;
       } 
     },
+    
     setCurrentProblem(state, problem) {
       /**
        * Update the stored problem to the specified on

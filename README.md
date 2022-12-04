@@ -282,7 +282,7 @@ Here is a list of documentation you may want to consult while working with Vue:
 
 **Body** 
 
-- `studentId` _{string}_ - The ID of the student to be added
+- `studentName` _{string}_ - The username of the student to be added
 
 **Returns**
 

@@ -113,7 +113,7 @@ const isValidTeacherOfCompetition = async (req: Request, res: Response, next: Ne
 
 const isValidAddAssignment = async (req: Request, res: Response, next: NextFunction) => {
   const competition = await CompetitionCollection.findOneByCompetitionId(req.params.competitionId);
-  if (competition.assignments.map(a => a._id.toString()).includes(req.body.assignmentId)) {
+  if (!competition.dateEnded && competition.assignments.map(a => a._id.toString()).includes(req.body.assignmentId)) {
     res.status(400).json({
       error: 'Your assignment is already part of this competition'
     });

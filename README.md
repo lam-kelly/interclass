@@ -365,118 +365,134 @@ Here is a list of documentation you may want to consult while working with Vue:
 - `403` if the user is not logged in or is not the teacher who made the assignment
 - `404` if the assignment ID is not valid
 
-#### `GET /api/competition` - Get the competition that the logged in user is in
-
+#### `GET /api/competition` - Get the competition the logged in user is in
+ 
 **Returns**
-
-- The competition or null
-
-**Throws**
-
-- `403` if the user is not logged in 
-
-#### `POST /api/competition` - Create a competition
-
-**Body** 
-
-- `name` _{string}_ - The name of the competition
-
-**Returns**
-
-- The created competition
-
-**Throws**
-
-- `403` if the user is not logged in or is not a teacher or if they are currently in a competition, or if the teacher does not have a class
-- `400` if the name is empty or a stream of empty spaces
-
-#### `PATCH /api/competition/:competitionId/join` - Add a class to a competition
-
-**Body** 
-
-- `classId` _{string}_ - The ID of the class to join the competition
-
-**Returns**
-
-- The updated competition
-
-**Throws**
-
-- `403` if the user is not logged in or is not the teacher of the class
-- `404` if the competition ID is invalid or the class ID is invalid
-- `400` if the class is already in the competition
-
-#### `PATCH /api/competition/:competitionId/leave` - Remove a class from a competition
-
-**Body** 
-
-- `classId` _{string}_ - The ID of the class
-
-**Returns**
-
-- The updated competition
-
-**Throws**
-
-- `403` if the user is not logged in or is not the teacher of the class
-- `404` if the competition ID is invalid or the class ID is invalid
-- `400` if the class is not already in the competition
-
-#### `PATCH /api/competition/:competitionId/addAssignment` - Add an assignment to a competition
-
-**Body** 
-
-- `assignmentId` _{string}_ - The ID of the assignment to add to the competition
-
-**Returns**
-
-- The updated competition
-
-**Throws**
-
-- `403` if the user is not logged in or the assignment is already in the competition
-- `404` if the competition ID is invalid or the assignment ID is invalid
-
-#### `PATCH /api/competition/:competitionId/removeAssignment` - Remove an assignment from a competition
-
-**Body** 
-
-- `assignmentId` _{string}_ - The ID of the assignment to remove from the competition
-
-**Returns**
-
-- The updated competition
-
-**Throws**
-
-- `403` if the user is not logged in or is not a teacher in the competition
-- `404` if the competition ID is invalid
-
-#### `PATCH /api/competition/:competitionId/end` - End a competition
-
-**Returns**
-
-- The updated competition
-
-**Throws**
-
-- `403` if the user is not logged in or is not a teacher in the competition
-- `404` if the competition ID is invalid
-
-
-#### `DELETE /api/competition/:competitionId` - Delete a competition
-
-**Body** 
-
-- `competitionId` _{string}_ - The ID of the competition to end
-
-**Returns**
-
+ 
 - A success message
-
+- `null` if user is not in a competition
+ 
 **Throws**
-
-- `403` if the user is not logged in or is not a teacher in the competition
+ 
+- `403` if the user is not logged in
+ 
+#### `POST /api/competition` - Create a competition
+ 
+**Body**
+ 
+- `name` _{string}_ - The name of the competition
+ 
+**Returns**
+ 
+- The created competition
+ 
+**Throws**
+ 
+- `403` if the user is not logged in
+- `403` if the user is not a teacher
+- `403` if the user is currently in an active competition
+- `400` if the name is empty or a stream of empty spaces
+- `403` if teacher does not have a class
+ 
+#### `PATCH /api/competition/:competitionId/join` - Join a competition
+ 
+**Body**
+ 
+- `classId` _{string}_ - The ID of the class to add
+ 
+**Returns**
+ 
+- The joined competition
+ 
+**Throws**
+ 
+- `403` if the user is not logged in
+- `404` if `competitionId` is invalid
+- `403` If competition has ended
+- `404` if `classId` is invalid
+- `403` If the user is not the teacher of the class
+- `400` if the class is already in the competition
+ 
+#### `PATCH /api/competition/:competitionId/leave` - Leave a competition
+ 
+**Body**
+ 
+- `classId` _{string}_ - The ID of the class to add
+ 
+**Returns**
+ 
+- The competition that user left
+ 
+**Throws**
+ 
+- `403` if the user is not logged in
+- `404` if `competitionId` is invalid
+- `403` If competition has ended
+- `404` if `classId` is invalid
+- `403` If the user is not the teacher of the class
+- `400` if the class is not already in the competition
+ 
+#### `PATCH /api/competition/:competitionId/addAssignment` - Add an assignment
+ 
+**Body**
+ 
+- `assignmentId` _{string}_ - The ID of the assignment to add
+ 
+**Returns**
+ 
+- The competition that you're adding an assignment to
+ 
+**Throws**
+ 
+- `403` if the user is not logged in
+- `404` if `competitionId` is invalid
+- `403` If competition has ended
+- `404` if `assignmentId` is invalid
+- `403` If the user is not the teacher of the class
+- `400` if the class is already in the competition
+ 
+#### `PATCH /api/competition/:competitionId/removeAssignment` - Remove an assignment
+ 
+**Body**
+ 
+- `assignmentId` _{string}_ - The ID of the assignment to remove
+ 
+**Returns**
+ 
+- The competition that you're removing an assignment from
+ 
+**Throws**
+ 
+- `403` if the user is not logged in
+- `404` if `competitionId` is invalid
+- `403` If competition has ended
+- `404` if `assignmentId` is invalid
+- `403` If the user is not the teacher of the class
+ 
+#### `PATCH /api/competition/:competitionId/end` - End a competition
+ 
+**Returns**
+ 
+- The competition to end
+ 
+**Throws**
+ 
+- `403` if the user is not logged in
+- `404` if `competitionId` is invalid
+- `403` If competition has ended
+- `403` If the user is not the teacher of the class
+ 
+#### `DELETE /api/competition/:competitionId` - Delete a competition
+ 
+**Returns**
+ 
+- A success message
+ 
+**Throws**
+ 
+- `403` if the user is not logged in
+- `404` if `competitionId` is invalid
+- `403` If the user is not the teacher of the class
 
 #### `GET /api/problem/:problemId` - Get the specified problem
 

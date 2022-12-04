@@ -1,6 +1,7 @@
-import type {Request, Response, NextFunction} from 'express';
+import type { Request, Response, NextFunction } from 'express';
 import { Types } from 'mongoose';
 import UserCollection from '../user/collection';
+import CompetitionCollection from '../competition/collection';
 import ProblemCollection from './collection';
 
 /**
@@ -31,17 +32,17 @@ const isProblemExists = async (req: Request, res: Response, next: NextFunction) 
  * - question, answer, answer choices are all non-empty
  * - answer is among the answer choices
  */
- const isValidProblem = async (req: Request, res: Response, next: NextFunction) => {
+const isValidProblem = async (req: Request, res: Response, next: NextFunction) => {
     if (!req.body.question || !req.body.question.trim()) {
         res.status(400).json({
-          error: 'Problem question must be at least one character long.'
+            error: 'Problem question must be at least one character long.'
         });
         return;
     }
 
     if (!req.body.pointValue.toString() || !req.body.pointValue.toString().trim()) {
         res.status(400).json({
-          error: 'Point value must be non empty.'
+            error: 'Point value must be non empty.'
         });
         return;
     }
@@ -49,7 +50,7 @@ const isProblemExists = async (req: Request, res: Response, next: NextFunction) 
     let answerAmongAnswerChoices = false;
     const previousAnswerChoices = new Set();
     for (const answerChoice of req.body.answerChoices) {
-        if (!answerChoice || !answerChoice.trim()) { 
+        if (!answerChoice || !answerChoice.trim()) {
             res.status(400).json({
                 error: 'Answer choice must be at least one character long.'
             });
@@ -67,7 +68,7 @@ const isProblemExists = async (req: Request, res: Response, next: NextFunction) 
         if (req.body.answer === answerChoice) {
             answerAmongAnswerChoices = true;
         }
-        
+
         previousAnswerChoices.add(answerChoice)
     }
 
@@ -84,7 +85,7 @@ const isProblemExists = async (req: Request, res: Response, next: NextFunction) 
 /**
  * Checks if a user with userId as newSolverId or newWorkerId in req.body exists
  */
- const isUserExists = async (req: Request, res: Response, next: NextFunction) => {
+const isUserExists = async (req: Request, res: Response, next: NextFunction) => {
 
     if (!req.body.newWorkerId && !req.body.newSolverId) {
         res.status(400).json({
@@ -104,9 +105,9 @@ const isProblemExists = async (req: Request, res: Response, next: NextFunction) 
         const user = validFormat ? await UserCollection.findOneByUserId(req.body.newWorkerId as string) : '';
         if (!user) {
             res.status(404).json({
-            error: `A user with Id ${req.body.newWorkerId as string} does not exist.`
-        });
-        return;
+                error: `A user with Id ${req.body.newWorkerId as string} does not exist.`
+            });
+            return;
         }
     }
 
@@ -121,17 +122,38 @@ const isProblemExists = async (req: Request, res: Response, next: NextFunction) 
         const user = validFormat ? await UserCollection.findOneByUserId(req.body.newSolverId as string) : '';
         if (!user) {
             res.status(404).json({
-            error: `A user with Id ${req.body.newSolverId as string} does not exist.`
-        });
-        return;
+                error: `A user with Id ${req.body.newSolverId as string} does not exist.`
+            });
+            return;
         }
     }
-  
+
     next();
-  };
+};
+
+const isValidTeacherOfCompetition = async (req: Request, res: Response, next: NextFunction) => {
+    const user = await UserCollection.findOneByUserId(req.session.userId);
+    if (user.role !== 'teacher') {
+        res.status(400).json({
+            error: 'You are not a teacher'
+        });
+        return;
+    }
+    const competition = await CompetitionCollection.findOneByUserId(req.session.userId);
+    const teachers = competition.classes.map(c => c.teacher._id.toString());
+    if (!teachers.includes(req.session.userId)) {
+        res.status(400).json({
+            error: 'You are not a valid teacher in this competition'
+        });
+        return;
+    }
+
+    next();
+};
 
 export {
     isProblemExists,
     isValidProblem,
     isUserExists,
+    isValidTeacherOfCompetition
 };

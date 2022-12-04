@@ -49,12 +49,15 @@ const store = new Vuex.Store({
        */
       state.userid = userid;
     },
-    setCompetition(state, competition) {
+    async getCompetition(state) {
       /**
-       * Update the stored competition to the specified one.
-       * @param competition - the competition to set
+       * Refresh current competition
        */
-      state.competition = competition;
+       if (state.userid) {
+        const url ='/api/competition';
+        const res = await fetch(url).then(async r => r.json());
+        state.competition = res;
+      } 
     },
     setCurrentAssignment(state, assignment) {
       /**
@@ -63,12 +66,15 @@ const store = new Vuex.Store({
        */
       state.currentAssignment = assignment;
     },
-    setCurrentClass(state, currentClass) {
+    async getCurrentClass(state) {
       /**
-       * Update the stored competition to the specified one.
-       * @param currentClass - the class to set
+       * Refresh current class
        */
-      state.currentClass = currentClass;
+       if (state.role && state.userid) {
+        const url = state.role === 'teacher' ? `/api/class/teacher/${state.userid}` : `/api/class/student/${state.userid}`;
+        const res = await fetch(url).then(async r => r.json());
+        state.currentClass = res;
+      } 
     },
     setCurrentProblem(state, problem) {
       /**

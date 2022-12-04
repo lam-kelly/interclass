@@ -15,7 +15,9 @@
             <header>
           <h2>Welcome to {{ this.teacherName }}'s class!</h2>
         </header>
-
+        <!-- <div id="myProgress">
+          <div id="myBar" :style="{width: this.progress + '%'}"></div>
+        </div> -->
         <section>
         <header>
           <h2>Points: {{ this.classpoints }}</h2>
@@ -118,6 +120,7 @@
         teacherName: '',
         classid: '',
         classpoints: '',
+        // progress: 10,
         alerts: {} // Displays success/error messages encountered
       };
     },
@@ -143,13 +146,15 @@
         try {
           const r = await fetch(url);
           const res = await r.json();
-          if (res !== null && !this.classExists){
+          if (res !== null){
+            if (!this.classExists){
+              this.classExists = true;
+            }
             this.classid = res['_id'];
             this.students = res['students'];
             this.classpoints = res['totalPoints'];
             this.teacherName = res['teacher']['username'];
 
-            this.classExists = true;
           } 
           // const res = await r.text();
           
@@ -295,6 +300,16 @@
   button {
       margin-right: 10px;
   }
+
+  #myProgress {
+  width: 100%;
+  background-color: grey;
+}
+
+#myBar {
+  height: 30px;
+  background-color: green;
+}
   
   section .scrollbox {
     flex: 1 0 50vh;

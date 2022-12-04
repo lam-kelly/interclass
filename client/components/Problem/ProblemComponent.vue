@@ -5,10 +5,10 @@
             :value="questionDraft"
             @input="questionDraft = $event.target.value"
         />
-        <h2 v-else> 
-            {{ problem.question }} 
-        </h2>
-        Selected: {{ selected }}
+        <div v-else> 
+            <h2> {{ problem.question }} </h2>
+            <h3> Correct Answer: {{ problem.answer }} </h3>
+        </div>
         <div v-for="(answerChoice, index) in problem.answerChoices">
             <textarea
                 v-if="editing"
@@ -130,7 +130,7 @@ export default {
                 return;
             }
             const params = {
-                url: `/api/problem/${this.problem._id}`,
+                url: `/api/problem/${this.problem._id}/problemDetails`,
                 method: 'PATCH',
                 message: 'Successfully edited problem!',
                 body: JSON.stringify({question: this.questionDraft, answer: this.answerDraft, answerChoices: this.answerChoicesDraft}),
@@ -142,12 +142,13 @@ export default {
             this.request(params);
             // UPDATE/REFRESH THE PROBLEMS
         },
+
         async submitAnswer() {
             /**
              * Submit an answer choice as the answer and check its correctness (student action)
              */
             // change this into normal GET to access the returned response
-            const url = `/api/problem/${this.problem.id}`;
+            const url = `/api/problem/${this.problem.id}/addStudent`;
             const res = await fetch(url).then(async r => r.json());
 
             if (this.selected === res.problem.answer) {
@@ -197,7 +198,7 @@ export default {
                 throw new Error(res.error);
                 }
                 this.editing = false;
-                // REFRESH PROBLEMS - MAYBE EMIT SOMETHING BACK TO PARENT? TO REFRSH
+                this.$store.commit('refreshProblems');
                 params.callback();
             } catch (e) {
                 this.$set(this.alerts, e, 'error');

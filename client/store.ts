@@ -15,6 +15,7 @@ const store = new Vuex.Store({
     competition: null, // competition that the logged in user is in
     currentAssignment: null,
     currentClass: null,
+    currentProblem: null,
     alerts: {} // global success/error messages encountered during submissions to non-visible forms
   },
   mutations: {
@@ -69,6 +70,13 @@ const store = new Vuex.Store({
        */
       state.currentClass = currentClass;
     },
+    setCurrentProblem(state, problem) {
+      /**
+       * Update the stored problem to the specified on
+       * @param problem - the problem to set
+       */
+      state.currentProblem = problem;
+    },
     async refreshProblems(state) {
       /**
        * Refresh problems of current assignment
@@ -76,7 +84,7 @@ const store = new Vuex.Store({
       if (state.currentAssignment) {
         const url = `/api/assignment/${state.currentAssignment._id}`;
         const res = await fetch(url).then(async r => r.json());
-        state.currentAssignment = res.assignment;
+        state.currentAssignment = res;
       }
       
     },

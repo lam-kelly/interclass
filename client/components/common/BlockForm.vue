@@ -76,6 +76,8 @@ export default {
       method: 'GET', // Form request method
       hasBody: false, // Whether or not form request has a body
       setUsername: false, // Whether or not stored username should be updated after form submission
+      setAssignmentName: false,
+      setCurrentAssignment: false,
       booleanFields: [],
       alerts: {}, // Displays success/error messages encountered during form submission
       callback: null // Function to run after successful form submission
@@ -96,7 +98,14 @@ export default {
           field.value = field.value ? 'teacher' : 'student';
           return field;
         });
-        let allFields = this.fields.concat(role);
+
+        const answerChoices = this.fields
+          .filter(field => field.id.includes('answerChoice'))
+          .map(field => field.value);
+
+        let answerChoicesField = [{id: 'answerChoices', label: 'answerChoices', value: answerChoices}];
+
+        let allFields = this.fields.concat(role).concat(answerChoicesField);
         options.body = JSON.stringify(Object.fromEntries(
           allFields.map(field => {
             const {id, value} = field;
@@ -126,6 +135,12 @@ export default {
           const text = await r.text();
           const res = text ? JSON.parse(text) : {user: null};
           this.$store.commit('setCurrentAssignment', res.assignment ? res.assignment : null);
+        }
+
+        if (this.setCurrentProblem) {
+          const text = await r.text();
+          const res = text ? JSON.parse(text) : {user: null};
+          this.$store.commit('setCurrentProblem', res.problem ? res.problem : null);
         }
 
         if (this.callback) {

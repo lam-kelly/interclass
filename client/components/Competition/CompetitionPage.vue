@@ -31,12 +31,12 @@
         <button @click="deleteCompetition">Delete Competition</button>
         <SetAssignmentName/>
         <h2> Assignments in this Competition: </h2>
-        <AssignmentComponent
+      </article>
+      <AssignmentComponent
           v-for="assignment in $store.state.competition.assignments"
           :key="assignment.id"
           :assignment="assignment"
         />
-      </article>
     </section>
   </main>
 </template>

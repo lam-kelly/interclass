@@ -154,9 +154,9 @@ const isValidCompetitionName = (req: Request, res: Response, next: NextFunction)
 };
 
 const teacherHasClass = async (req: Request, res: Response, next: NextFunction) => {
-  const classs = await ClassCollection.findOneByTeacher(req.session.userID);
+  const classs = await ClassCollection.findOneByTeacher(req.session.userId);
   if (!classs) {
-    res.status(400).json({
+    res.status(403).json({
       error: 'You do not have a class'
     });
     return;

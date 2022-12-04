@@ -40,6 +40,7 @@ router.get(
  * @throws {403} - If the user is not a teacher
  * @throws {403} - If user/teacher is currently in a competition
  * @throws {400} - If the name is empty or a stream of empty spaces
+ * @throws {403} - If teacher does not have a class
  */
 router.post(
   '/',

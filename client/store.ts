@@ -79,7 +79,6 @@ const store = new Vuex.Store({
         state.currentClass = res;
       } 
     },
-    
     setCurrentProblem(state, problem) {
       /**
        * Update the stored problem to the specified on

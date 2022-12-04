@@ -3,7 +3,7 @@
     <button @click="setCurrentAssignment">
     {{ assignment.name }}
     </button>
-    <button @click="deleteAssignment">
+    <button v-if="$store.state.role === 'teacher'" @click="deleteAssignment">
       🗑️ Delete
     </button>
   </section>

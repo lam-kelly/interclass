@@ -81,6 +81,7 @@ router.patch(
   [
     userValidator.isUserLoggedIn,
     competitionValidator.isValidCompetition,
+    competitionValidator.isCompetitionEnded,
     competitionValidator.isValidClassAndTeacherOfClass,
     competitionValidator.isValidClassJoin,
   ],
@@ -112,11 +113,15 @@ router.patch(
   [
     userValidator.isUserLoggedIn,
     competitionValidator.isValidCompetition,
+    competitionValidator.isCompetitionEnded,
     competitionValidator.isValidClassAndTeacherOfClass,
     competitionValidator.isValidClassLeave,
   ],
   async (req: Request, res: Response) => {
     const competition = await CompetitionCollection.updateOneRemoveClass(req.params.competitionId, req.body.classId);
+    if (!competition.classes.length) {
+      await CompetitionCollection.deleteOne(competition._id);
+    }
     res.status(200).json({
       message: 'Your class has left the competition successfully.',
       competition: util.constructCompetitionResponse(competition)
@@ -142,6 +147,7 @@ router.patch(
   [
     userValidator.isUserLoggedIn,
     competitionValidator.isValidCompetition,
+    competitionValidator.isCompetitionEnded,
     competitionValidator.isValidTeacherOfCompetition,
     competitionValidator.isValidAssignment,
     competitionValidator.isValidAddAssignment
@@ -173,6 +179,7 @@ router.patch(
   [
     userValidator.isUserLoggedIn,
     competitionValidator.isValidCompetition,
+    competitionValidator.isCompetitionEnded,
     competitionValidator.isValidTeacherOfCompetition,
     competitionValidator.isValidAssignment,
     competitionValidator.isValidRemoveAssignment,
@@ -202,6 +209,7 @@ router.patch(
   [
     userValidator.isUserLoggedIn,
     competitionValidator.isValidCompetition,
+    competitionValidator.isCompetitionEnded,
     competitionValidator.isValidTeacherOfCompetition
   ],
   async (req: Request, res: Response) => {

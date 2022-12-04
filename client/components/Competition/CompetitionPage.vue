@@ -30,13 +30,16 @@
         <button @click="endCompetition">End Competition</button>
         <button @click="deleteCompetition">Delete Competition</button>
         <SetAssignmentName/>
-        <h2> Assignments in this Competition: </h2>
       </article>
-      <AssignmentComponent
-          v-for="assignment in $store.state.competition.assignments"
-          :key="assignment.id"
-          :assignment="assignment"
-        />
+      <article v-if="$store.state.competition.assignments.length">
+        <h2> Assignments in this Competition: </h2>
+          <AssignmentComponent
+            v-for="assignment in $store.state.competition.assignments"
+            :key="assignment.id"
+            :assignment="assignment"
+          />
+      </article>
+      <h2 v-else> No assignments yet!</h2>
     </section>
   </main>
 </template>

@@ -1,14 +1,15 @@
 <template>
   <main>
-    <section>
+    <section v-if="$store.state.competition">
       <h2>Leaderboard for {{$store.state.competition.name}} Competition</h2>
-    </section>
-    <section>
       <Rank
         v-for="classs in $store.state.competition.classes"
         :key="classs.id"
         :classs="classs"
       />
+    </section>
+    <section v-else>
+      You are not currently in a competition
     </section>
   </main>
 </template>

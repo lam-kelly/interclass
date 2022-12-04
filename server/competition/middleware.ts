@@ -64,7 +64,7 @@ const isValidClassAndTeacherOfClass = async (req: Request, res: Response, next: 
 
 const isValidClassJoin = async (req: Request, res: Response, next: NextFunction) => {
   const competition = await CompetitionCollection.findOneByCompetitionId(req.params.competitionId);
-  if (competition.classes.map(c => c._id.toString()).includes(req.body.classId)) {
+  if (!competition.dateEnded && competition.classes.map(c => c._id.toString()).includes(req.body.classId)) {
     res.status(400).json({
       error: 'Your class is already part of this competition'
     });
@@ -165,6 +165,18 @@ const teacherHasClass = async (req: Request, res: Response, next: NextFunction) 
   next();
 };
 
+const isCompetitionEnded = async (req: Request, res: Response, next: NextFunction) => {
+  const competition = await CompetitionCollection.findOneByCompetitionId(req.params.competitionId);
+  if (competition.dateEnded) {
+    res.status(403).json({
+      error: 'This competition has ended'
+    });
+    return;
+  }
+
+  next();
+};
+
 export {
   isTeacher,
   isNotInCompetition,
@@ -177,5 +189,6 @@ export {
   isValidRemoveAssignment,
   isValidTeacherOfCompetition,
   isValidCompetitionName,
-  teacherHasClass
+  teacherHasClass,
+  isCompetitionEnded
 };

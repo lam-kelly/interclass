@@ -88,6 +88,12 @@ class CompetitionCollection {
       return await CompetitionModel.findOne({ classes: classs, dateEnded: undefined })
       .populate('creatorId')
       .populate('classes')
+      .populate({
+        path : 'classes',
+        populate : {
+          path : 'teacher'
+        }
+      })
       .populate('assignments')
       .populate({
         path : 'assignments',

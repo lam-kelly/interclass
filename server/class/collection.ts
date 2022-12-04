@@ -81,12 +81,12 @@ class ClassCollection {
    * Add a student to a class. 
    *
    * @param {string} classId - The classId of the Class to update
-   * @param {string} studentId - The ID of the student to be added 
+   * @param {string} studentName - The name of the student to be added 
    * @return {Promise<HydratedDocument<Class>>} - The updated Class
    */
-  static async addStudent(classId: Types.ObjectId | string, studentId: string): Promise<HydratedDocument<Class>> {
+  static async addStudent(classId: Types.ObjectId | string, studentName: string): Promise<HydratedDocument<Class>> {
     const Class = await ClassModel.findOne({_id: classId});
-    const student = await UserCollection.findOneByUserId(studentId);
+    const student = await UserCollection.findOneByUsername(studentName);
     Class.students.push(student);
     // Class.students.push(studentId);
 

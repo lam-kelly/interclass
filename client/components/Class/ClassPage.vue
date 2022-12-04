@@ -15,7 +15,9 @@
             <header>
           <h2>Welcome to {{ this.teacherName }}'s class!</h2>
         </header>
-
+        <!-- <div id="myProgress">
+          <div id="myBar" :style="{width: this.progress + '%'}"></div>
+        </div> -->
         <section>
         <header>
           <h2>Points: {{ this.classpoints }}</h2>
@@ -49,7 +51,7 @@
         <header>
             <h2>Add a student</h2>
         </header>
-        <p>Type a student's ID, and hit enter:</p>
+        <p>Type a student's username, and hit enter:</p>
         <input v-model="newstudent" @keyup.enter="addToClass()"/>
         <header> 
           <h2>Delete the class?</h2>
@@ -118,6 +120,7 @@
         teacherName: '',
         classid: '',
         classpoints: '',
+        // progress: 10,
         alerts: {} // Displays success/error messages encountered
       };
     },
@@ -143,13 +146,15 @@
         try {
           const r = await fetch(url);
           const res = await r.json();
-          if (res !== null && !this.classExists){
+          if (res !== null){
+            if (!this.classExists){
+              this.classExists = true;
+            }
             this.classid = res['_id'];
             this.students = res['students'];
             this.classpoints = res['totalPoints'];
             this.teacherName = res['teacher']['username'];
 
-            this.classExists = true;
           } 
           // const res = await r.text();
           
@@ -198,7 +203,7 @@
               method: 'PATCH',
               headers: {'Content-Type': 'application/json'},
               credentials: 'same-origin', 
-              body: JSON.stringify({ "studentId": this.newstudent })
+              body: JSON.stringify({ "studentName": this.newstudent })
           };
         const url = `/api/class/add/${this.classid}`;
         try {
@@ -295,6 +300,16 @@
   button {
       margin-right: 10px;
   }
+
+  #myProgress {
+  width: 100%;
+  background-color: grey;
+}
+
+#myBar {
+  height: 30px;
+  background-color: green;
+}
   
   section .scrollbox {
     flex: 1 0 50vh;

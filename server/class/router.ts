@@ -131,7 +131,7 @@ router.delete(
  *
  * @name PATCH /api/class/add/:id
  *
- * @param {string} studentId - the ID of the new student to be added
+ * @param {string} studentName - the name of the new student to be added
  * @return {string} - a success message
  * @throws {403} - if the user is not logged in or not the teacher of the class, or the student is already in the class
  * @throws {404} - If the classId is not valid
@@ -148,7 +148,7 @@ router.patch(
     classValidator.isStudentInClass
   ],
   async (req: Request, res: Response) => {
-    await ClassCollection.addStudent(req.params.classId, req.body.studentId);
+    await ClassCollection.addStudent(req.params.classId, req.body.studentName);
     res.status(200).json({message: 'You added a student to your class successfully.'});
   }
 );
@@ -171,7 +171,7 @@ router.patch(
       classValidator.isValidTeacher,
       classValidator.isClassExists,
       classValidator.canEdit,
-      classValidator.isStudentExists
+      classValidator.isStudentIDExists
     ],
     async (req: Request, res: Response) => {
       await ClassCollection.removeStudent(req.params.classId, req.body.studentId);

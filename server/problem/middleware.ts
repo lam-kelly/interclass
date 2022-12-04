@@ -39,7 +39,7 @@ const isProblemExists = async (req: Request, res: Response, next: NextFunction) 
         return;
     }
 
-    if (!req.body.pointValue || !req.body.pointValue.trim()) {
+    if (!req.body.pointValue.toString() || !req.body.pointValue.toString().trim()) {
         res.status(400).json({
           error: 'Point value must be non empty.'
         });
@@ -47,6 +47,7 @@ const isProblemExists = async (req: Request, res: Response, next: NextFunction) 
     }
 
     let answerAmongAnswerChoices = false;
+    const previousAnswerChoices = new Set();
     for (const answerChoice of req.body.answerChoices) {
         if (!answerChoice || !answerChoice.trim()) { 
             res.status(400).json({
@@ -55,9 +56,19 @@ const isProblemExists = async (req: Request, res: Response, next: NextFunction) 
             return;
         }
 
+        // checking for duplicate answer choices
+        if (previousAnswerChoices.has(answerChoice)) {
+            res.status(400).json({
+                error: 'Cannot have duplicate answer choices.'
+            });
+            return;
+        }
+
         if (req.body.answer === answerChoice) {
             answerAmongAnswerChoices = true;
         }
+        
+        previousAnswerChoices.add(answerChoice)
     }
 
     if (!answerAmongAnswerChoices) {

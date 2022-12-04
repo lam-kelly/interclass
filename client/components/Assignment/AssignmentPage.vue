@@ -1,6 +1,6 @@
 <template>
     <main>
-        <CreateProblemForm />
+        <CreateProblemForm v-if="$store.state.role=='teacher'"/>
         <h2> Problems in this assignment: </h2>
         <ProblemComponent
             v-for="problem in $store.state.currentAssignment.problems"

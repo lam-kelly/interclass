@@ -1,22 +1,25 @@
 <template>
-    <main>
+    <article class="problem">
         <div v-if="editing">
             Question:
             <textarea
                 :value="questionDraft"
                 @input="questionDraft = $event.target.value"
             />
-        </div>
-        <div v-else> 
-            <h2> {{ problem.question }} </h2>
-            <h3> Correct Answer: {{ problem.answer }} </h3>
-        </div>
+            
+        </div> 
+        <h2 v-else> 
+            {{ problem.question }} 
+        </h2>
+        <h3 v-if="$store.state.role=='teacher' && !editing"> 
+            Correct Answer: {{ problem.answer }} 
+        </h3>
         <div v-for="(answerChoice, index) in problem.answerChoices">
             <div v-if="editing">
                 Answer Choice {{ index+1 }}
                 <textarea
-                    :value="answerChoicesDraft[index]"
-                    @input="answerChoicesDraft[index] = $event.target.value"
+
+                    v-model="answerChoicesDraft[index]"
                 />
             </div>
             <div v-else>
@@ -65,8 +68,24 @@
                 Submit
             </button>
         </div>
-        <p>Point Value: {{ problem.pointValue }}</p>
-    </main>
+        <div v-if="editing">
+            Point Value:
+            <textarea
+                :value="pointValueDraft"
+                @input="pointValueDraft = $event.target.value"
+            />
+        </div>
+        <p v-else>Point Value: {{ problem.pointValue }}</p>
+        <section class="alerts">
+            <article
+                v-for="(status, alert, index) in alerts"
+                :key="index"
+                :class="status"
+            >
+                <p>{{ alert }}</p>
+            </article>
+        </section>
+    </article>
 </template>
 
 <script>
@@ -83,7 +102,8 @@ export default {
         return {
             questionDraft: this.problem.question,
             answerDraft: this.problem.answer,
-            answerChoicesDraft: this.problem.answerChoices,
+            pointValueDraft: this.problem.pointValue,
+            answerChoicesDraft: Object.assign([], this.problem.answerChoices), // deep copy an array
             selected: null,
             editing: false,
             alerts: {} // Displays success/error messages encountered during freet modification
@@ -97,7 +117,8 @@ export default {
             this.editing = true; 
             this.questionDraft = this.problem.question; 
             this.answerDraft = this.problem.answer;
-            this.answerChoicesDraft = this.problem.answerChoices;
+            this.pointValueDraft = this.problem.pointValue;
+            this.answerChoicesDraft = Object.assign([], this.problem.answerChoices);
         },
         stopEditing() {
             /**
@@ -105,8 +126,9 @@ export default {
              */
             this.editing = false;
             this.questionDraft = this.problem.question;
+            this.pointValueDraft = this.problem.pointValue;
             this.answerDraft = this.problem.answer;
-            this.answerChoicesDraft = this.problem.answerChoices;
+            this.answerChoicesDraft = Object.assign([], this.problem.answerChoices);
         },
         deleteProblem() {
             /**
@@ -127,7 +149,15 @@ export default {
             /**
              * Updates problem to have the submitted draft content.
              */
-            if (this.problem.question === this.questionDraft && this.problem.answer === this.answerDraft && this.problem.answerChoices === this.answerChoicesDraft) {
+            // deep check if arrays are equal
+            let answerChoicesChanged = false;
+            for (let i=0; i<this.answerChoicesDraft.length; i++) {
+                if (this.answerChoicesDraft[i] !== this.problem.answerChoices[i]) {
+                    answerChoicesChanged = true;
+                }
+            }
+
+            if (this.problem.question === this.questionDraft && this.problem.answer === this.answerDraft && !answerChoicesChanged && this.problem.pointValue === this.pointValueDraft) {
                 const error = 'Error: Edited problem details should be different than current problem details.';
                 this.$set(this.alerts, error, 'error'); // Set an alert to be the error text, timeout of 3000 ms
                 setTimeout(() => this.$delete(this.alerts, error), 3000);
@@ -137,29 +167,27 @@ export default {
                 url: `/api/problem/${this.problem._id}/problemDetails`,
                 method: 'PATCH',
                 message: 'Successfully edited problem!',
-                body: JSON.stringify({question: this.questionDraft, answer: this.answerDraft, answerChoices: this.answerChoicesDraft}),
+                body: JSON.stringify({question: this.questionDraft, answer: this.answerDraft, answerChoices: this.answerChoicesDraft, pointValue: this.pointValueDraft}),
                 callback: () => {
-                this.$set(this.alerts, params.message, 'success');
-                setTimeout(() => this.$delete(this.alerts, params.message), 3000);
+                    this.$set(this.alerts, params.message, 'success');
+                    setTimeout(() => this.$delete(this.alerts, params.message), 3000);
                 }
             };
             this.request(params);
-            // UPDATE/REFRESH THE PROBLEMS
         },
 
         async submitAnswer() {
             /**
              * Submit an answer choice as the answer and check its correctness (student action)
              */
-            // change this into normal GET to access the returned response
-            const url = `/api/problem/${this.problem.id}/addStudent`;
+            const url = `/api/problem/${this.problem._id}`;
             const res = await fetch(url).then(async r => r.json());
-
+            // NEED TO GIVE FEEDBACK ON WHETHER ANSWER WAS CORRECT
             if (this.selected === res.problem.answer) {
                 const params = {
-                    url: `/api/problem/${this.problem._id}`,
+                    url: `/api/problem/${this.problem._id}/addStudent`,
                     method: 'PATCH',
-                    // message: 'Successfully revised problem!',
+                    message: 'Correct answer!',
                     body: JSON.stringify({isSolver: true, isWorker: true}),
                     callback: () => {
                     this.$set(this.alerts, params.message, 'success');
@@ -170,13 +198,14 @@ export default {
             }
             else {
                 const params = {
-                    url: `/api/problem/${this.problem._id}`,
+                    url: `/api/problem/${this.problem._id}/addStudent`,
                     method: 'PATCH',
-                    // message: 'Successfully revised problem!',
+                    message: 'Incorrect, please try again!',
                     body: JSON.stringify({isWorker: true}),
                     callback: () => {
-                    this.$set(this.alerts, params.message, 'success');
-                    setTimeout(() => this.$delete(this.alerts, params.message), 3000);
+                        console.log('should be here')
+                        this.$set(this.alerts, params.message, 'error');
+                        setTimeout(() => this.$delete(this.alerts, params.message), 3000);
                     }
                 };
                 this.request(params);
@@ -215,5 +244,10 @@ export default {
 </script>
 
 <style scoped>
+.problem {
+    border: 1px solid #111;
+    padding: 20px;
+    position: relative;
+}
 
 </style>

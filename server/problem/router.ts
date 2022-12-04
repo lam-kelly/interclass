@@ -98,9 +98,11 @@ router.patch(
   '/:problemId?/problemDetails',
   [
     problemValidator.isProblemExists,
+    problemValidator.isValidProblem,
     // check problem format again? depends on whether pass in all details (might might more calls in collections)
   ],
   async (req: Request, res: Response) => {
+    console.log(req.body.pointValue)
     const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
     const problem = await ProblemCollection.updateOne(req.params.problemId, req.body);
     res.status(200).json({
@@ -132,10 +134,10 @@ router.patch(
   ],
   async (req: Request, res: Response) => {
     const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
-    if (req.params.isSolver) {
+    if (req.body.isSolver === true) {
       req.body.newSolverId = userId;
     }
-    if (req.params.isWorker) {
+    if (req.body.isWorker === true) {
       req.body.newWorkerId = userId;
     }
     const problem = await ProblemCollection.updateOne(req.params.problemId, req.body);

@@ -52,6 +52,7 @@ class ProblemCollection {
             answerChoices?: string[];
             answer?: string;
             question?: string;
+            pointValue?: number;
         }
     ): Promise<HydratedDocument<Problem>> {
         const problem = await ProblemModel.findOne({_id: problemId});
@@ -85,6 +86,10 @@ class ProblemCollection {
 
         if (problemDetails.question) {
             problem.question = problemDetails.question;
+        }
+
+        if (problemDetails.pointValue) {
+            problem.pointValue = problemDetails.pointValue;
         }
 
         await problem.save();

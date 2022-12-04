@@ -51,7 +51,7 @@
         <header>
             <h2>Add a student</h2>
         </header>
-        <p>Type a student's ID, and hit enter:</p>
+        <p>Type a student's username, and hit enter:</p>
         <input v-model="newstudent" @keyup.enter="addToClass()"/>
         <header> 
           <h2>Delete the class?</h2>
@@ -203,7 +203,7 @@
               method: 'PATCH',
               headers: {'Content-Type': 'application/json'},
               credentials: 'same-origin', 
-              body: JSON.stringify({ "studentId": this.newstudent })
+              body: JSON.stringify({ "studentName": this.newstudent })
           };
         const url = `/api/class/add/${this.classid}`;
         try {

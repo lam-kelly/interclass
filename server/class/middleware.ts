@@ -39,7 +39,17 @@ const isClassExists = async (req: Request, res: Response, next: NextFunction) =>
  */
 const isStudentInClass = async (req: Request, res: Response, next: NextFunction) => {
   const curClass = await ClassCollection.findOneByclassId(req.params.classId);
-  const index = curClass.students.indexOf(req.body.studentId);
+  const student = await UserCollection.findOneByUsername(req.body.studentName);
+  const studentId = student._id.toString();
+  let index = -1;
+  let count = 0;
+  for (const currStud of curClass.students){
+    if (currStud._id.toString() == studentId){
+      index = count;
+      break; 
+    }
+    count++; 
+  }
   if (index !== -1) {
     res.status(403).json({
       error: 'Student is already part of the class.'
@@ -53,6 +63,20 @@ const isStudentInClass = async (req: Request, res: Response, next: NextFunction)
  * Checks if the student exists.
  */
 const isStudentExists = async (req: Request, res: Response, next: NextFunction) => {
+  const user = await UserCollection.findOneByUsername(req.body.studentName);
+  if (!user || user.role !== 'student') {
+    res.status(404).json({
+      error: 'Not a valid student.'
+    });
+    return;
+  }
+  next();
+}
+
+/**
+ * Checks if the student exists.
+ */
+const isStudentIDExists = async (req: Request, res: Response, next: NextFunction) => {
   const user = await UserCollection.findOneByUserId(req.body.studentId);
   if (!user || user.role !== 'student') {
     res.status(404).json({
@@ -102,6 +126,7 @@ export {
   isUserExists,
   isClassExists,
   isStudentExists,
+  isStudentIDExists,
   canEdit,
   isStudentInClass
 };

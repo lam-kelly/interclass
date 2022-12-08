@@ -76,6 +76,7 @@
             />
         </div>
         <p v-else>Point Value: {{ problem.pointValue }}</p>
+        <p v-if="$store.state.role=='student'"> {{ this.isSolved() }} </p>
         <section class="alerts">
             <article
                 v-for="(status, alert, index) in alerts"
@@ -110,6 +111,11 @@ export default {
         }
     },
     methods: {
+        isSolved() {
+            console.log(this.problem.solvers)
+            console.log(this.$store.state.userid)
+            return (this.problem.solvers.includes(this.$store.state.userid) ? "Solved" : "Not Solved")
+        },
         startEditing() {
             /**
              * Enables edit mode on this problem.

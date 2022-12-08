@@ -78,6 +78,7 @@ export default {
       setUsername: false, // Whether or not stored username should be updated after form submission
       setAssignmentName: false,
       setCurrentAssignment: false,
+      allFields: [],
       booleanFields: [],
       alerts: {}, // Displays success/error messages encountered during form submission
       callback: null // Function to run after successful form submission
@@ -106,10 +107,11 @@ export default {
         let answerChoicesField = [{id: 'answerChoices', label: 'answerChoices', value: answerChoices}];
 
         let allFields = this.fields.concat(role).concat(answerChoicesField);
+        this.allFields = allFields;
         options.body = JSON.stringify(Object.fromEntries(
           allFields.map(field => {
             const {id, value} = field;
-            field.value = '';
+            // field.value = '';
             return [id, value];
           })
         ));
@@ -122,6 +124,11 @@ export default {
           const res = await r.json();
           throw new Error(res.error);
         }
+
+        // if there's no error, then clear the form
+        this.allFields.forEach(field => {
+          field.value = '';
+        })
 
         if (this.setUsername) {
           const text = await r.text();

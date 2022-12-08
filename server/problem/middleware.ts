@@ -140,10 +140,16 @@ const isValidTeacherOfCompetition = async (req: Request, res: Response, next: Ne
         return;
     }
     const competition = await CompetitionCollection.findOneByUserId(req.session.userId);
+    if (!competition) {
+        res.status(400).json({
+            error: 'You are not in a competition'
+        });
+        return;
+    }
     const teachers = competition.classes.map(c => c.teacher._id.toString());
     if (!teachers.includes(req.session.userId)) {
         res.status(400).json({
-            error: 'You are not a valid teacher in this competition'
+            error: 'You are not a valid teacher in a competition'
         });
         return;
     }

@@ -25,7 +25,7 @@ export default {
         {id: 'answerChoice4', label: 'Answer Choice 4', value: ''},
         {id: 'pointValue', label: 'Point Value', value: ''},
       ],
-      title: 'Create Assignment',
+      title: 'Create Problem',
       callback: async () => {
         await this.addProblemToAssignment();
         const message = `Successfully created a new problem!` ;

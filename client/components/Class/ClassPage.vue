@@ -15,16 +15,17 @@
             <header>
           <h2>Welcome to {{ this.teacherName }}'s class!</h2>
         </header>
-        <!-- <div id="myProgress">
-          <div id="myBar" :style="{width: this.progress + '%'}"></div>
-        </div> -->
+        <div id="myProgress">
+          <div id="myBar" :style="{width: this.classpoints + '%'}"></div>
+        </div>
         <section>
         <header>
           <h2>Points: {{ this.classpoints }}</h2>
         </header>
         </section>
-
-        <section>
+        
+        <StudentComponent />
+        <!-- <section>
         <header>
           <h2>Students</h2>
         </header>
@@ -45,14 +46,15 @@
         >
           <h3>No students found.</h3>
         </article>
-      </section>
+      </section> -->
 
         <section v-if="$store.state.role === 'teacher'">
-        <header>
+          <AddStudentComponent />
+        <!-- <header>
             <h2>Add a student</h2>
         </header>
         <p>Type a student's username, and hit enter:</p>
-        <input v-model="newstudent" @keyup.enter="addToClass()"/>
+        <input v-model="newstudent" @keyup.enter="addToClass()"/> -->
         <header> 
           <h2>Delete the class?</h2>
         </header>
@@ -108,10 +110,12 @@
   </template>
   
   <script>
-//   import StudentComponent from '@/components/Class/StudentComponent.vue';
+  import StudentComponent from '@/components/Class/StudentComponent.vue';
+  import AddStudentComponent from '@/components/Class/AddStudentComponent.vue';
   
   export default {
     name: 'ClassPage',
+    components: {StudentComponent, AddStudentComponent},
     data() {
       return {
         classExists: false,
@@ -130,6 +134,7 @@
         }
     },
     created() {
+      this.$store.commit('getCurrentClass');
       if (this.$store.state.username){
         this.getClass();
       }
@@ -184,6 +189,7 @@
           if (!r.ok) {
             throw new Error(res.error);
           }
+          this.$store.commit('getCurrentClass');
           this.getClass();
           this.$set(this.alerts, 'Successfully created a class!', 'success');
           setTimeout(() => this.$delete(this.alerts, 'Successfully created a class!'), 3000);
@@ -299,6 +305,15 @@
   
   button {
       margin-right: 10px;
+  }
+
+  .studentsInClass {
+    /* display: flex; */
+    /* justify-content: center;
+    align-items: center; */
+  }
+  .removebutton {
+    /* float: right; */
   }
 
   #myProgress {

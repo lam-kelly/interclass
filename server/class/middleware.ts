@@ -59,6 +59,33 @@ const isStudentInClass = async (req: Request, res: Response, next: NextFunction)
   next();
 }
 
+const isTeacherInOneClass = async (req: Request, res: Response, next: NextFunction) => {
+  const class1 = await ClassCollection.findOneByTeacher(req.session.userId);
+  if (class1) {
+    res.status(403).json({
+      error: 'A teacher can only create one class.'
+    });
+    return;
+  }
+
+  next();
+};
+
+
+const isInOneClass = async (req: Request, res: Response, next: NextFunction) => {
+  const user = await UserCollection.findOneByUsername(req.body.studentName);
+  const studentId = user._id;
+  const class1 = await ClassCollection.findOneByStudent(studentId);
+  if (class1) {
+    res.status(403).json({
+      error: 'A student can only be in one class at a time.'
+    });
+    return;
+  }
+
+  next();
+};
+
 /**
  * Checks if the student exists.
  */
@@ -74,7 +101,7 @@ const isStudentExists = async (req: Request, res: Response, next: NextFunction) 
 }
 
 /**
- * Checks if the student exists.
+ * Checks if the student ID exists.
  */
 const isStudentIDExists = async (req: Request, res: Response, next: NextFunction) => {
   const user = await UserCollection.findOneByUserId(req.body.studentId);
@@ -128,5 +155,7 @@ export {
   isStudentExists,
   isStudentIDExists,
   canEdit,
-  isStudentInClass
+  isStudentInClass,
+  isInOneClass,
+  isTeacherInOneClass
 };

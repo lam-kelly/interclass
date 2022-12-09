@@ -91,7 +91,8 @@ router.post(
   '/',
   [
     userValidator.isUserLoggedIn,
-    classValidator.isValidTeacher
+    classValidator.isValidTeacher,
+    classValidator.isTeacherInOneClass
   ],
   async (req: Request, res: Response) => {
     const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
@@ -133,7 +134,7 @@ router.delete(
  *
  * @param {string} studentName - the name of the new student to be added
  * @return {string} - a success message
- * @throws {403} - if the user is not logged in or not the teacher of the class, or the student is already in the class
+ * @throws {403} - if the user is not logged in or not the teacher of the class, or the student is already in a class
  * @throws {404} - If the classId is not valid
  * @throws {400} - If the student does not exist
  */
@@ -145,7 +146,8 @@ router.patch(
     classValidator.isClassExists,
     classValidator.canEdit,
     classValidator.isStudentExists,
-    classValidator.isStudentInClass
+    // classValidator.isStudentInClass,
+    classValidator.isInOneClass
   ],
   async (req: Request, res: Response) => {
     await ClassCollection.addStudent(req.params.classId, req.body.studentName);

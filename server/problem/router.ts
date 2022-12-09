@@ -44,7 +44,7 @@ router.get(
 router.post(
   '/',
   [
-    // userValidator.isTeacherInClassOfCompetition,
+    problemValidator.isValidTeacherOfCompetition,
     problemValidator.isValidProblem,
   ],
   async (req: Request, res: Response) => {

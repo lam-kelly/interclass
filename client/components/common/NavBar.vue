@@ -3,13 +3,14 @@
 <!-- This navbar takes advantage of both flex and grid layouts for positioning elements; feel free to redesign as you see fit! -->
 
 <template>
-  <nav>
+  <v-app-bar color="accent" elevation="1">
     <div class="left">
       <img src="../../public/logo.svg">
       <h1 class="title">
         InterClass
       </h1>
     </div>
+    <v-spacer></v-spacer>
     <div class="right">
       <router-link to="/">
         Home
@@ -45,7 +46,7 @@
         <p>{{ alert }}</p>
       </article>
     </section>
-  </nav>
+  </v-app-bar>
 </template>
 
 <style scoped>

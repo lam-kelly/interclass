@@ -5,7 +5,7 @@
 <template>
   <v-app-bar color="accent" elevation="1">
     <div class="left">
-      <img src="../../public/logo.svg">
+      <img src="../../public/logo2.png">
       <h1 class="title">
         InterClass
       </h1>

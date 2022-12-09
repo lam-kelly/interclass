@@ -8,23 +8,33 @@
       v-if="fields.length"
     >
       <div
-        v-for="field in fields"
+        v-for="(field, index) in fields"
         :key="field.id"
       >
-        <label :for="field.id">{{ field.label }}:</label>
-        <textarea
+        <!-- <label :for="field.id">{{ field.label }}:</label> -->
+        <!-- <v-textarea
           v-if="field.id === 'content'"
           :name="field.id"
           :value="field.value"
           @input="field.value = $event.target.value"
-        />
-        <input
+        /> -->
+        <!-- <input
           v-else
           :type="field.id === 'password' ? 'password' : 'text'"
           :name="field.id"
           :value="field.value"
           @input="field.value = $event.target.value"
-        >
+        > -->
+        <v-text-field
+          :type="field.id === 'password' ? 'password' : 'text'"
+          :label="field.label"
+          v-model="fields[index]['value']"
+        ></v-text-field>
+        <!-- <v-text-field
+          :type="field.id === 'password' ? 'password' : 'text'"
+          :label="field.label"
+          v-model="userFields[index]"
+        ></v-text-field> -->
       </div>
     </article>
     <article v-else>
@@ -34,23 +44,39 @@
       v-if="booleanFields.length"
     >
       <div
-        v-for="booleanField in booleanFields"
+        v-for="(booleanField, index) in booleanFields"
         :key="booleanField.id"
       >
-        <label :for="booleanField.id">{{ booleanField.label }}:</label>
-        <input
+        <!-- <label :for="booleanField.id">{{ booleanField.label }}:</label> -->
+        <v-checkbox
+          input-value="0"
+          v-model="booleanFields[index]['value']"
+          :label="booleanField.label"
+        ></v-checkbox>
+        <!-- <v-checkbox
+          v-model="checkboxes[index]"
+          :label="booleanField.label"
+        ></v-checkbox> -->
+        <!-- <input
           :type="'checkbox'"
           :name="booleanField.id"
           :checked="booleanField.value"
           @input="booleanField.value = $event.target.checked"
-        >
+        > -->
       </div>
     </article>
-    <button
+    <div @click.stop="">
+    <v-btn 
+        type="submit"
+      >
+      {{ title }}
+      </v-btn>
+    </div>
+    <!-- <button
       type="submit"
     >
       {{ title }}
-    </button>
+    </button> -->
     <section class="alerts">
       <article
         v-for="(status, alert, index) in alerts"
@@ -78,13 +104,18 @@ export default {
       setUsername: false, // Whether or not stored username should be updated after form submission
       setAssignmentName: false,
       setCurrentAssignment: false,
+      // userFields: [],
       allFields: [],
+      // checkboxes: [],
       booleanFields: [],
       alerts: {}, // Displays success/error messages encountered during form submission
       callback: null // Function to run after successful form submission
     };
   },
   methods: {
+    changeStatus(event) {
+        event.stopPropagation();
+    },
     async submit() {
       /**
         * Submits a form with the specified options from data().

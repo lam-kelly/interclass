@@ -2,44 +2,88 @@
   <main>
     <section v-if="!$store.state.competition">
       <section v-if="$store.state.role === 'teacher'">
-        <h2 v-if="!$store.state.currentClass">Create a Class First</h2>
-        <article v-else>
-          <h2>Start a new Competition</h2>
+        <v-container fill-height fluid v-if="!$store.state.currentClass">
+          <v-card flat class="justify-center">
+            <v-card-title class="text-h5">Wait for your teacher to join a competition</v-card-title>
+          </v-card>
+        </v-container>
+        <v-card flat v-else>
+          <v-card-title>Start a new Competition</v-card-title>
           <CreateCompetitionForm
-            placeholder="Competition Name"
+            label="Competition Name"
+            placeholder="ex: Fractions"
             button="Create"
           />
-          <h2>Join a Competition</h2>
+          <v-card-title>Join a Competition</v-card-title>
           
           <JoinCompetitionForm
-            placeholder="Competition ID"
+            label="Competition ID"
+            placeholder="ex: 63840fdge3j503f9"
             button="Join"
           />
-        </article>
+        </v-card>
       </section>
-      <section v-else>
-        Wait for your teacher to join a competition
-      </section>
+      <v-container fill-height fluid v-else>
+          <v-card flat class="justify-center">
+            <v-card-title class="text-h5">Wait for your teacher to join a competition</v-card-title>
+          </v-card>
+      </v-container>
     </section>
     <section v-else>
-      <h2>Competition: {{$store.state.competition.name}}</h2>
-      <article v-if="$store.state.role === 'teacher'">
-        <h4>Competition ID: {{$store.state.competition._id}}</h4>
-        <p>Share your competition ID, so that other teachers can join your competition!</p>
-        <button @click="leaveCompetition">Leave Competition</button>
-        <button @click="endCompetition">End Competition</button>
-        <button @click="deleteCompetition">Delete Competition</button>
-        <SetAssignmentName/>
-      </article>
-      <article v-if="$store.state.competition.assignments.length">
-        <h2> Assignments in this Competition: </h2>
+      <v-card flat>
+        <v-card-title>Competition: {{$store.state.competition.name}}</v-card-title>
+        <div v-if="$store.state.role === 'teacher'">
+          <v-card-subtitle>Competition ID: {{$store.state.competition._id}}</v-card-subtitle>
+          <v-card-text>Share your competition ID with other teachers, so that their classes can join your competition!</v-card-text>
+          <v-card-actions>
+            <v-tooltip top>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  color="error"
+                  outlined
+                  small
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="leaveCompetition"
+                >
+                  Leave Competition
+                </v-btn>
+              </template>
+              <span>Leaving this competition will remove your class from this competition.</span>
+            </v-tooltip>
+            <v-tooltip top>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  color="error"
+                  outlined
+                  small
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="endCompetition"
+                >
+                  End Competition
+                </v-btn>
+              </template>
+              <span>Ending this competition will end the competition for all classes.</span>
+            </v-tooltip>
+          </v-card-actions>
+        </div>
+      </v-card>
+      <v-divider></v-divider>
+      <SetAssignmentName v-if="$store.state.role === 'teacher'"/>
+      <v-list v-if="$store.state.competition.assignments.length">
+        <v-list-title> Current Assignments: </v-list-title>
           <AssignmentComponent
             v-for="assignment in $store.state.competition.assignments"
             :key="assignment.id"
             :assignment="assignment"
           />
-      </article>
-      <h2 v-else> No assignments yet!</h2>
+      </v-list>
+      <v-container fill-height fluid v-else>
+          <v-card flat class="justify-center">
+            <v-card-title class="text-h5">No assignments yet!</v-card-title>
+          </v-card>
+      </v-container>
     </section>
   </main>
 </template>

@@ -2,17 +2,30 @@
 <!-- This is just an example; feel free to define any reusable components you want! -->
 
 <template>
-  <form @submit.prevent="submit">
-    <input
-      v-model="value"
-      type="text"
-      :placeholder="placeholder"
-    >
-    <button
-      type="submit"
-    >
-      {{ button }}
-    </button>
+  <v-form @submit.prevent="submit">
+    <v-container>
+      <v-row>
+        <v-col>
+          <v-text-field
+            dense
+            v-model="value"
+            type="text"
+            :label="label"
+            :placeholder="placeholder"
+          ></v-text-field>
+        </v-col>
+        <v-col>
+        <v-btn
+          flat
+          rounded
+          color="secondary"
+          type="submit"
+        >
+          {{ button }}
+        </v-btn>
+      </v-col>
+      </v-row>
+    </v-container>
     <section class="alerts">
       <article
         v-for="(status, alert, index) in alerts"
@@ -22,13 +35,17 @@
         <p>{{ alert }}</p>
       </article>
     </section>
-  </form>
+  </v-form>
 </template>
 
 <script>
 export default {
   name: 'InlineForm',
   props: {
+    label: {
+      type: String,
+      default: ''
+    },
     placeholder: {
       type: String,
       default: ''

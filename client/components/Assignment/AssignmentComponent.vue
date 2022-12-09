@@ -1,12 +1,14 @@
 <template>
-  <section>
-    <button @click="setCurrentAssignment">
-    {{ assignment.name }}
-    </button>
-    <button v-if="$store.state.role === 'teacher'" @click="deleteAssignment">
-      🗑️ Delete
-    </button>
-  </section>
+  <v-list-item @click="setCurrentAssignment">
+    <v-list-item-title>
+      {{ assignment.name }}
+    </v-list-item-title>
+    <v-list-action>
+      <v-btn icon small color="secondary" v-if="$store.state.role === 'teacher'" @click="deleteAssignment">
+        <v-icon dark>mdi-trash-can</v-icon>
+      </v-btn>
+    </v-list-action>
+  </v-list-item>
 </template>
 
 <script>

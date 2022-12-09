@@ -23,12 +23,13 @@
                 />
             </div>
             <div v-else>
-                <input 
+                <v-radio 
                     v-model="selected"
-                    type="radio"
+                    color="secondary"
                     :value="answerChoice"
-                />
-                <label>{{ answerChoice }}</label>
+                    :label="answerChoice"
+                >
+                </v-radio>
             </div>
         </div>
         <div v-if="editing">
@@ -62,11 +63,14 @@
             </button>
         </div>
         <div v-else>
-            <button
+            <v-btn 
+                depressed 
+                small
+                color="secondary"
                 @click="submitAnswer"
-            >
-                Submit
-            </button>
+            > 
+                Submit 
+            </v-btn>
         </div>
         <div v-if="editing">
             Point Value:

@@ -1,20 +1,32 @@
 <template>
     <main>
-       
-        <header>
+      <div class="text-h4">Students</div>
+        <!-- <header>
           <h2>Students</h2>
-        </header>
+        </header> -->
         <section
           v-if="$store.state.currentClass.students"
         >
+        <div class="d-flex">
           <div class="studentsInClass" v-for="(user, index) in $store.state.currentClass.students" :key="index">
-            {{user.username}}
+            <div class="font-weight-regular">{{user.username}}</div>
+            <!-- {{user.username}} -->
             <section v-if="$store.state.role === 'teacher'">
-            <button class="removebutton" @click="removeFromClass(user._id)">
+              <v-btn class="removebutton" color="secondary" @click="removeFromClass(user._id)">
+                Remove
+                <v-icon
+            dark
+            right
+          >
+            mdi-trash-can
+          </v-icon>
+              </v-btn>
+            <!-- <button class="removebutton" @click="removeFromClass(user._id)">
                 <i>Remove</i>
-            </button>  
+            </button>   -->
             </section>
         </div>
+      </div>
         </section>
         <!-- <article
           v-else

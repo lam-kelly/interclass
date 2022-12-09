@@ -1,11 +1,28 @@
 <template>
     <main>
         <section>
-            <header>
+          <div class="text-h4">Add a student</div>
+            <!-- <header>
             <h2>Add a student</h2>
-        </header>
-        <p>Type a student's username, and hit enter:</p>
-        <input v-model="newstudent" @keyup.enter="addToClass()"/>
+        </header> -->
+        <div class="font-weight-light">Type a student's username, and hit the Add button:</div>
+        <!-- <p>Type a student's username, and hit the Add button:</p> -->
+        <div class="d-flex">
+        <v-text-field
+            v-model="newstudent"
+            label="Enter a username"
+          ></v-text-field>
+          <v-btn color="secondary" @click="addToClass">
+            Add
+            <v-icon
+          dark
+          right
+        >
+          mdi-checkbox-marked-circle
+        </v-icon>
+          </v-btn>
+        </div>
+        <!-- <input v-model="newstudent" @keyup.enter="addToClass()"/> -->
         <section class="alerts">
       <article
         v-for="(status, alert, index) in alerts"

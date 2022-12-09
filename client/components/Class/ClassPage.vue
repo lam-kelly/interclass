@@ -12,17 +12,26 @@
     
     <section v-if="$store.state.username">
         <section v-if="this.classExists">
-            <header>
+          <div class="text-h4">Welcome to {{ this.teacherName }}'s class!</div>
+            <!-- <header>
           <h2>Welcome to {{ this.teacherName }}'s class!</h2>
-        </header>
-        <div id="myProgress">
+        </header> -->
+        <v-progress-linear
+        color="light-green darken-4"
+        height="10"
+        :value="this.classpoints"
+        striped
+      ></v-progress-linear>
+        <!-- <div id="myProgress">
           <div id="myBar" :style="{width: this.classpoints + '%'}"></div>
-        </div>
+        </div> -->
         <section>
-        <header>
+          <div class="text-h5">Points: {{ this.classpoints }}</div>
+        <!-- <header>
           <h2>Points: {{ this.classpoints }}</h2>
-        </header>
+        </header> -->
         </section>
+        <br>
         
         <StudentComponent />
         <!-- <section>
@@ -55,21 +64,29 @@
         </header>
         <p>Type a student's username, and hit enter:</p>
         <input v-model="newstudent" @keyup.enter="addToClass()"/> -->
-        <header> 
+        <div class="text-h5">Delete the class?</div>
+        <!-- <header> 
           <h2>Delete the class?</h2>
-        </header>
-        <button class="deleteclass" @click="removeClass()">
+        </header> -->
+        <v-btn class="deleteclass" color="red" @click="removeClass">
+                Remove Class
+        </v-btn>
+        <!-- <button class="deleteclass" @click="removeClass()">
                 <i>Remove Class</i>
-            </button> 
+            </button>  -->
         </section>
         </section>
 
         <section v-else>
           <section v-if="$store.state.role === 'teacher'">
-            <header>
+            <div class="text-h2">Create a new class!</div>
+            <!-- <header>
             <h2>Create a new class!</h2>
-            </header>
-            <button @click="createClass()"> Create </button>
+            </header> -->
+            <v-btn color="primary" @click="createClass">
+                Create
+        </v-btn>
+            <!-- <button @click="createClass()"> Create </button> -->
           </section>
           <section v-else>
             <header>
@@ -305,15 +322,6 @@
   
   button {
       margin-right: 10px;
-  }
-
-  .studentsInClass {
-    /* display: flex; */
-    /* justify-content: center;
-    align-items: center; */
-  }
-  .removebutton {
-    /* float: right; */
   }
 
   #myProgress {

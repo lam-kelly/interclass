@@ -12,7 +12,7 @@
             <div class="font-weight-regular">{{user.username}}</div>
             <!-- {{user.username}} -->
             <section v-if="$store.state.role === 'teacher'">
-              <v-btn class="removebutton" color="secondary" @click="removeFromClass(user._id)">
+              <v-btn rounded class="removebutton" color="secondary" @click="removeFromClass(user._id)">
                 Remove
                 <v-icon
             dark

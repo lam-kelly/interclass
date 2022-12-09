@@ -12,7 +12,7 @@
             v-model="newstudent"
             label="Enter a username"
           ></v-text-field>
-          <v-btn color="secondary" @click="addToClass">
+          <v-btn rounded color="secondary" @click="addToClass">
             Add
             <v-icon
           dark

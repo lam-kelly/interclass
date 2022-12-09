@@ -68,7 +68,7 @@
         <!-- <header> 
           <h2>Delete the class?</h2>
         </header> -->
-        <v-btn class="deleteclass" color="red" @click="removeClass">
+        <v-btn class="deleteclass" rounded color="red" @click="removeClass">
                 Remove Class
         </v-btn>
         <!-- <button class="deleteclass" @click="removeClass()">
@@ -83,7 +83,7 @@
             <!-- <header>
             <h2>Create a new class!</h2>
             </header> -->
-            <v-btn color="primary" @click="createClass">
+            <v-btn rounded color="primary" @click="createClass">
                 Create
         </v-btn>
             <!-- <button @click="createClass()"> Create </button> -->

@@ -94,7 +94,7 @@ class ProblemCollection {
 
         await problem.save();
         // need to do nested populate for array elements
-        return await ProblemModel.findOne({id: problemId}).populate('workers').populate('solvers');
+        return await ProblemModel.findOne({_id: problemId}).populate('workers').populate('solvers');
     }
 
     /**

@@ -8,6 +8,7 @@ type UserResponse = {
   username: string;
   dateJoined: string;
   role: string;
+  hints: number;
 };
 
 /**

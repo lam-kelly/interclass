@@ -118,8 +118,8 @@ router.patch(
  * @name PATCH /api/problem/:problemId?/addStudent
  *
  * @param {string} problemId - The id of the Problem being udpated
- * @param {string} isSolver - True if logged in user solved the problem
- * @param {string} isWorker - True if the logged in user attempted the problem
+ * @param {string} newSolverId - True if logged in user solved the problem
+ * @param {string} newWorkerId - True if the logged in user attempted the problem
  * @return {ProblemResponse} - The updated user
  * @throws {403} - If user is not logged in
  * @throws {409} - If username already taken
@@ -134,15 +134,10 @@ router.patch(
   ],
   async (req: Request, res: Response) => {
     const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
-    if (req.body.isSolver === true) {
-      req.body.newSolverId = userId;
-    }
-    if (req.body.isWorker === true) {
-      req.body.newWorkerId = userId;
-    }
+
     const problem = await ProblemCollection.updateOne(req.params.problemId, req.body);
     res.status(200).json({
-      message: 'Your successfully updated the problem.',
+      message: 'You successfully updated the problem.',
       problem: util.constructProblemResponse(problem)
     });
   }

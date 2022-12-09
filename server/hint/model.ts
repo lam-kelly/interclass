@@ -1,4 +1,4 @@
-import type {NumberSchemaDefinition, Types} from 'mongoose';
+import type {Types} from 'mongoose';
 import {Schema, model} from 'mongoose';
 import { Competition } from '../competition/model';
 
@@ -6,15 +6,15 @@ import { Competition } from '../competition/model';
 export type Hint = {
   _id: Types.ObjectId; // MongoDB assigns each object this ID on creation
   competition: Types.ObjectId;
-  pointsUntilReward: Number;
-  numberOfHints: Number;
+  pointsUntilReward: number;
+  numberOfHints: number;
 };
 
 export type PopulatedHint = {
   _id: Types.ObjectId; // MongoDB assigns each object this ID on creation
   competition: Competition;
-  pointsUntilReward: Number;
-  numberOfHints: Number;
+  pointsUntilReward: number;
+  numberOfHints: number;
 };
 
 // Mongoose schema definition for interfacing with a MongoDB table

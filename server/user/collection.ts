@@ -83,6 +83,23 @@ class UserCollection {
   }
 
   /**
+   * Update user's hint
+   *
+   * @param {string} userId - The userId of the user to update
+   * @param {Number} hintNum - Number of hints to add
+   * @return {Promise<HydratedDocument<User>>} - The updated user
+   */
+  static async updateOneHints(userId: Types.ObjectId | string, hintNum: number): Promise<HydratedDocument<User>> {
+    const user = await UserModel.findOne({_id: userId});
+    let totalHints = 0;
+    if (!user.hints || user.hints >= 0) {
+      totalHints = user.hints + hintNum;
+    }
+    await UserModel.updateOne({_id: userId}, { hints: totalHints });
+    return await UserModel.findOne({_id: userId});
+  }
+
+  /**
    * Delete a user from the collection.
    *
    * @param {string} userId - The userId of user to delete

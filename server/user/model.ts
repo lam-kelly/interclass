@@ -13,6 +13,7 @@ export type User = {
   password: string;
   dateJoined: Date;
   role: string;
+  hints: number;
 };
 
 // Mongoose schema definition for interfacing with a MongoDB table
@@ -37,6 +38,10 @@ const UserSchema = new Schema({
   role: {
     type: String,
     required: true
+  },
+  hints: {
+    type: Number,
+    default: 0
   }
 });
 

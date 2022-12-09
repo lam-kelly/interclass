@@ -188,7 +188,7 @@ export default {
                     url: `/api/problem/${this.problem._id}/addStudent`,
                     method: 'PATCH',
                     message: 'Correct answer!',
-                    body: JSON.stringify({isSolver: true, isWorker: true}),
+                    body: JSON.stringify({newSolverId: this.$store.state.userid, newWorkerId: this.$store.state.userid}),
                     callback: () => {
                     this.$set(this.alerts, params.message, 'success');
                     setTimeout(() => this.$delete(this.alerts, params.message), 3000);
@@ -201,7 +201,7 @@ export default {
                     url: `/api/problem/${this.problem._id}/addStudent`,
                     method: 'PATCH',
                     message: 'Incorrect, please try again!',
-                    body: JSON.stringify({isWorker: true}),
+                    body: JSON.stringify({newWorkerId: this.$store.state.userid}),
                     callback: () => {
                         console.log('should be here')
                         this.$set(this.alerts, params.message, 'error');

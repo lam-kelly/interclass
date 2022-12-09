@@ -13,6 +13,7 @@ import { problemRouter } from '../server/problem/router';
 import { classRouter } from '../server/class/router';
 import { assignmentRouter } from '../server/assignment/router';
 import { competitionRouter } from '../server/competition/router';
+import { hintRouter } from '../server/hint/router';
 
 // Load environmental variables
 dotenv.config({});
@@ -76,6 +77,7 @@ app.use('/api/problem', problemRouter);
 app.use('/api/class', classRouter);
 app.use('/api/assignment', assignmentRouter);
 app.use('/api/competition', competitionRouter);
+app.use('/api/hint', hintRouter);
 
 // Catch all the other routes and display error message
 app.all('*', (req: Request, res: Response) => {

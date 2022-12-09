@@ -147,6 +147,31 @@ router.patch(
 );
 
 /**
+ * Update a user's hint number
+ *
+ * @name PATCH /api/users/hints
+ *
+ * @param {string} hints - Number of hints to add
+ * @return {UserResponse} - The updated user
+ * @throws {403} - If user is not logged in
+ * @throws {409} - If hint is not a positive integer
+ */
+router.patch(
+  '/hints',
+  [
+    userValidator.isUserLoggedIn,
+  ],
+  async (req: Request, res: Response) => {
+    const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
+    const user = await UserCollection.updateOneHints(userId, Number(req.body.hints));
+    res.status(200).json({
+      message: 'Your hints were updated successfully.',
+      user: util.constructUserResponse(user)
+    });
+  }
+);
+
+/**
  * Delete a user.
  *
  * @name DELETE /api/users

@@ -1,9 +1,9 @@
 import type {HydratedDocument, Types} from 'mongoose';
 import type {Class} from './model';
-import type {User} from '../user/model';
 import ClassModel from './model';
 import UserCollection from '../user/collection';
 import CompetitionCollection from '../competition/collection';
+import HintCollection from '../hint/collection';
 
 /**
  * This file contains a class with functionality to interact with Classs stored
@@ -119,9 +119,19 @@ class ClassCollection {
    */
   static async addPoints(studentId: Types.ObjectId | string, points: number): Promise<HydratedDocument<Class>> {
     const Class = await ClassCollection.findOneByStudent(studentId);
+    const oldPoints = Class.totalPoints;
     Class.totalPoints += points;
-
     await Class.save();
+    const competition = await CompetitionCollection.findOneByUserId(studentId);
+    const hint = await HintCollection.findOneByCompetitionId(competition._id);
+    const pastMilestoneNum = Math.floor(oldPoints/hint.pointsUntilReward);
+    const currMilestoneNum = Math.floor(Class.totalPoints/hint.pointsUntilReward);
+    const diff = currMilestoneNum - pastMilestoneNum;
+    if (diff) {
+      Class.students.forEach(async (student) => {
+        await UserCollection.updateOneHints(student._id, diff * hint.numberOfHints);
+      });
+    }
     return (await (await Class.populate('teacher')).populate('students')).populate('totalPoints');
   }
 

@@ -63,7 +63,8 @@ export default {
           if (!r.ok) {
             throw new Error(res.error);
           }
-          this.$store.commit('getCurrentClass');
+          this.$store.commit('setCurrentClass', res.class);
+          // this.$store.commit('getCurrentClass');
           // this.getClass();
           this.$set(this.alerts, 'Successfully added a student!', 'success');
           setTimeout(() => this.$delete(this.alerts, 'Successfully added a student!'), 3000);

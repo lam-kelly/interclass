@@ -11,7 +11,7 @@
     </section>
     
     <section v-if="$store.state.username">
-        <section v-if="this.classExists">
+        <section v-if="$store.state.currentClass">
           <div class="text-h4">Welcome to {{ this.teacherName }}'s class!</div>
             <!-- <header>
           <h2>Welcome to {{ this.teacherName }}'s class!</h2>
@@ -19,14 +19,14 @@
         <v-progress-linear
         color="light-green darken-4"
         height="10"
-        :value="this.classpoints"
+        :value="$store.state.currentClass.totalPoints"
         striped
       ></v-progress-linear>
         <!-- <div id="myProgress">
           <div id="myBar" :style="{width: this.classpoints + '%'}"></div>
         </div> -->
         <section>
-          <div class="text-h5">Points: {{ this.classpoints }}</div>
+          <div class="text-h5">Points: {{ $store.state.currentClass.totalPoints }}</div>
         <!-- <header>
           <h2>Points: {{ this.classpoints }}</h2>
         </header> -->
@@ -135,7 +135,7 @@
     components: {StudentComponent, AddStudentComponent},
     data() {
       return {
-        classExists: false,
+        // classExists: false,
         students: [],
         newstudent: '',
         teacherName: '',
@@ -146,12 +146,12 @@
       };
     },
     watch: {
-        classExists: function(value) {
-            this.getClass();
-        }
+        // classExists: function(value) {
+        //     this.getClass();
+        // }
     },
     created() {
-      this.$store.commit('getCurrentClass');
+      // this.$store.commit('getCurrentClass');
       if (this.$store.state.username){
         this.getClass();
       }
@@ -169,13 +169,13 @@
           const r = await fetch(url);
           const res = await r.json();
           if (res !== null){
-            if (!this.classExists){
-              this.classExists = true;
-            }
-            this.classid = res['_id'];
-            this.students = res['students'];
-            this.classpoints = res['totalPoints'];
+            // if (!this.classExists){
+            //   this.classExists = true;
+            // }
+            // this.classid = res['_id'];
+            // this.classpoints = res['totalPoints'];
             this.teacherName = res['teacher']['username'];
+            this.$store.commit('setCurrentClass', res);
 
           } 
           // const res = await r.text();
@@ -206,8 +206,9 @@
           if (!r.ok) {
             throw new Error(res.error);
           }
-          this.$store.commit('getCurrentClass');
-          this.getClass();
+          // this.$store.commit('getCurrentClass');
+          // this.getClass();
+          this.$store.commit('setCurrentClass', res.class);
           this.$set(this.alerts, 'Successfully created a class!', 'success');
           setTimeout(() => this.$delete(this.alerts, 'Successfully created a class!'), 3000);
           // this.$store.commit('alert', {
@@ -228,7 +229,7 @@
               credentials: 'same-origin', 
               body: JSON.stringify({ "studentName": this.newstudent })
           };
-        const url = `/api/class/add/${this.classid}`;
+        const url = `/api/class/add/${this.$store.state.currentClass._id}`;
         try {
           const r = await fetch(url, requestOptions);
           const res = await r.json();
@@ -257,7 +258,7 @@
               credentials: 'same-origin', 
               body: JSON.stringify({ "studentId": studentID })
           };
-        const url = `/api/class/remove/${this.classid}`;
+        const url = `/api/class/remove/${this.$store.state.currentClass._id}`;
         try {
           const r = await fetch(url, requestOptions);
           const res = await r.json();
@@ -285,14 +286,15 @@
               credentials: 'same-origin', 
               body: JSON.stringify({})
           };
-        const url = `/api/class/${this.classid}`;
+        const url = `/api/class/${this.$store.state.currentClass._id}`;
         try {
           const r = await fetch(url, requestOptions);
           const res = await r.json();
           if (!r.ok) {
             throw new Error(res.error);
           }
-          this.classExists = false;
+          // this.classExists = false;
+          this.$store.commit('setCurrentClass', null);
           // this.getClass();
           this.$set(this.alerts, 'Successfully removed a class!', 'success');
           setTimeout(() => this.$delete(this.alerts, 'Successfully removed a class!'), 3000);

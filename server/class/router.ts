@@ -97,9 +97,12 @@ router.post(
   async (req: Request, res: Response) => {
     const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
     // const user = await UserCollection.findOneByUserId(userId);
-    await ClassCollection.addOne(userId);
+    const newClass = await ClassCollection.addOne(userId);
 
-    res.status(201).json({message: 'Your class was created successfully.'});
+    res.status(201).json({
+      class: newClass,
+      message: 'Your class was created successfully.'
+    });
   }
 );
 
@@ -150,8 +153,11 @@ router.patch(
     classValidator.isInOneClass
   ],
   async (req: Request, res: Response) => {
-    await ClassCollection.addStudent(req.params.classId, req.body.studentName);
-    res.status(200).json({message: 'You added a student to your class successfully.'});
+    const currClass = await ClassCollection.addStudent(req.params.classId, req.body.studentName);
+    res.status(201).json({
+      class: currClass,
+      message: 'You added a student to your class successfully.'
+    });
   }
 );
 
@@ -176,8 +182,12 @@ router.patch(
       classValidator.isStudentIDExists
     ],
     async (req: Request, res: Response) => {
-      await ClassCollection.removeStudent(req.params.classId, req.body.studentId);
-      res.status(200).json({message: 'You removed a student from your class successfully.'});
+      const currClass = await ClassCollection.removeStudent(req.params.classId, req.body.studentId);
+      // res.status(200).json({message: 'You removed a student from your class successfully.'});
+      res.status(200).json({
+        class: currClass,
+        message: 'You removed a student from your class successfully.'
+      });
     }
   );
 

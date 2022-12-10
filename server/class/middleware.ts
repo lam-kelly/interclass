@@ -120,7 +120,6 @@ const isStudentIDExists = async (req: Request, res: Response, next: NextFunction
 const isValidTeacher = async (req: Request, res: Response, next: NextFunction) => {
   const user = await UserCollection.findOneByUserId(req.session.userId);
   const userRole = user.role;
-  console.log(userRole)
   if (userRole !== 'teacher') {
     res.status(403).json({
       error: 'Cannot edit or create a class if you are not a teacher.'

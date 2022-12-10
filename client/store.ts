@@ -77,7 +77,10 @@ const store = new Vuex.Store({
         const url = state.role === 'teacher' ? `/api/class/teacher/${state.userid}` : `/api/class/student/${state.userid}`;
         const res = await fetch(url).then(async r => r.json());
         state.currentClass = res;
-      } 
+      }
+      else {
+        state.currentClass = null;
+      }
     },
     setCurrentClass(state, currClass) {
       /**

@@ -32,7 +32,8 @@ const opts = {
             darkblueshade: "#308DC2",
             lightgray: "#BDBDBD",
             lightpink: "#FFCFE3",
-            white: "#FFFFFF"
+            white: "#FFFFFF",
+            fieryrose: "f45b69",
         }
       }
     }

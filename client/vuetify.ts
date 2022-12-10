@@ -34,6 +34,7 @@ const opts = {
             lightpink: "#FFCFE3",
             white: "#FFFFFF",
             fieryrose: "f45b69",
+            black: "000000"
         }
       }
     }

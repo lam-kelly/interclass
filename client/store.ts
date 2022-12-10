@@ -16,6 +16,7 @@ const store = new Vuex.Store({
     currentAssignment: null,
     currentClass: null,
     currentProblem: null,
+    hints: null,
     alerts: {} // global success/error messages encountered during submissions to non-visible forms
   },
   mutations: {
@@ -48,6 +49,13 @@ const store = new Vuex.Store({
        * @param userid - the user ID to set
        */
       state.userid = userid;
+    },
+    setHints(state, hints) {
+      /**
+       * Update the stored ID to the specified one.
+       * @param userid - the user ID to set
+       */
+      state.hints = hints;
     },
     async getCompetition(state) {
       /**

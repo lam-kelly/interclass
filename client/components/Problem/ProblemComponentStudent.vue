@@ -15,6 +15,8 @@
             <v-radio-group v-model="selected">
                 <v-radio  v-for="(answerChoice, index) in problem.answerChoices"
                     color="secondary"
+                    :disabled="eliminatedAnswerChoices.includes(answerChoice)"
+                    :off-icon="eliminatedAnswerChoices.includes(answerChoice) ? 'mdi-close-circle-outline' : '$radioOff'"
                     :value="answerChoice"
                     :label="answerChoice"
                 >
@@ -23,9 +25,11 @@
             <v-card-actions class="pa-0" v-if="$store.state.role=='student'" >
                 <v-btn 
                     depressed 
+                    :disabled="disableHints"
                     color="secondary"
+                    @click="useHint"
                 > 
-                    Use Hint 
+                    Hints: {{ $store.state.hints }}
                 </v-btn>
                 <v-spacer></v-spacer>
                 <v-btn 
@@ -40,7 +44,7 @@
                 <v-btn
                     icon
                     outlined
-                    color="fieryrose"
+                    color="red"
                     class="ml-auto"
                     @click="deleteProblem"
                 >
@@ -78,34 +82,42 @@ export default {
             answerChoicesDraft: Object.assign([], this.problem.answerChoices), // deep copy an array
             selected: null,
             editing: false,
+            updateHints: false,
+            disableHints: false,
+            eliminatedAnswerChoices: [],
             alerts: {} // Displays success/error messages encountered during freet modification
         }
     },
     methods: {
         isSolved() {
-            console.log(this.problem.solvers)
-            console.log(this.$store.state.userid)
             return (this.problem.solvers.includes(this.$store.state.userid) ? "Solved" : "Not Solved")
         },
-        startEditing() {
-            /**
-             * Enables edit mode on this problem.
-             */
-            this.editing = true; 
-            this.questionDraft = this.problem.question; 
-            this.answerDraft = this.problem.answer;
-            this.pointValueDraft = this.problem.pointValue;
-            this.answerChoicesDraft = Object.assign([], this.problem.answerChoices);
-        },
-        stopEditing() {
-            /**
-             * Disables edit mode on this problem.
-             */
-            this.editing = false;
-            this.questionDraft = this.problem.question;
-            this.pointValueDraft = this.problem.pointValue;
-            this.answerDraft = this.problem.answer;
-            this.answerChoicesDraft = Object.assign([], this.problem.answerChoices);
+        useHint() {
+            const possibleHints = this.problem.answerChoices.filter(
+                answerChoice => answerChoice !== this.problem.answer && 
+                !this.eliminatedAnswerChoices.includes(answerChoice)
+            )
+            console.log(possibleHints)
+            if (possibleHints.length) {
+                this.eliminatedAnswerChoices.push(possibleHints[Math.floor(Math.random() * possibleHints.length)]);
+
+                this.updateHints = true;
+
+                const params = {
+                    url: `/api/users/hints/`,
+                    method: 'PATCH',
+                    headers: {'Content-Type': 'application/json'},
+                    credentials: 'same-origin', 
+                    body: JSON.stringify({ "hints": -1 }),
+                    callback: () => {}
+                };
+
+                this.request(params)
+
+                if (possibleHints.length == 1) {
+                   this.disableHints = true; 
+                }
+            }
         },
         deleteProblem() {
             /**
@@ -115,51 +127,20 @@ export default {
                 url: `/api/problem/${this.problem._id}`,
                 method: 'DELETE',
                 callback: () => {
-                this.$store.commit('alert', {
-                    message: 'Successfully deleted problem!', status: 'success'
-                });
+                    this.$store.commit('refreshProblems');
+                    this.$store.commit('alert', {
+                        message: 'Successfully deleted problem!', status: 'success'
+                    });
                 }
             };
             this.request(params);
         },
-        submitEdit() {
-            /**
-             * Updates problem to have the submitted draft content.
-             */
-            // deep check if arrays are equal
-            let answerChoicesChanged = false;
-            for (let i=0; i<this.answerChoicesDraft.length; i++) {
-                if (this.answerChoicesDraft[i] !== this.problem.answerChoices[i]) {
-                    answerChoicesChanged = true;
-                }
-            }
-
-            if (this.problem.question === this.questionDraft && this.problem.answer === this.answerDraft && !answerChoicesChanged && this.problem.pointValue === this.pointValueDraft) {
-                const error = 'Error: Edited problem details should be different than current problem details.';
-                this.$set(this.alerts, error, 'error'); // Set an alert to be the error text, timeout of 3000 ms
-                setTimeout(() => this.$delete(this.alerts, error), 3000);
-                return;
-            }
-            const params = {
-                url: `/api/problem/${this.problem._id}/problemDetails`,
-                method: 'PATCH',
-                message: 'Successfully edited problem!',
-                body: JSON.stringify({question: this.questionDraft, answer: this.answerDraft, answerChoices: this.answerChoicesDraft, pointValue: this.pointValueDraft}),
-                callback: () => {
-                    this.$set(this.alerts, params.message, 'success');
-                    setTimeout(() => this.$delete(this.alerts, params.message), 3000);
-                }
-            };
-            this.request(params);
-        },
-
         async submitAnswer() {
             /**
              * Submit an answer choice as the answer and check its correctness (student action)
              */
             const url = `/api/problem/${this.problem._id}`;
             const res = await fetch(url).then(async r => r.json());
-            // NEED TO GIVE FEEDBACK ON WHETHER ANSWER WAS CORRECT
             if (this.selected === res.problem.answer) {
                 const params = {
                     url: `/api/problem/${this.problem._id}/addStudent`,
@@ -167,8 +148,9 @@ export default {
                     message: 'Correct answer!',
                     body: JSON.stringify({newSolverId: this.$store.state.userid, newWorkerId: this.$store.state.userid}),
                     callback: () => {
-                    this.$set(this.alerts, params.message, 'success');
-                    setTimeout(() => this.$delete(this.alerts, params.message), 3000);
+                        this.$store.commit('refreshProblems');
+                        this.$set(this.alerts, params.message, 'success');
+                        setTimeout(() => this.$delete(this.alerts, params.message), 3000);
                     }
                 };
                 this.request(params);
@@ -180,7 +162,7 @@ export default {
                     message: 'Incorrect, please try again!',
                     body: JSON.stringify({newWorkerId: this.$store.state.userid}),
                     callback: () => {
-                        console.log('should be here')
+                        this.$store.commit('refreshProblems');
                         this.$set(this.alerts, params.message, 'error');
                         setTimeout(() => this.$delete(this.alerts, params.message), 3000);
                     }
@@ -204,11 +186,14 @@ export default {
             try {
                 const r = await fetch(params.url, options);
                 if (!r.ok) {
-                const res = await r.json();
-                throw new Error(res.error);
+                    const res = await r.json();
+                    throw new Error(res.error);
                 }
-                this.editing = false;
-                this.$store.commit('refreshProblems');
+                if (this.updateHints) {
+                    const res = await r.json();
+                    this.$store.commit('setHints', res.user.hints);
+                    this.updateHints = false;
+                }
                 params.callback();
             } catch (e) {
                 this.$set(this.alerts, e, 'error');
@@ -225,6 +210,11 @@ export default {
     border: 1px solid #111;
     padding: 20px;
     position: relative;
+}
+
+.v-radio.v-radio--disabled.contained-btn:not(.v-btn--flat):not(.v-btn--text):not(.v-btn-outlined) {
+  background-color: #DDE5ED !important;
+  color: black !important;
 }
 
 </style>

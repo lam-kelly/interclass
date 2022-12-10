@@ -123,6 +123,7 @@ export default {
           this.$store.commit('setUsername', res.user ? res.user.username : null);
           this.$store.commit('setRole', res.user ? res.user.role : null);
           this.$store.commit('setUserId', res.user ? res.user._id : null);
+          this.$store.commit('setHints', res.user ? res.user.hints : null);
         }
 
         if (this.setCurrentProblem) {

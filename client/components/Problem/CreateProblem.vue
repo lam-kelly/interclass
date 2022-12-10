@@ -1,6 +1,6 @@
 <template>
     <v-card outlined>
-        <v-card-title class="pa-0 pl-3 pt-2"> Create a New Problem </v-card-title>
+        <v-card-title class="pa-0 pl-3 pt-2 "> Create a New Problem </v-card-title>
         <v-form class="pa-4 pt-0"
             ref="form"
             v-model="valid"
@@ -30,7 +30,7 @@
                         class="shrink mr-0 mt-0"
                         @click="updateSelection(index)"
                     ></v-checkbox>
-                    <v-text-field class="ma-0" label="answer choice " v-model="answerChoices[index]"></v-text-field>
+                    <v-text-field class="ma-0" label="answer choice " v-model="answerChoices[index]" :rules="answerChoiceRules "></v-text-field>
                 </v-row>
             </v-card-text>
     
@@ -51,7 +51,18 @@
                 Reset Form
             </v-btn>
   
-        </v-form>
+        <section class="alerts">
+            <article
+                v-for="(status, alert, index) in alerts"
+                :key="index"
+                :class="status"
+            >
+                <p>{{ alert }}</p>
+            </article>
+        </section>
+    </v-form>
+
+        
     </v-card>
 </template>
 
@@ -69,6 +80,10 @@ export default {
             v => !!v || 'Assigning a point value is required',
             v => /^[0-9]*[1-9][0-9]*$/.test(v) || 'Point value must be a positive integer',
         ],
+        answerChoiceRules: [
+            v => !!v || 'Answer choice is required',
+            // v => /^[0-9]*[1-9][0-9]*$/.test(v) || 'Point value must be a positive integer',
+        ],
         selected: null,
         selectedAnswerChoices: [
             false,
@@ -83,6 +98,7 @@ export default {
             ''
         ],
         checkbox: false,
+        alerts: {},
     }),
 
     methods: {
@@ -97,8 +113,9 @@ export default {
             }
         },
         async validate () {
-            this.$refs.form.validate()
-            await this.createProblem()
+            if (this.$refs.form.validate()) {
+                await this.createProblem()
+            }
         },
         reset () {
             this.$refs.form.reset()
@@ -123,18 +140,16 @@ export default {
                 const r = await fetch(url, options);
                 let res = await r.json();
                 if (!r.ok) {
-                    console.log('error ' + error)
                     throw new Error(res.error);
                 }
                 this.$store.commit('setCurrentProblem', res.problem ? res.problem : null);
-
+                await this.addProblemToAssignment();
+                this.reset();
             } catch (e) {
-                console.log('error ' + e)
-                // this.$set(this.alerts, e, 'error');
-                // setTimeout(() => this.$delete(this.alerts, e), 3000);
+                console.log('error2 ' + e)
+                this.$set(this.alerts, e, 'error');
+                setTimeout(() => this.$delete(this.alerts, e), 3000);
             }
-
-            await this.addProblemToAssignment();
         },
         async addProblemToAssignment() {
             console.log('adding problem to assignment')

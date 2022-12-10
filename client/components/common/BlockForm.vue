@@ -32,6 +32,9 @@
       </div>
     </article>
     <v-btn 
+        depressed 
+        color="secondary"
+        small
         @click="submit"
       >
       {{ title }}

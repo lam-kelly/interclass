@@ -34,6 +34,7 @@ const isProblemExists = async (req: Request, res: Response, next: NextFunction) 
  */
 const isValidProblem = async (req: Request, res: Response, next: NextFunction) => {
     if (!req.body.question || !req.body.question.trim()) {
+        console.log('here')
         res.status(400).json({
             error: 'Problem question must be at least one character long.'
         });

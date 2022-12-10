@@ -19,7 +19,7 @@
           flat
           rounded
           color="secondary"
-          type="submit"
+          @click="submit"
         >
           {{ button }}
         </v-btn>

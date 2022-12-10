@@ -4,7 +4,7 @@
       {{ assignment.name }}
     </v-list-item-title>
     <v-list-action>
-      <v-btn icon small color="secondary" v-if="$store.state.role === 'teacher'" @click="deleteAssignment">
+      <v-btn icon outlined color="error" v-if="$store.state.role === 'teacher'" @click="deleteAssignment">
         <v-icon dark>mdi-trash-can</v-icon>
       </v-btn>
     </v-list-action>

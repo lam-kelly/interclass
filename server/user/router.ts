@@ -189,11 +189,15 @@ router.delete(
     const user = await UserCollection.findOneByUserId(userId);
     if (user.role === 'teacher') {
       const classs = await ClassCollection.findOneByTeacher(userId);
-      await ClassCollection.deleteOne(classs._id);
+      if (classs) {
+        await ClassCollection.deleteOne(classs._id);
+      }
     }
     else {
       const classs = await ClassCollection.findOneByStudent(userId);
-      await ClassCollection.removeStudent(classs._id, userId);
+      if (classs) {
+        await ClassCollection.removeStudent(classs._id, userId);
+      }
     }
     await UserCollection.deleteOne(userId);
     req.session.userId = undefined;

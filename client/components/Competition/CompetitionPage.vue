@@ -69,21 +69,32 @@
           </v-card-actions>
         </div>
       </v-card>
-      <v-divider></v-divider>
-      <SetAssignmentName v-if="$store.state.role === 'teacher'"/>
-      <v-list v-if="$store.state.competition.assignments.length">
-        <v-list-title> Current Assignments: </v-list-title>
+      <v-divider color="secondary"></v-divider>
+      <v-card flat>
+        <v-card-title>Create a new Assignment</v-card-title>
+        <SetAssignmentName 
+          label="Assignment Name"
+          placeholder="ex. Fractions practice"
+          button="Create"
+          v-if="$store.state.role === 'teacher'"
+        />
+      </v-card>
+      <v-divider color="secondary"></v-divider>
+      <v-card flat>
+        <v-card-title>Current Assignments:</v-card-title>
+        <v-list v-if="$store.state.competition.assignments.length">
           <AssignmentComponent
             v-for="assignment in $store.state.competition.assignments"
             :key="assignment.id"
             :assignment="assignment"
           />
-      </v-list>
-      <v-container fill-height fluid v-else>
-          <v-card flat class="justify-center">
-            <v-card-title class="text-h5">No assignments yet!</v-card-title>
-          </v-card>
-      </v-container>
+        </v-list>
+        <v-container fill-height fluid v-else>
+            <v-card flat class="justify-center">
+              <v-card-title class="text-h5">No assignments yet!</v-card-title>
+            </v-card>
+        </v-container>
+      </v-card>
     </section>
   </main>
 </template>

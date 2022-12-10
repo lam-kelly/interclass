@@ -16,7 +16,6 @@ import AssignmentComponent from '@/components/Assignment/AssignmentComponent.vue
 
 export default {
   name: 'AssignmentComponent',
-  components: { AssignmentComponent },
   props: {
     assignment: {
       type: Object,

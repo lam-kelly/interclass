@@ -70,13 +70,12 @@
         </div>
       </v-card>
       <v-divider color="secondary"></v-divider>
-      <v-card flat>
+      <v-card flat v-if="$store.state.role === 'teacher'">
         <v-card-title>Create a new Assignment</v-card-title>
         <SetAssignmentName 
           label="Assignment Name"
           placeholder="ex. Fractions practice"
           button="Create"
-          v-if="$store.state.role === 'teacher'"
         />
       </v-card>
       <v-divider color="secondary"></v-divider>

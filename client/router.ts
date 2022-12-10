@@ -29,6 +29,11 @@ const router = new VueRouter({routes});
  */
 router.beforeEach((to, from, next) => {  
   if (router.app.$store) {
+    if (to.name === 'Class' && !router.app.$store.state.username) {
+      next({name: 'Login'}); // Go to Login page if user navigates to Leaderboard and are not signed in
+      return;
+    }
+
     if (to.name === 'Leaderboard' && !router.app.$store.state.username) {
       next({name: 'Login'}); // Go to Login page if user navigates to Leaderboard and are not signed in
       return;

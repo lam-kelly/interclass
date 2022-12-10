@@ -2,10 +2,11 @@
   <v-list-item>
     <v-progress-linear
       v-model="valueAsPercent"
-      color="primary"
+      color="#0F850D"
       height="25"
+      striped
     >
-      <div>{{classs.teacher.username}}'s class: {{classs.totalPoints}} points</div>
+      <div class="white--text font-weight-bold">{{classs.teacher.username}}'s class: {{classs.totalPoints}} points</div>
     </v-progress-linear>
   </v-list-item>
 </template>

@@ -3,11 +3,11 @@
     <v-list-item-title>
       {{ assignment.name }}
     </v-list-item-title>
-    <v-list-action>
-      <v-btn icon outlined color="error" v-if="$store.state.role === 'teacher'" @click="deleteAssignment">
-        <v-icon dark>mdi-trash-can</v-icon>
+    <v-list-item-action>
+      <v-btn icon small outlined color="error" v-if="$store.state.role === 'teacher'" @click="deleteAssignment">
+        <v-icon small >mdi-trash-can</v-icon>
       </v-btn>
-    </v-list-action>
+    </v-list-item-action>
   </v-list-item>
 </template>
 
@@ -15,7 +15,7 @@
 import AssignmentComponent from '@/components/Assignment/AssignmentComponent.vue';
 
 export default {
-  name: 'AssignmentPage',
+  name: 'AssignmentComponent',
   components: { AssignmentComponent },
   props: {
     assignment: {

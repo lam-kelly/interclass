@@ -16,7 +16,7 @@
         </v-col>
         <v-col>
         <v-btn
-          flat
+          elevation="0"
           rounded
           color="secondary"
           @click="submit"

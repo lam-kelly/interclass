@@ -3,7 +3,7 @@
 <!-- This navbar takes advantage of both flex and grid layouts for positioning elements; feel free to redesign as you see fit! -->
 
 <template>
-  <v-app-bar color="accent" elevation="1">
+  <v-app-bar color="accent" elevation="0">
     <div class="left">
       <img src="../../public/logo2.png">
       <h1 class="title">
@@ -12,30 +12,30 @@
     </div>
     <v-spacer></v-spacer>
     <div class="right">
-      <router-link to="/">
+      <v-btn depressed color="accent" @click="$router.push(`/`)">
         Home
-      </router-link>
-      <router-link to="/class">
+      </v-btn>
+      <v-btn depressed color="accent" @click="$router.push(`/class`)">
         Class
-      </router-link>
-      <router-link to="/competition">
+      </v-btn>
+      <v-btn depressed color="accent" @click="$router.push(`/competition`)">
         Competition
-      </router-link>
-      <router-link to="/leaderboard">
+      </v-btn>
+      <v-btn depressed color="accent" @click="$router.push(`/leaderboard`)">
         Leaderboard
-      </router-link>
-      <router-link
+      </v-btn>
+      <v-btn depressed color="accent"
         v-if="$store.state.username"
-        to="/account"
+        @click="$router.push(`/account`)"
       >
         Account
-      </router-link>
-      <router-link
+      </v-btn>
+      <v-btn depressed color="accent"
         v-else
-        to="/login"
+        @click="$router.push(`/login`)"
       >
         Login
-      </router-link>
+    </v-btn>
     </div>
     <section class="alerts">
       <article

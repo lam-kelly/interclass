@@ -4,15 +4,15 @@
       <v-card tile elevation="0" >
         <v-row align="center">
           <v-card-title class="text-h4">Welcome to {{ $store.state.currentClass.teacher.username }}'s class!</v-card-title>
+          <v-spacer></v-spacer>
           <div v-if="$store.state.role === 'teacher'">
-            <v-spacer></v-spacer>
             <v-btn outlined color="error" @click="removeClass">
               Delete Class
             </v-btn>
           </div>
         </v-row>
         
-        <v-progress-linear
+        <v-progress-linear v-if="$store.state.competition"
           color="#0F850D"
           height="25"
           :value="$store.state.currentClass.totalPoints/this.maxPoints*100"
@@ -37,7 +37,7 @@
             <p>{{ alert }}</p>
           </article>
         </section>
-        <v-list v-if="$store.state.competition.assignments.length">
+        <v-list v-if="$store.state.currentClass && $store.state.currentClass.students.length">
           <v-card-title>Students</v-card-title>
           <StudentComponent v-for="student in $store.state.currentClass.students"
             :key="student.id"
@@ -56,7 +56,7 @@
         </v-btn>
       </v-card>
       <section v-else>
-        <v-card>
+        <v-card elevation="0">
           <v-card-title>Hi! Please wait for a teacher to add you to a class :)</v-card-title>
         </v-card>
       </section>
@@ -79,9 +79,13 @@ export default {
   },
   async mounted() {
     await this.$store.commit('getCurrentClass');
-    const classes = [... this.$store.state.competition.classes];
-    classes.sort((a, b) => a.totalPoints > b.totalPoints ? -1 : a.totalPoints < b.totalPoints ? 1 : 0);
-    this.maxPoints = classes[0].totalPoints;
+    await this.$store.commit('getCompetition');
+    if (this.$store.state.competition) {
+      const classes = [... this.$store.state.competition.classes];
+      classes.sort((a, b) => a.totalPoints > b.totalPoints ? -1 : a.totalPoints < b.totalPoints ? 1 : 0);
+      this.maxPoints = classes[0].totalPoints;
+    }
+    
   },
   methods: {
     async createClass() {

@@ -20,19 +20,18 @@
 
             <v-expansion-panel>
             <v-expansion-panel-header>
-                What can I use the Class page for?
+                I'm a teacher. How do I make a class?
             </v-expansion-panel-header>
             <v-expansion-panel-content>
                 When you start out on InterClass, the first thing to do is to look at the Class page. 
                 <br/> <br/> The Class page shows the amount of points your class has earned, and all of the students in your class. 
-                As a teacher, you have the power to create a class, add students into your class, and remove students from your class. 
-                <br/> <br/> As a student, you can be added to a class by your teacher.
+                If you do not have a class, you can first create a class, then add students into your class or remove students from your class. 
             </v-expansion-panel-content>
             </v-expansion-panel>
 
             <v-expansion-panel>
             <v-expansion-panel-header>
-                What can I use the Competition page for?
+                What are competitions?
             </v-expansion-panel-header>
             <v-expansion-panel-content>
                 Competitions are a way for classes to compete against each other. Students can work through the same assignments and earn points for their class. 
@@ -54,7 +53,7 @@
 
             <v-expansion-panel>
             <v-expansion-panel-header>
-                I'm a teacher in a competition. How do I make an assignment? 
+                I'm a teacher, and I just joined a competition. How do I make an assignment? 
             </v-expansion-panel-header>
             <v-expansion-panel-content>
                 When you join a competition, you have the option to create a new assignment. 

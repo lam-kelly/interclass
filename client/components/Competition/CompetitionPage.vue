@@ -4,7 +4,7 @@
       <section v-if="$store.state.role === 'teacher'">
         <v-container fill-height fluid v-if="!$store.state.currentClass">
           <v-card flat class="justify-center">
-            <v-card-title class="text-h5">Wait for your teacher to join a competition</v-card-title>
+            <v-card-title class="text-h5">Create a class first</v-card-title>
           </v-card>
         </v-container>
         <v-card flat v-else>

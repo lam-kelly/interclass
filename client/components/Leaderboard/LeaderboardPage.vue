@@ -1,6 +1,6 @@
 <template>
   <main>
-    <v-list v-if="classes">
+    <v-list v-if="$store.state.competition && classes">
       <h2>Leaderboard for {{$store.state.competition.name}} Competition</h2>
       <Rank
         v-for="classs in classes"
@@ -26,8 +26,11 @@ export default {
   },
   async mounted() {
     await this.$store.commit('getCompetition');
-    this.classes = [... this.$store.state.competition.classes]
-    this.classes.sort((a, b) => a.totalPoints > b.totalPoints ? -1 : a.totalPoints < b.totalPoints ? 1 : 0)
+    if (this.$store.state.competition) {
+      this.classes = [... this.$store.state.competition.classes]
+      this.classes.sort((a, b) => a.totalPoints > b.totalPoints ? -1 : a.totalPoints < b.totalPoints ? 1 : 0)
+    }
+    
   }
 };
 </script>

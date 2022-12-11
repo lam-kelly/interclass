@@ -10,8 +10,11 @@
                         <div v-if="$store.state.role=='student'"> {{ this.isSolved() }} </div>
                     </v-card-subtitle>
                 </v-row>
-
+                
             </div>
+            <v-card-subtitle v-if="$store.state.role=='teacher'" class="pl-0 pb-0">
+                Correct Answer: {{ problem.answer }}
+            </v-card-subtitle>
             <v-radio-group v-model="selected">
                 <v-radio  v-for="(answerChoice, index) in problem.answerChoices"
                     color="secondary"
@@ -22,7 +25,15 @@
                 >
                 </v-radio>
             </v-radio-group>
-            <v-card-actions class="pa-0" v-if="$store.state.role=='student'" >
+            <v-card-actions class="pa-0" v-if="$store.state.role=='student'" >           
+                <v-btn 
+                    depressed 
+                    color="secondary"
+                    @click="submitAnswer"
+                > 
+                    Submit 
+                </v-btn>
+                <v-spacer></v-spacer>
                 <v-btn 
                     depressed 
                     :disabled="disableHints"
@@ -30,14 +41,6 @@
                     @click="useHint"
                 > 
                     Hints: {{ $store.state.hints }}
-                </v-btn>
-                <v-spacer></v-spacer>
-                <v-btn 
-                    depressed 
-                    color="secondary"
-                    @click="submitAnswer"
-                > 
-                    Submit 
                 </v-btn>
             </v-card-actions>
             <v-card-actions class="pa-0" v-else >
@@ -150,7 +153,7 @@ export default {
                     callback: () => {
                         this.$store.commit('refreshProblems');
                         this.$set(this.alerts, params.message, 'success');
-                        setTimeout(() => this.$delete(this.alerts, params.message), 3000);
+                        setTimeout(() => this.$delete(this.alerts, params.message), 1000);
                     }
                 };
                 this.request(params);
@@ -164,7 +167,7 @@ export default {
                     callback: () => {
                         this.$store.commit('refreshProblems');
                         this.$set(this.alerts, params.message, 'error');
-                        setTimeout(() => this.$delete(this.alerts, params.message), 3000);
+                        setTimeout(() => this.$delete(this.alerts, params.message), 1000);
                     }
                 };
                 this.request(params);
@@ -197,7 +200,7 @@ export default {
                 params.callback();
             } catch (e) {
                 this.$set(this.alerts, e, 'error');
-                setTimeout(() => this.$delete(this.alerts, e), 3000);
+                setTimeout(() => this.$delete(this.alerts, e), 1000);
             }
         }
     }

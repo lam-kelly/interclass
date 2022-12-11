@@ -111,6 +111,9 @@ export default {
                     }
                 });
             }
+            else {
+                this.selected = null;
+            }
         },
         async validate () {
             if (this.$refs.form.validate()) {
@@ -148,7 +151,7 @@ export default {
             } catch (e) {
                 console.log('error2 ' + e)
                 this.$set(this.alerts, e, 'error');
-                setTimeout(() => this.$delete(this.alerts, e), 3000);
+                setTimeout(() => this.$delete(this.alerts, e), 1000);
             }
         },
         async addProblemToAssignment() {
@@ -170,7 +173,7 @@ export default {
                 await this.$store.commit('refreshProblems');
             } catch (e) {
                 this.$set(this.alerts, e, 'error');
-                setTimeout(() => this.$delete(this.alerts, e), 3000);
+                setTimeout(() => this.$delete(this.alerts, e), 1000);
             }
         }
     },

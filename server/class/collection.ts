@@ -113,17 +113,16 @@ class ClassCollection {
     /**
    * Add points to a class
    *
-   * @param {string} studentId - The ID of the student in the class
+   * @param {string} classId - The ID of the class to add points to
    * @param {number} points - The number of points to add 
    * @return {Promise<HydratedDocument<Class>>} - The updated Class
    */
-  static async addPoints(studentId: Types.ObjectId | string, points: number): Promise<HydratedDocument<Class>> {
-    const Class = await ClassCollection.findOneByStudent(studentId);
+  static async addPoints(classId: Types.ObjectId | string, competitionId: Types.ObjectId | string, points: number): Promise<HydratedDocument<Class>> {
+    const Class = await ClassModel.findOne({_id: classId});
     const oldPoints = Class.totalPoints;
     Class.totalPoints += points;
     await Class.save();
-    const competition = await CompetitionCollection.findOneByUserId(studentId);
-    const hint = await HintCollection.findOneByCompetitionId(competition._id);
+    const hint = await HintCollection.findOneByCompetitionId(competitionId);
     const pastMilestoneNum = Math.floor(oldPoints/hint.pointsUntilReward);
     const currMilestoneNum = Math.floor(Class.totalPoints/hint.pointsUntilReward);
     const diff = currMilestoneNum - pastMilestoneNum;

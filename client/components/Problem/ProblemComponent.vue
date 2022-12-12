@@ -119,6 +119,13 @@ export default {
       /**
        * Submit an answer choice as the answer and check its correctness (student action)
        */
+      
+      this.classes = [... this.$store.state.competition.classes]
+      const classes = this.classes
+        .sort((a, b) => a.totalPoints > b.totalPoints ? 1 : a.totalPoints < b.totalPoints ? -1 : 0)
+        .map(c => c._id)
+      
+      console.log(classes)
       const url = `/api/problem/${this.problem._id}`;
       const res = await fetch(url).then(async r => r.json());
       if (this.selected === res.problem.answer) {
@@ -126,7 +133,7 @@ export default {
           url: `/api/problem/${this.problem._id}/addStudent`,
           method: 'PATCH',
           message: 'Correct answer!',
-          body: JSON.stringify({ newSolverId: this.$store.state.userid, newWorkerId: this.$store.state.userid }),
+          body: JSON.stringify({ newSolverId: this.$store.state.userid, newWorkerId: this.$store.state.userid, sortedClassesId: classes }),
           callback: () => {
             this.$store.commit('refreshProblems');
             this.$set(this.alerts, params.message, 'success');

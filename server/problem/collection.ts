@@ -1,9 +1,9 @@
 import type {HydratedDocument, ObjectId, Types} from 'mongoose';
 import mongoose from 'mongoose';
 import ClassCollection from '../class/collection';
-import UserCollection from 'server/user/collection';
 import type {Problem} from './model';
 import ProblemModel from './model';
+import CompetitionCollection from '../competition/collection';
 
 class ProblemCollection {
     /**
@@ -53,6 +53,7 @@ class ProblemCollection {
             answer?: string;
             question?: string;
             pointValue?: number;
+            sortedClassesId?: string[];
         }
     ): Promise<HydratedDocument<Problem>> {
         const problem = await ProblemModel.findOne({_id: problemId});
@@ -67,12 +68,20 @@ class ProblemCollection {
         if (problemDetails.newSolverId) {
             const newSolver = new mongoose.Types.ObjectId(problemDetails.newSolverId)
             if (!problem.solvers.includes(newSolver)) {
-                // await ProblemModel.updateOne({_id: problemId}, {$push: {solvers: problemDetails.newSolverId}})
                 problem.solvers.push(newSolver)
-                ClassCollection.addPoints(problemDetails.newSolverId, problem.pointValue)
+                const currClassId = (await ClassCollection.findOneByStudent(problemDetails.newSolverId))._id;
+                
+                // alliance
+                const classes = problemDetails.sortedClassesId
+                const competitionId = (await CompetitionCollection.findOneByUserId(problemDetails.newSolverId))._id;
+                if (classes.length > 2 && classes.slice(0,2).includes(currClassId.toString())) {
+                    ClassCollection.addPoints(classes[0], competitionId, problem.pointValue)
+                    ClassCollection.addPoints(classes[1], competitionId, problem.pointValue)
+                } 
+                else {
+                    ClassCollection.addPoints(currClassId, competitionId, problem.pointValue)
+                }
             }
-            // const solverId = problemDetails.newSolverId as ObjectId;
-            // problem.solvers.push(problemDetails.newSolverId)
         }
 
         if (problemDetails.answerChoices) {

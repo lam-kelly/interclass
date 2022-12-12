@@ -12,8 +12,8 @@
                 What is InterClass?
             </v-expansion-panel-header>
             <v-expansion-panel-content>
-                Growing up, we all know how hard it is to do homework. Every kid has something they would rather do instead of schoolwork. 
-                <br/> <br/> That's where InterClass comes in. InterClass helps make learning fun and easy, allowing classes to complete assignments, earn points and rewards, and compete against other classes. InterClass keeps students engaged in learning and motivated to complete assignments. InterClass is best aimed towards elementary school classes for when teachers want to introduce concepts like basic math. 
+                Growing up, we all know how hard it is to do homework or pay attention in class. That's where InterClass comes in. 
+                <br/> <br/> InterClass helps make learning fun and easy, allowing classes to complete assignments, earn points and rewards, and compete against other classes. InterClass keeps students engaged in learning and motivated to complete assignments, and is best aimed towards elementary school classes for when teachers want to introduce concepts like basic math. 
                 <br/> <br/> If this all sounds like everything you've always wanted, come join us in the magic of InterClass!
             </v-expansion-panel-content>
             </v-expansion-panel>

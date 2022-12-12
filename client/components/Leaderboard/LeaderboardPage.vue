@@ -10,7 +10,13 @@
       />
     </v-list>
     <section v-else>
-      You are not currently in a competition
+      <v-card elevation="0" class="d-flex" height="82vh">
+        <v-row align="center">
+            <v-col align="center">
+              <v-card-title class="text-h1" style="justify-content: center; word-break: break-word">You are not currently in a competition</v-card-title>
+            </v-col>
+        </v-row>
+      </v-card>
     </section>
   </main>
 </template>

@@ -17,6 +17,7 @@ const store = new Vuex.Store({
     currentClass: null,
     currentProblem: null,
     hints: null,
+    hintSetting: null,
     alerts: {} // global success/error messages encountered during submissions to non-visible forms
   },
   mutations: {
@@ -113,6 +114,16 @@ const store = new Vuex.Store({
         state.currentAssignment = res;
       }
       
+    },
+    async getHintSetting(state) {
+      /**
+       * Refresh current competition
+       */
+       if (state.competition) {
+        const url ='/api/hint?competition=' + state.competition._id;
+        const res = await fetch(url).then(async r => r.json());
+        state.hintSetting = res;
+      } 
     },
   },
   // Store data across page refreshes, only discard on browser close

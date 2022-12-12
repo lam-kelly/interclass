@@ -40,13 +40,29 @@
 
             <v-expansion-panel>
             <v-expansion-panel-header>
-                I'm a teacher. How do I make a competition? How do I join a competition?
+                I'm a teacher. How do I make a competition? 
             </v-expansion-panel-header>
             <v-expansion-panel-content>
                 Once you have a class, you can either create a new competition or join an ongoing competition on the Competition page. 
-                <br/> <br/> You can start a new competition by entering a name for the competition and clicking "Create". An example of a name could be "Unit 1 Math".
-                <br/> <br/> Alternatively, you can join a competition by entering in the ID of an existing competition and clicking "Join". 
-                Afterwards, you can leave or end the competition that you are currently in. 
+                <br/> <br/> You can start a new competition by entering a name for the competition and clicking "Create". An example of a name could be "Unit 1 Math". 
+            </v-expansion-panel-content>
+            </v-expansion-panel>
+
+            <v-expansion-panel>
+            <v-expansion-panel-header>
+                I'm a teacher. Another teacher that I know has already created a competition. How do I join this competition?
+            </v-expansion-panel-header>
+            <v-expansion-panel-content>
+                On the Competition page, you can join a competition by entering in the ID of an existing competition and clicking "Join". 
+            </v-expansion-panel-content>
+            </v-expansion-panel>
+
+            <v-expansion-panel>
+            <v-expansion-panel-header>
+                What if I don't want to be in a competition anymore? 
+            </v-expansion-panel-header>
+            <v-expansion-panel-content>
+                If you are a teacher, you can leave the competition that your class is currently in. Alternatively, if the competition is over, you can end the competition.
             </v-expansion-panel-content>
             </v-expansion-panel>
 

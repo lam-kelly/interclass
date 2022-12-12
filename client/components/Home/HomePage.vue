@@ -34,20 +34,28 @@
                 What are competitions?
             </v-expansion-panel-header>
             <v-expansion-panel-content>
-                Competitions are a way for classes to compete against each other. Students can work through the same assignments and earn points for their class by solving assignments.
+                Competitions are a way for classes to compete against each other. Students can work through the same assignments and earn points for their class.
             </v-expansion-panel-content>
             </v-expansion-panel>
 
             <v-expansion-panel>
             <v-expansion-panel-header>
-                How do I make a competition? How do I join a competition?
+                I'm a teacher. How do I make a competition? How do I join a competition?
             </v-expansion-panel-header>
             <v-expansion-panel-content>
-                As a teacher, once you have a class, you can either create a new competition or join an ongoing competition on the Competition page. 
+                Once you have a class, you can either create a new competition or join an ongoing competition on the Competition page. 
                 <br/> <br/> You can start a new competition by entering a name for the competition and clicking "Create". An example of a name could be "Unit 1 Math".
-                <br/> <br/> Alternatively, you can join a competition by entering in the ID of an existing competition and clicking "Join".
-                <br/> <br/> Once you are in a competition, you can create or delete assignments for that competition. The students in your class can work on and solve assignments in the competition.
+                <br/> <br/> Alternatively, you can join a competition by entering in the ID of an existing competition and clicking "Join". 
                 Afterwards, you can leave or end the competition that you are currently in. 
+            </v-expansion-panel-content>
+            </v-expansion-panel>
+
+            <v-expansion-panel>
+            <v-expansion-panel-header>
+                I'm a student. Why can't I join a class or a competition?
+            </v-expansion-panel-header>
+            <v-expansion-panel-content>
+                You will be added to a class by your teacher. Once your teacher joins a competition, you and all other students in your class will be automatically added to the competition.
             </v-expansion-panel-content>
             </v-expansion-panel>
 
@@ -56,7 +64,7 @@
                 What is an assignment? 
             </v-expansion-panel-header>
             <v-expansion-panel-content>
-                An assignment is made of one or more problems. Each assignment can be created by a teacher, and solved by students, in a competition.
+                Assignments are what students can work through and solve in a competition to earn points. An assignment is made of one or more problems. 
                 <br/> <br/> A problem has a question, four answer choices, a correct answer, and a point value. When a student solves a problem, they earn the points for that problem for their class. 
             </v-expansion-panel-content>
             </v-expansion-panel>
@@ -69,7 +77,6 @@
                 When you join a competition, you have the option to create a new assignment. 
                 <br/> <br/> First, give your assignment a name, like "Fractions Practice". 
                 Once you've made the assignment, you can add new problems to the assignment. For each problem, you can enter in the question, the point value, and the four answer choices. You can mark the correct answer by checking the checkbox next to an answer choice. 
-                <br/> <br/> If there are any errors with your input, you'll be able to see a message that shows what's wrong so you can correct it.
             </v-expansion-panel-content>
             </v-expansion-panel>
 
@@ -84,10 +91,37 @@
 
             <v-expansion-panel>
             <v-expansion-panel-header>
+                I'm a student working on an assignment. I resubmitted a problem, but I didn't get any points this time. Why is that?
+            </v-expansion-panel-header>
+            <v-expansion-panel-content>
+                The first time you completed a problem in an assignment, you earned the points for that problem for your class. Afterwards, you can practice solving the problems again for better understanding, but you will not earn more points for resubmitting.
+            </v-expansion-panel-content>
+            </v-expansion-panel>
+
+            <v-expansion-panel>
+            <v-expansion-panel-header>
                 What are hints? How do I use them?
             </v-expansion-panel-header>
             <v-expansion-panel-content>
                 Hints are rewarded to students in a class once the class's total points reaches a milestone goal during a competition. A student can use hints on an assignment to eliminate incorrect answer choices. The amount of hints is limited, so be sure to use them carefully! 
+            </v-expansion-panel-content>
+            </v-expansion-panel>
+
+            <v-expansion-panel>
+            <v-expansion-panel-header>
+                What are alliances? 
+            </v-expansion-panel-header>
+            <v-expansion-panel-content>
+                An alliance is automatically formed between the bottom two classes in a competition. In an alliance, any points that a class gains are given to both classes. The alliance is removed once a class advances up, and a new alliance is automatically formed between the last two classes.
+            </v-expansion-panel-content>
+            </v-expansion-panel>
+
+            <v-expansion-panel>
+            <v-expansion-panel-header>
+                Why can't my class join an alliance? 
+            </v-expansion-panel-header>
+            <v-expansion-panel-content>
+                Alliances are meant to help reduce pressure on classes and make competitions friendlier, by giving a helping hand to the bottom two classes. Since alliances are automatically formed to help these classes, you cannot create your own alliance or opt-in to join an alliance. 
             </v-expansion-panel-content>
             </v-expansion-panel>
 

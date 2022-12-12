@@ -34,10 +34,20 @@
                 What are competitions?
             </v-expansion-panel-header>
             <v-expansion-panel-content>
-                Competitions are a way for classes to compete against each other. Students can work through the same assignments and earn points for their class. 
-                <br/> <br/> As a teacher, once you have a class, you can either create a new competition or join an ongoing competition on the Competition page. 
-                You can create or delete assignments for that competition. Afterwards, you can leave or end the competition that you are currently in. 
-                <br/> <br/> As a student, you can work on and solve assignments in the competition that your class is participating in.
+                Competitions are a way for classes to compete against each other. Students can work through the same assignments and earn points for their class by solving assignments.
+            </v-expansion-panel-content>
+            </v-expansion-panel>
+
+            <v-expansion-panel>
+            <v-expansion-panel-header>
+                How do I make a competition? How do I join a competition?
+            </v-expansion-panel-header>
+            <v-expansion-panel-content>
+                As a teacher, once you have a class, you can either create a new competition or join an ongoing competition on the Competition page. 
+                <br/> <br/> You can start a new competition by entering a name for the competition and clicking "Create". An example of a name could be "Unit 1 Math".
+                <br/> <br/> Alternatively, you can join a competition by entering in the ID of an existing competition and clicking "Join".
+                <br/> <br/> Once you are in a competition, you can create or delete assignments for that competition. The students in your class can work on and solve assignments in the competition.
+                Afterwards, you can leave or end the competition that you are currently in. 
             </v-expansion-panel-content>
             </v-expansion-panel>
 

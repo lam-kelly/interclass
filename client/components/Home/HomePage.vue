@@ -80,8 +80,7 @@
                 What is an assignment? 
             </v-expansion-panel-header>
             <v-expansion-panel-content>
-                Assignments are what students can work through and solve in a competition to earn points. An assignment is made of one or more problems. 
-                <br/> <br/> A problem has a question, four answer choices, a correct answer, and a point value. When a student solves a problem, they earn the points for that problem for their class. 
+                Assignments are what students can work through and solve in a competition to earn points. An assignment is made of one or more problems. When a student solves a problem, they earn the points for that problem for their class. 
             </v-expansion-panel-content>
             </v-expansion-panel>
 

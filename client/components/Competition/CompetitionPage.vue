@@ -58,19 +58,13 @@
         </v-row>
 
         <v-row v-if="$store.state.role === 'teacher'">
-          <v-card-subtitle>Competition ID: {{ $store.state.competition._id }}</v-card-subtitle>
-          <v-card-text>Share your competition ID with other teachers, so that their classes can join your
-            competition!
-          </v-card-text>
+            <v-card-subtitle>Competition ID: {{ $store.state.competition._id }} <br/> Share your competition ID with other teachers, so that their classes can join your
+          competition!</v-card-subtitle>
+            <v-spacer></v-spacer>
+            <CreateHintSetting v-if="$store.state.role === 'teacher' && !$store.state.hintSetting"></CreateHintSetting>
+            <HintSettingComponent v-else></HintSettingComponent>
         </v-row>
       </v-card>
-
-      <v-divider></v-divider>
-
-      <CreateHintSetting v-if="$store.state.role === 'teacher' && !$store.state.hintSetting"></CreateHintSetting>
-      <HintSettingComponent v-else></HintSettingComponent>
-
-      <v-divider></v-divider>
 
       <v-card flat v-if="$store.state.role === 'teacher'">
         <v-card-title>Create a new Assignment</v-card-title>

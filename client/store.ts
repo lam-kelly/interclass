@@ -117,12 +117,22 @@ const store = new Vuex.Store({
     },
     async getHintSetting(state) {
       /**
-       * Refresh current competition
+       * Get current hint settings
        */
        if (state.competition) {
         const url ='/api/hint?competition=' + state.competition._id;
         const res = await fetch(url).then(async r => r.json());
         state.hintSetting = res;
+      } 
+    },
+    async refreshHints(state) {
+      /**
+       * Refresh hints
+       */
+       if (state.username) {
+        const url ='/api/users/' + state.username;
+        const res = await fetch(url).then(async r => r.json());
+        state.hints = res.hints;
       } 
     },
   },

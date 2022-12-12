@@ -207,4 +207,27 @@ router.delete(
   }
 );
 
+/**
+ * Get the requested user
+ *
+ * @name GET /api/users/:username?
+ *
+ * @return - user if user with username was found, null otherwise
+ */
+ router.get(
+  '/:username?',
+  async (req: Request, res: Response) => {
+    if (!req.params.username) {
+      res.status(400).json({
+        error: 'Provided username must be nonempty.'
+      });
+      return;
+    }
+
+    const user = await UserCollection.findOneByUsername(req.params.username);
+    const response = user ? util.constructUserResponse(user) : null;
+    res.status(200).json(response);
+  }
+);
+
 export {router as userRouter};

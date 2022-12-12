@@ -47,6 +47,14 @@ const isValidProblem = async (req: Request, res: Response, next: NextFunction) =
         });
         return;
     }
+    else {
+        if (req.body.pointValue <= 0) {
+            res.status(400).json({
+                error: 'Point value must be a positive integer.'
+            });
+            return;
+        }
+    }
 
     let answerAmongAnswerChoices = false;
     const previousAnswerChoices = new Set();

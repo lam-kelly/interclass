@@ -1,6 +1,7 @@
 <template>
   <v-list-item>
     <v-list-item-title>
+      <v-icon large> mdi-account </v-icon>
       {{ student.username }}
     </v-list-item-title>
     <v-list-item-action>

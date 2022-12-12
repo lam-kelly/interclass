@@ -1,6 +1,6 @@
 <template>
     <main>
-        <v-card-title primary-title class="justify-center">
+        <v-card-title primary-title class="justify-center pa-10">
         <div>
             <div class="text-h1">Welcome to InterClass</div>
             <p class="text-center">Use InterClass to view classes, competitions, assignments, and more!</p>

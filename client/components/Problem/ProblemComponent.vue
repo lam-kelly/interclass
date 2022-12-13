@@ -33,7 +33,7 @@
           Submit
         </v-btn>
         <v-spacer></v-spacer>
-        <v-btn depressed :disabled="disableHints" color="secondary" @click="useHint">
+        <v-btn depressed :disabled="$store.state.hints <= 0 || disableHints" color="secondary" @click="useHint">
           Use Hint ({{ $store.state.hints }})
         </v-btn>
       </v-card-actions>

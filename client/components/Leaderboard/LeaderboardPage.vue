@@ -3,7 +3,7 @@
     <v-list v-if="$store.state.competition && $store.state.competition.classes.length">
       <h2>Leaderboard for {{$store.state.competition.name}} Competition</h2>
       <Rank
-        v-for="classs in classes.slice(0, classes.length-2)"
+        v-for="classs in $store.state.competition.classes.slice(0, $store.state.competition.classes.length-2)"
         :key="classs.id"
         :classs="classs"
         :maxPoints="$store.state.competition.classes[0].totalPoints"
@@ -11,14 +11,14 @@
       <v-card outlined>
         <v-card-subtitle class="pa-0 pl-3"> Allied - When one class in the alliance earns points, the other class will automatically gain the same amount of points. </v-card-subtitle>
         <Rank
-          :key="classes[classes.length-2].id"
-          :classs="classes[classes.length-2]"
-          :maxPoints="classes[0].totalPoints"
+          :key="$store.state.competition.classes[$store.state.competition.classes.length-2].id"
+          :classs="$store.state.competition.classes[$store.state.competition.classes.length-2]"
+          :maxPoints="$store.state.competition.classes[0].totalPoints"
         />
         <Rank
-          :key="classes[classes.length-1].id"
-          :classs="classes[classes.length-1]"
-          :maxPoints="classes[0].totalPoints"
+          :key="$store.state.competition.classes[$store.state.competition.classes.length-1].id"
+          :classs="$store.state.competition.classes[$store.state.competition.classes.length-1]"
+          :maxPoints="$store.state.competition.classes[0].totalPoints"
         />
       </v-card>
     </v-list>

@@ -83,7 +83,7 @@ export default {
     await this.$store.commit('getCompetition');
     if (this.$store.state.competition) {
       this.$store.state.competition.classes.sort((a, b) => a.totalPoints > b.totalPoints ? -1 : a.totalPoints < b.totalPoints ? 1 : 0);
-      this.maxPoints = $store.state.competition.classes[0].totalPoints;
+      this.maxPoints = this.$store.state.competition.classes[0].totalPoints;
     }
   },
   methods: {

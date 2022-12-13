@@ -8,7 +8,7 @@
         required></v-text-field>
 
       <v-card-text>
-        <v-row align="center" v-for="(answerChoice, index) in answerChoices" :key="answerChoice">
+        <v-row align="center" v-for="(answerChoice, index) in answerChoices" :key="answerChoice.id">
           <v-checkbox v-model="selectedAnswerChoices[index]" hide-details class="shrink mr-0 mt-0"
             @click="updateSelection(index)"></v-checkbox>
           <v-text-field class="ma-0" label="answer choice " v-model="answerChoices[index]"

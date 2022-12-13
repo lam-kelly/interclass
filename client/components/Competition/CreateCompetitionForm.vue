@@ -107,6 +107,7 @@ export default {
           throw new Error(res.error);
         }
         this.reset();
+        await this.$store.commit('getHintSetting');
       } catch (e) {
         this.$set(this.alerts, e, 'error');
         setTimeout(() => this.$delete(this.alerts, e), 1000);

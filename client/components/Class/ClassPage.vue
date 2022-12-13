@@ -82,11 +82,9 @@ export default {
     await this.$store.commit('getCurrentClass');
     await this.$store.commit('getCompetition');
     if (this.$store.state.competition) {
-      const classes = [... this.$store.state.competition.classes];
-      classes.sort((a, b) => a.totalPoints > b.totalPoints ? -1 : a.totalPoints < b.totalPoints ? 1 : 0);
-      this.maxPoints = classes[0].totalPoints;
+      this.$store.state.competition.classes.sort((a, b) => a.totalPoints > b.totalPoints ? -1 : a.totalPoints < b.totalPoints ? 1 : 0);
+      this.maxPoints = $store.state.competition.classes[0].totalPoints;
     }
-
   },
   methods: {
     async createClass() {

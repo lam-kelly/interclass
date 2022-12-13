@@ -1,30 +1,16 @@
 <template>
-  <v-tooltip bottom>
-    <template v-slot:activator="{ on, attrs }">
-      <v-btn
-        color="primary"
-        plain
-        :ripple=false
-        v-bind="attrs"
-        v-on="on"
-      >
-        View Hint Settings
-      </v-btn>
-    </template>
-    <span>
+  <v-card>
+    <v-card-title class="text-subtitle-2">Hint Setting</v-card-title>
+    <v-card-text>
       Points per Milestone: {{$store.state.hintSetting.pointsUntilReward}} <br/>
       Number of Hints per Milestone: {{$store.state.hintSetting.numberOfHints}}
-    </span>
-  </v-tooltip>
+    </v-card-text>
+  </v-card>
+  
 </template>
   
 <script>
 export default {
   name: 'HintSettingComponent',
-  data () {
-    return {
-      show: false,
-    }
-  },
 }
 </script>

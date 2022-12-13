@@ -120,12 +120,10 @@ export default {
        * Submit an answer choice as the answer and check its correctness (student action)
        */
       
-      this.classes = [... this.$store.state.competition.classes]
-      const classes = this.classes
-        .sort((a, b) => a.totalPoints > b.totalPoints ? 1 : a.totalPoints < b.totalPoints ? -1 : 0)
-        .map(c => c._id)
-      
-      console.log(classes)
+      if (this.$store.state.competition) {
+        this.classes = this.$store.state.competition.classes.sort((a, b) => a.totalPoints < b.totalPoints ? -1 : a.totalPoints > b.totalPoints ? 1 : 0);
+      }
+
       const url = `/api/problem/${this.problem._id}`;
       const res = await fetch(url).then(async r => r.json());
       if (this.selected === res.problem.answer) {

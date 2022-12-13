@@ -1,12 +1,12 @@
 <template>
   <main>
-    <v-list v-if="$store.state.competition && classes">
+    <v-list v-if="$store.state.competition && $store.state.competition.classes.length">
       <h2>Leaderboard for {{$store.state.competition.name}} Competition</h2>
       <Rank
-        v-for="classs in classes"
+        v-for="classs in $store.state.competition.classes"
         :key="classs.id"
         :classs="classs"
-        :maxPoints="classes[0].totalPoints"
+        :maxPoints="$store.state.competition.classes[0].totalPoints"
       />
     </v-list>
     <section v-else>
@@ -27,16 +27,11 @@ import Rank from '@/components/Leaderboard/Rank.vue';
 export default {
   name: 'LeaderboardPage',
   components: {Rank},
-  data() {
-    return {classes: []};
-  },
   async mounted() {
     await this.$store.commit('getCompetition');
     if (this.$store.state.competition) {
-      this.classes = [... this.$store.state.competition.classes]
-      this.classes.sort((a, b) => a.totalPoints > b.totalPoints ? -1 : a.totalPoints < b.totalPoints ? 1 : 0)
+      this.$store.state.competition.classes.sort((a, b) => a.totalPoints > b.totalPoints ? -1 : a.totalPoints < b.totalPoints ? 1 : 0);
     }
-    
   }
 };
 </script>

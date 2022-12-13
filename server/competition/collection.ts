@@ -47,6 +47,12 @@ class CompetitionCollection {
     return await CompetitionModel.findOne({ _id: competitionId })
     .populate('creatorId')
     .populate('classes')
+    .populate({
+      path : 'classes',
+      populate : {
+        path : 'teacher'
+      }
+    })
     .populate('assignments')
     .populate({
       path : 'assignments',
@@ -114,6 +120,12 @@ class CompetitionCollection {
     return await CompetitionModel.find({ classes: classId })
     .populate('creatorId')
     .populate('classes')
+    .populate({
+      path : 'classes',
+      populate : {
+        path : 'teacher'
+      }
+    })
     .populate('assignments')
     .populate({
       path : 'assignments',
@@ -133,6 +145,12 @@ class CompetitionCollection {
       return await CompetitionModel.find({ assignments: assignmentId })
       .populate('creatorId')
       .populate('classes')
+      .populate({
+        path : 'classes',
+        populate : {
+          path : 'teacher'
+        }
+      })
       .populate('assignments')
       .populate({
         path : 'assignments',
@@ -154,6 +172,12 @@ class CompetitionCollection {
     return await CompetitionModel.findOne({_id: competitionId})
     .populate('creatorId')
     .populate('classes')
+    .populate({
+      path : 'classes',
+      populate : {
+        path : 'teacher'
+      }
+    })
     .populate('assignments')
     .populate({
       path : 'assignments',
@@ -175,6 +199,12 @@ class CompetitionCollection {
     return await CompetitionModel.findOne({_id: competitionId})
     .populate('creatorId')
     .populate('classes')
+    .populate({
+      path : 'classes',
+      populate : {
+        path : 'teacher'
+      }
+    })
     .populate('assignments')
     .populate({
       path : 'assignments',
@@ -196,6 +226,12 @@ class CompetitionCollection {
     return await CompetitionModel.findOne({_id: competitionId})
     .populate('creatorId')
     .populate('classes')
+    .populate({
+      path : 'classes',
+      populate : {
+        path : 'teacher'
+      }
+    })
     .populate('assignments')
     .populate({
       path : 'assignments',
@@ -217,6 +253,12 @@ class CompetitionCollection {
     return await CompetitionModel.findOne({_id: competitionId})
     .populate('creatorId')
     .populate('classes')
+    .populate({
+      path : 'classes',
+      populate : {
+        path : 'teacher'
+      }
+    })
     .populate('assignments')
     .populate({
       path : 'assignments',
@@ -237,9 +279,15 @@ class CompetitionCollection {
     competition.dateEnded = new Date();
 
     await competition.save();
-    return (await (await (await competition
+    return (await (await (await (await competition
       .populate('creatorId'))
       .populate('classes'))
+      .populate({
+        path : 'classes',
+        populate : {
+          path : 'teacher'
+        }
+      }))
       .populate('assignments'))
       .populate({
         path : 'assignments',

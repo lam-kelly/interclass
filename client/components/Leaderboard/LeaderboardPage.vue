@@ -17,7 +17,6 @@
             :classs="classes[classes.length-2]"
             :maxPoints="classes[0].totalPoints"
           />
-          {{ classes[classes.length-1]._id }}
           <Rank
             :key="classes[classes.length-1]._id"
             :classs="classes[classes.length-1]"

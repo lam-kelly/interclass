@@ -6,7 +6,7 @@
           <v-card-title class="text-h5 font-weight-black"> {{ problem.question }} </v-card-title>
           <v-spacer></v-spacer>
           <v-card-subtitle>
-            <div v-if="isSolved"> 0/{{ problem.pointValue }} points available </div>
+            <div v-if="problem.solvers.includes($store.state.userid)"> 0/{{ problem.pointValue }} points available </div>
             <div v-else> {{ problem.pointValue }}/{{ problem.pointValue }} points available </div>
             <div v-if="$store.state.role == 'student'"> {{ this.isSolved() }} </div>
           </v-card-subtitle>
@@ -26,7 +26,7 @@
         </v-radio>
       </v-radio-group>
       <v-card-actions class="pa-0" v-if="$store.state.role == 'student'">
-        <v-btn v-if="isSolved" depressed :disabled="selected ? false : true" color="secondary" @click="submitAnswer">
+        <v-btn v-if="problem.solvers.includes($store.state.userid)" depressed :disabled="selected ? false : true" color="secondary" @click="submitAnswer">
           Resubmit
         </v-btn>
         <v-btn v-else depressed :disabled="selected ? false : true" color="secondary" @click="submitAnswer">

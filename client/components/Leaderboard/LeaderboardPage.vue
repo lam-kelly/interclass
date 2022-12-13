@@ -10,7 +10,6 @@
           :maxPoints="classes[0].totalPoints"
         />
         <v-card outlined>
-          {{ classes[classes.length-2] }}
           
           <v-card-subtitle class="pa-0 pl-3"> Allied - When one class in the alliance earns points, the other class will automatically gain the same amount of points. </v-card-subtitle>
           <Rank

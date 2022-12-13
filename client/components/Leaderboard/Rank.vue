@@ -1,7 +1,7 @@
 <template>
   <v-list-item>
     <v-progress-linear
-      v-model="valueAsPercent"
+      v-model="classs.totalPoints/maxPoints*100"
       color="#0F850D"
       height="25"
       striped
@@ -25,9 +25,6 @@ export default {
       required: true
     }
   },
-  data() {
-    return {valueAsPercent: this.classs.totalPoints/this.maxPoints*100}
-  }
 };
 </script>
   

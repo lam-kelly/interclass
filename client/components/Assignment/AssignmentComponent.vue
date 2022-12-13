@@ -1,10 +1,12 @@
 <template>
-  <v-list-item @click="setCurrentAssignment">
-    <v-list-item-title>
-      {{ assignment.name }}
-    </v-list-item-title>
+  <v-list-item @click="doNothing">
+    <v-list-item-content @click="setCurrentAssignment">
+      <v-list-item-title>
+        {{ assignment.name }}
+      </v-list-item-title>
+    </v-list-item-content>
     <v-list-item-action>
-      <v-btn icon small outlined color="error" v-if="$store.state.role === 'teacher'" @click="deleteAssignment">
+      <v-btn v-if="$store.state.role === 'teacher'" icon small outlined color="error" @click="deleteAssignment">
         <v-icon small >mdi-trash-can</v-icon>
       </v-btn>
     </v-list-item-action>
@@ -32,6 +34,7 @@ export default {
       this.$store.commit('setCurrentAssignment', this.assignment);
       this.$router.push(`/assignment/${this.$store.state.currentAssignment._id}`)
     },
+    doNothing() {},
     async deleteAssignment() {
       const url = `/api/assignment/${this.assignment._id}`;
       const options = {

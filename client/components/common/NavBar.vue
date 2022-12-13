@@ -15,13 +15,13 @@
       <v-btn depressed color="accent" @click="$router.push(`/`)">
         Home
       </v-btn>
-      <v-btn depressed color="accent" @click="$router.push(`/class`)">
+      <v-btn v-if="$store.state.username" depressed color="accent" @click="$router.push(`/class`)">
         Class
       </v-btn>
-      <v-btn depressed color="accent" @click="$router.push(`/competition`)">
+      <v-btn v-if="$store.state.username" depressed color="accent" @click="$router.push(`/competition`)">
         Competition
       </v-btn>
-      <v-btn depressed color="accent" @click="$router.push(`/leaderboard`)">
+      <v-btn v-if="$store.state.username" depressed color="accent" @click="$router.push(`/leaderboard`)">
         Leaderboard
       </v-btn>
       <v-btn depressed color="accent"

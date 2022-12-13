@@ -1,8 +1,8 @@
 <template>
   <main>
-    <v-list v-if="$store.state.competition && $store.state.competition.classes.length">
+    <v-list v-if="$store.state.competition && $store.state.classesInOrder.length">
       <h2>Leaderboard for {{$store.state.competition.name}} Competition</h2>
-      <div v-if="$store.state.competition.classes.length > 2">
+      <div v-if="$store.state.classesInOrder.length > 2">
         <Rank
           v-for="classs in classes.slice(0, classes.length-2)"
           :key="classs._id"

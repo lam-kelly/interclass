@@ -145,8 +145,14 @@ export default {
     SetAssignmentName,
     HintSettingComponent
   },
+  data() {
+    return {
+      dialog: false
+    };
+  },
   methods: {
     async leaveCompetition() {
+      this.dialog = false;
       const url = `/api/competition/${this.$store.state.competition._id}/leave`;
       const options = {
         method: 'PATCH',

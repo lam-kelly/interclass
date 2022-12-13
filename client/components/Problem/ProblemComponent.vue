@@ -6,7 +6,8 @@
           <v-card-title class="text-h5 font-weight-black"> {{ problem.question }} </v-card-title>
           <v-spacer></v-spacer>
           <v-card-subtitle>
-            <div> {{ problem.pointValue }} points </div>
+            <div v-if="isSolved"> 0/{{ problem.pointValue }} points available </div>
+            <div v-else> {{ problem.pointValue }}/{{ problem.pointValue }} points available </div>
             <div v-if="$store.state.role == 'student'"> {{ this.isSolved() }} </div>
           </v-card-subtitle>
         </v-row>
@@ -19,16 +20,21 @@
         <v-radio v-for="(answerChoice, index) in problem.answerChoices" color="secondary"
           :disabled="eliminatedAnswerChoices.includes(answerChoice)"
           :off-icon="eliminatedAnswerChoices.includes(answerChoice) ? 'mdi-close-circle-outline' : '$radioOff'"
-          :value="answerChoice" :label="answerChoice">
+          :key="answerChoice"
+          :value="answerChoice" 
+          :label="answerChoice">
         </v-radio>
       </v-radio-group>
       <v-card-actions class="pa-0" v-if="$store.state.role == 'student'">
-        <v-btn depressed :disabled="selected ? false : true" color="secondary" @click="submitAnswer">
+        <v-btn v-if="isSolved" depressed :disabled="selected ? false : true" color="secondary" @click="submitAnswer">
+          Resubmit
+        </v-btn>
+        <v-btn v-else depressed :disabled="selected ? false : true" color="secondary" @click="submitAnswer">
           Submit
         </v-btn>
         <v-spacer></v-spacer>
         <v-btn depressed :disabled="disableHints" color="secondary" @click="useHint">
-          Hints: {{ $store.state.hints }}
+          Use Hint ({{ $store.state.hints }})
         </v-btn>
       </v-card-actions>
       <v-card-actions class="pa-0" v-else>

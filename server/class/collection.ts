@@ -48,7 +48,7 @@ class ClassCollection {
    * @return {Promise<HydratedDocument<Class>> | Promise<null>} - The Class with the given Class ID, if any
    */
   static async findOneByclassId(classId: Types.ObjectId | string): Promise<HydratedDocument<Class>> {
-    return await ClassModel.findOne({_id: classId}).populate('teacher').populate('students').populate('totalPoints');
+    return await ClassModel.findOne({_id: classId}).populate('teacher').populate('students');
   }
 
   /**
@@ -81,7 +81,7 @@ class ClassCollection {
   static async addStudent(classId: Types.ObjectId | string, studentName: string): Promise<HydratedDocument<Class>> {
     const student = await UserCollection.findOneByUsername(studentName);
     await ClassModel.updateOne({_id: classId}, {$push: {students: student._id}});
-    return await ClassModel.findOne({_id: classId}).populate('teacher').populate('student');
+    return await ClassModel.findOne({_id: classId}).populate('teacher').populate('students');
   }
 
     /**
@@ -117,7 +117,7 @@ class ClassCollection {
    */
    static async removeStudent(classId: Types.ObjectId | string, studentId: string): Promise<HydratedDocument<Class>> {
     await ClassModel.updateOne({_id: classId}, {$pull: {students: studentId}});
-    return await ClassModel.findOne({_id: classId}).populate('teacher').populate('student');
+    return await ClassModel.findOne({_id: classId}).populate('teacher').populate('students');
    }
 
 }

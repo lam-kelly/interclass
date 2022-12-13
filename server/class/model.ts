@@ -7,8 +7,6 @@ export type Class = {
   _id: Types.ObjectId; // MongoDB assigns each object this ID on creation
   teacher: User;
   students: Types.Array<User>;
-  // teacher: Types.ObjectId; // Id of teacher
-  // students: Types.ObjectId[]; // Ids of students
   totalPoints: number;
 };
 
@@ -26,17 +24,6 @@ const ClassSchema = new Schema({
     required: true,
     ref: 'User'
   },
-  // teacher: {
-  //   type: String,
-  //   required: true
-  // },
-  // students: {
-  //   type: [{
-  //     type: Schema.Types.ObjectId,
-  //     ref: 'User'
-  //   }],
-  //   required: true
-  // },
   totalPoints: {
     type: Number,
     required: true

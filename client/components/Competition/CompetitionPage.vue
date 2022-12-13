@@ -13,7 +13,7 @@
         <v-card flat v-else>
           <v-card-title>Join a Competition</v-card-title>
           <JoinCompetitionForm label="Competition ID" placeholder="ex: 63840fdge3j503f9" button="Join" />
-          <CreateCompetitionForm/>
+          <CreateCompetitionForm />
         </v-card>
       </v-container>
       <v-container fill-height fluid v-else>
@@ -47,14 +47,37 @@
                     </template>
                     <span>Leaving this competition will remove your class from this competition.</span>
                   </v-tooltip>
-                  <v-tooltip top>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-btn color="error" outlined small v-bind="attrs" v-on="on" @click="endCompetition">
-                        End Competition
-                      </v-btn>
-                    </template>
-                    <span>Ending this competition will end the competition for all classes.</span>
-                  </v-tooltip>
+                  <template>
+                    <div class="text-center">
+                      <v-dialog v-model="dialog" width="500">
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn color="error" outlined small v-bind="attrs" v-on="on">
+                            End Competition
+                          </v-btn>
+                        </template>
+
+                        <v-card>
+                          <v-card-title class="text-h5 grey lighten-2" style="word-break: break-word;">
+                            Are you sure you want to end this competition?
+                          </v-card-title>
+
+                          <v-card-text>
+                            Ending this competition will end the competition for all classes. <br />
+                            WARNING: This is an irreversible action.
+                          </v-card-text>
+
+                          <v-divider></v-divider>
+
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="primary" text @click="leaveCompetition">
+                              Confirm
+                            </v-btn>
+                          </v-card-actions>
+                        </v-card>
+                      </v-dialog>
+                    </div>
+                  </template>
                 </v-card-actions>
                 <HintSettingComponent v-else-if="$store.state.hintSetting"></HintSettingComponent>
               </v-col>

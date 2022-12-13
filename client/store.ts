@@ -18,6 +18,7 @@ const store = new Vuex.Store({
     currentProblem: null,
     hints: null,
     hintSetting: null,
+    classesInOrder: null,
     alerts: {} // global success/error messages encountered during submissions to non-visible forms
   },
   mutations: {
@@ -134,6 +135,9 @@ const store = new Vuex.Store({
         const res = await fetch(url).then(async r => r.json());
         state.hints = res.hints;
       } 
+    },
+    setClassesInOrder(state, classes) {
+      state.classesInOrder = classes;
     },
   },
   // Store data across page refreshes, only discard on browser close

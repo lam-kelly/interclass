@@ -1,34 +1,34 @@
 <template>
   <main>
-    <v-list v-if="$store.state.competition && $store.state.competition.classes.length">
+    <v-list v-if="$store.state.competition && $store.state.classesInOrder.length">
       <h2>Leaderboard for {{$store.state.competition.name}} Competition</h2>
-      <div v-if="$store.state.competition.classes.length > 2">
+      <div v-if="$store.state.classesInOrder.length > 2">
         <Rank
-          v-for="classs in $store.state.competition.classes.slice(0, $store.state.competition.classes.length-2)"
+          v-for="classs in $store.state.classesInOrder.slice(0, $store.state.classesInOrder.length-2)"
           :key="classs.id"
           :classs="classs"
-          :maxPoints="$store.state.competition.classes[0].totalPoints"
+          :maxPoints="$store.state.classesInOrder[0].totalPoints"
         />
         <v-card outlined>
           <v-card-subtitle class="pa-0 pl-3"> Allied - When one class in the alliance earns points, the other class will automatically gain the same amount of points. </v-card-subtitle>
           <Rank
-            :key="$store.state.competition.classes[$store.state.competition.classes.length-2].id"
-            :classs="$store.state.competition.classes[$store.state.competition.classes.length-2]"
-            :maxPoints="$store.state.competition.classes[0].totalPoints"
+            :key="$store.state.classesInOrder[$store.state.classesInOrder.length-2].id"
+            :classs="$store.state.classesInOrder[$store.state.classesInOrder.length-2]"
+            :maxPoints="$store.state.classesInOrder[0].totalPoints"
           />
           <Rank
-            :key="$store.state.competition.classes[$store.state.competition.classes.length-1].id"
-            :classs="$store.state.competition.classes[$store.state.competition.classes.length-1]"
-            :maxPoints="$store.state.competition.classes[0].totalPoints"
+            :key="$store.state.classesInOrder[$store.state.classesInOrder.length-1].id"
+            :classs="$store.state.classesInOrder[$store.state.classesInOrder.length-1]"
+            :maxPoints="$store.state.classesInOrder[0].totalPoints"
           />
         </v-card>
       </div>
       <div v-else>
         <Rank
-          v-for="classs in $store.state.competition.classes"
+          v-for="classs in $store.state.classesInOrder"
           :key="classs.id"
           :classs="classs"
-          :maxPoints="$store.state.competition.classes[0].totalPoints"
+          :maxPoints="$store.state.classesInOrder[0].totalPoints"
         />
       </div>
     </v-list>
@@ -53,7 +53,8 @@ export default {
   async mounted() {
     await this.$store.commit('getCompetition');
     if (this.$store.state.competition) {
-      this.$store.state.competition.classes.sort((a, b) => a.totalPoints > b.totalPoints ? -1 : a.totalPoints < b.totalPoints ? 1 : 0);
+      const classes = this.$store.state.competition.classes.sort((a, b) => a.totalPoints > b.totalPoints ? -1 : a.totalPoints < b.totalPoints ? 1 : 0);
+      await this.$store.commit('setClassesInOrder', classes);
     }
   }
 };

@@ -126,9 +126,7 @@ export default {
        * Submit an answer choice as the answer and check its correctness (student action)
        */
       
-      if (this.$store.state.competition) {
-        this.classes = this.$store.state.competition.classes.sort((a, b) => a.totalPoints < b.totalPoints ? -1 : a.totalPoints > b.totalPoints ? 1 : 0);
-      }
+      const classes = this.$store.state.competition.classes.sort((a, b) => a.totalPoints < b.totalPoints ? -1 : a.totalPoints > b.totalPoints ? 1 : 0);
 
       const url = `/api/problem/${this.problem._id}`;
       const res = await fetch(url).then(async r => r.json());

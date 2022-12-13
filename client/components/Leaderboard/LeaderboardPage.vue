@@ -4,31 +4,34 @@
       <h2>Leaderboard for {{$store.state.competition.name}} Competition</h2>
       <div v-if="$store.state.competition.classes.length > 2">
         <Rank
-          v-for="classs in $store.state.competition.classes.slice(0, $store.state.competition.classes.length-2)"
-          :key="classs.id"
+          v-for="classs in classes.slice(0, classes.length-2)"
+          :key="classs._id"
           :classs="classs"
-          :maxPoints="$store.state.competition.classes[0].totalPoints"
+          :maxPoints="classes[0].totalPoints"
         />
         <v-card outlined>
+          {{ classes[classes.length-2] }}
+          
           <v-card-subtitle class="pa-0 pl-3"> Allied - When one class in the alliance earns points, the other class will automatically gain the same amount of points. </v-card-subtitle>
           <Rank
-            :key="$store.state.competition.classes[$store.state.competition.classes.length-2].id"
-            :classs="$store.state.competition.classes[$store.state.competition.classes.length-2]"
-            :maxPoints="$store.state.competition.classes[0].totalPoints"
+            :key="classes[classes.length-2]._id"
+            :classs="classes[classes.length-2]"
+            :maxPoints="classes[0].totalPoints"
           />
+          {{ classes[classes.length-1]._id }}
           <Rank
-            :key="$store.state.competition.classes[$store.state.competition.classes.length-1].id"
-            :classs="$store.state.competition.classes[$store.state.competition.classes.length-1]"
-            :maxPoints="$store.state.competition.classes[0].totalPoints"
+            :key="classes[classes.length-1]._id"
+            :classs="classes[classes.length-1]"
+            :maxPoints="classes[0].totalPoints"
           />
         </v-card>
       </div>
       <div v-else>
         <Rank
-          v-for="classs in $store.state.competition.classes"
-          :key="classs.id"
+          v-for="classs in classes"
+          :key="classs._id"
           :classs="classs"
-          :maxPoints="$store.state.competition.classes[0].totalPoints"
+          :maxPoints="classes[0].totalPoints"
         />
       </div>
     </v-list>
@@ -50,10 +53,15 @@ import Rank from '@/components/Leaderboard/Rank.vue';
 export default {
   name: 'LeaderboardPage',
   components: {Rank},
+  data () {
+    return {
+      classes: [],
+    }
+  },
   async mounted() {
     await this.$store.commit('getCompetition');
     if (this.$store.state.competition) {
-      this.$store.state.competition.classes.sort((a, b) => a.totalPoints > b.totalPoints ? -1 : a.totalPoints < b.totalPoints ? 1 : 0);
+      this.classes = this.$store.state.competition.classes.sort((a, b) => a.totalPoints > b.totalPoints ? -1 : a.totalPoints < b.totalPoints ? 1 : 0);
     }
   }
 };

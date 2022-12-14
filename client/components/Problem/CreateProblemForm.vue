@@ -74,7 +74,7 @@ export default {
   methods: {
     updateSelection(index) {
       if (this.selectedAnswerChoices[index] === true) {
-        this.selected = this.answerChoices[index];
+        this.selected = index;
         this.selectedAnswerChoices.forEach((answerChoice, i) => {
           if (i !== index) {
             this.selectedAnswerChoices[i] = false
@@ -106,7 +106,7 @@ export default {
           'question': this.question,
           'pointValue': this.pointValue,
           'answerChoices': this.answerChoices,
-          'answer': this.selected,
+          'answer': this.answerChoices[this.selected],
         })
       };
       try {
